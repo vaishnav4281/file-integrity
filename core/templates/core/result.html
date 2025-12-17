@@ -1,0 +1,440 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Header Section -->
+    <div class="mb-12 border-b border-border pb-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div>
+                <a href="{% url 'index' %}"
+                    class="inline-flex items-center text-sm font-medium text-secondary hover:text-primary transition-colors mb-4 group">
+                    <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Dashboard
+                </a>
+                <h1 class="text-4xl font-bold text-primary tracking-tight">
+                    Forensic Report: <span class="font-light text-secondary">{{ file_name }}</span>
+                </h1>
+                <div class="flex items-center mt-3 text-sm text-slate-400 font-mono">
+                    <span class="mr-4">ID: {{ result.header_analysis.stored|slice:":8" }}...</span>
+                    <span>{% now "F j, Y, g:i A" %}</span>
+                </div>
+            </div>
+
+            <div class="flex items-center">
+                <button onclick="downloadPDF()"
+                    class="flex items-center space-x-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-slate-800 transition-all shadow-soft hover:shadow-lg font-semibold text-sm">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                        </path>
+                    </svg>
+                    <span>Export PDF Report</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Integrity Status Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+
+        <!-- Status Indicator -->
+        <div
+            class="lg:col-span-2 bg-surface rounded-2xl p-8 border border-border shadow-card flex items-center justify-between">
+            <div class="flex items-center">
+                <div
+                    class="h-24 w-24 rounded-full flex items-center justify-center mr-8 shadow-sm border-4 
+                    {% if result.result_type == 'NO_CHANGE' %}bg-green-50 border-green-100 text-green-600{% elif result.result_type == 'PARTIAL_MODIFICATION' %}bg-yellow-50 border-yellow-100 text-yellow-600{% else %}bg-red-50 border-red-100 text-red-600{% endif %}">
+                    {% if result.result_type == 'NO_CHANGE' %}
+                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {% elif result.result_type == 'PARTIAL_MODIFICATION' %}
+                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                        </path>
+                    </svg>
+                    {% else %}
+                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    {% endif %}
+                </div>
+                <div>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">Analysis
+                        Result</span>
+                    <h2 class="text-3xl font-bold text-primary mb-2">
+                        {% if result.result_type == 'NO_CHANGE' %}
+                        Integrity Verified
+                        {% elif result.result_type == 'PARTIAL_MODIFICATION' %}
+                        Partial Change Detected
+                        {% else %}
+                        Critical Mismatch
+                        {% endif %}
+                    </h2>
+                    <p class="text-secondary max-w-md">
+                        {% if result.result_type == 'NO_CHANGE' %}
+                        The uploaded file is a bit-perfect match for the registered cryptographic profile.
+                        {% elif result.result_type == 'PARTIAL_MODIFICATION' %}
+                        Alterations detected in specific 4KB blocks. The majority of the file structure remains intact.
+                        {% else %}
+                        The file is fundamentally different from the original record.
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="hidden md:block pl-12 border-l border-border">
+                <div
+                    class="text-6xl font-bold tracking-tighter {% if result.confidence_score == 100 %}text-success{% elif result.confidence_score > 50 %}text-warning{% else %}text-danger{% endif %} animate-pulse-once">
+                    {{ result.confidence_score }}%
+                </div>
+                <div class="text-sm font-semibold text-slate-400 mt-2">CONFIDENCE</div>
+            </div>
+        </div>
+
+        <!-- Meta Stats -->
+        <div class="bg-surface rounded-2xl p-8 border border-border shadow-card flex flex-col justify-center gap-6">
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">File Size</span>
+                <div class="flex items-baseline">
+                    <span class="text-xl font-mono font-medium text-primary">{{ profile.file_size }}</span>
+                    <span class="ml-1 text-sm text-secondary">bytes</span>
+                    {% if result.size_diff != 0 %}
+                    <span
+                        class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold {% if result.size_diff > 0 %}bg-red-50 text-red-600{% else %}bg-orange-50 text-orange-600{% endif %}">
+                        {% if result.size_diff > 0 %}+{% endif %}{{ result.size_diff }} B
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">Analysis
+                    Resolution</span>
+                <div class="flex items-baseline">
+                    <span class="text-xl font-mono font-medium text-primary">4KB</span>
+                    <span class="ml-1 text-sm text-secondary">blocks</span>
+                </div>
+            </div>
+            <div>
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">Magic Header</span>
+                <div class="flex items-center flex-wrap gap-2">
+                    <span
+                        class="inline-block font-mono text-sm font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 tracking-wide break-all">
+                        {{ result.header_analysis.uploaded|slice:":8" }}..
+                    </span>
+                    <span
+                        class="text-[10px] font-bold text-slate-400 uppercase tracking-wider border border-slate-100 px-1.5 py-0.5 rounded">HEX</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Deep Forensic Analysis Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+
+        <!-- Structure Graph -->
+        <div class="bg-surface p-8 rounded-2xl border border-border shadow-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-primary tracking-tight">Structural Entropy Profile</h3>
+                <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-500 rounded">Visualization</span>
+            </div>
+            <div class="relative h-64 w-full">
+                <canvas id="entropyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Magic Byte Inspector -->
+        <div class="bg-surface p-8 rounded-2xl border border-border shadow-card">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-primary tracking-tight">Magic Byte Verification</h3>
+                <span
+                    class="text-xs font-semibold px-2 py-1 rounded
+                    {% if 'MISMATCH' in result.header_analysis.status %}bg-red-50 text-red-600{% else %}bg-green-50 text-green-600{% endif %}">
+                    {{ result.header_analysis.status }}
+                </span>
+            </div>
+
+            <div class="space-y-6">
+                <div>
+                    <span class="text-xs text-secondary font-semibold uppercase tracking-wide block mb-2">Original
+                        Profile (Stored)</span>
+                    <div
+                        class="bg-subtle p-4 rounded-xl border border-border font-mono text-sm text-secondary overflow-hidden break-all">
+                        {{ result.header_analysis.stored }}
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <svg class="h-5 w-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xs text-secondary font-semibold uppercase tracking-wide block mb-2">Current File
+                        (Uploaded)</span>
+                    <div class="bg-subtle p-4 rounded-xl border border-border font-mono text-sm text-primary overflow-hidden break-all
+                         {% if 'MISMATCH' in result.header_analysis.status %}border-red-200 bg-red-50{% endif %}">
+                        {{ result.header_analysis.uploaded }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Forensic Analysis Details (Only if mismatches exist) -->
+    {% if result.mismatch_count > 0 %}
+    <div class="bg-surface rounded-2xl border border-border shadow-card overflow-hidden">
+        <div class="px-8 py-6 border-b border-border bg-subtle flex justify-between items-center">
+            <h3 class="text-lg font-bold text-primary">Detailed Anomaly Report</h3>
+            <span
+                class="bg-white border border-border text-secondary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                {{ result.mismatch_count }} Mismatches Found
+            </span>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-border">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th scope="col"
+                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Chunk ID</th>
+                        <th scope="col"
+                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Byte Range</th>
+                        <th scope="col"
+                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Hash Fingerprint (SHA-256)</th>
+                        <th scope="col"
+                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Anomaly Classification</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border bg-white">
+                    {% for item in result.detailed_mismatches %}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-8 py-5 whitespace-nowrap text-primary font-mono text-sm font-medium">
+                            #{{ item.chunk_index }}
+                        </td>
+                        <td class="px-8 py-5 whitespace-nowrap text-secondary font-mono text-xs">
+                            {{ item.byte_range }}
+                        </td>
+                        <td class="px-8 py-5 whitespace-nowrap">
+                            <div class="flex flex-col space-y-1.5">
+                                <span
+                                    class="bg-green-50 text-green-700 font-mono text-xs px-2 py-0.5 rounded w-fit">Orig:
+                                    {{ item.stored_hash|slice:":12" }}...</span>
+                                <span class="bg-red-50 text-red-700 font-mono text-xs px-2 py-0.5 rounded w-fit">New: {{
+                                    item.uploaded_hash|slice:":12" }}...</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-5 whitespace-nowrap">
+                            <div class="flex flex-col gap-1">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="text-sm font-semibold {% if 'High' in item.anomaly_type %}text-danger{% elif 'Spike' in item.anomaly_type %}text-warning{% else %}text-slate-600{% endif %}">
+                                        {{ item.anomaly_type }}
+                                    </span>
+                                    {% if result.size_diff != 0 %}
+                                    <span
+                                        class="px-1.5 py-0.5 rounded text-[10px] font-bold border {% if result.size_diff > 0 %}bg-red-50 text-red-600 border-red-100{% else %}bg-orange-50 text-orange-600 border-orange-100{% endif %}">
+                                        {% if result.size_diff > 0 %}+{% endif %}{{ result.size_diff }}B
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                <div class="text-xs text-slate-400">
+                                    Entropy: {{ item.stored_entropy }} &rarr; {{ item.uploaded_entropy }}
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% if result.mismatch_count > 50 %}
+            <div class="px-8 py-4 bg-slate-50 text-center border-t border-border">
+                <p class="text-xs text-slate-500 italic">...and {{ result.mismatch_count|add:"-50" }} more mismatches
+                    hidden for clarity.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Chart.js Integration -->
+{{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
+{{ result.full_entropy_profile.uploaded|json_script:"uploaded-entropy-data" }}
+{{ result.detailed_mismatches|json_script:"mismatch-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('entropyChart').getContext('2d');
+
+        // robust data loading
+        const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
+        const uploadedEntropy = JSON.parse(document.getElementById('uploaded-entropy-data').textContent);
+        const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
+
+        // Light theme chart config
+        Chart.defaults.color = '#64748b'; // Slate 500
+        Chart.defaults.borderColor = '#e2e8f0'; // Slate 200
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Original Profile (Stored)',
+                        data: storedEntropy,
+                        borderColor: '#10b981', // Emerald 500
+                        backgroundColor: 'rgba(16, 185, 129, 0.05)',
+                        borderWidth: 2,
+                        tension: 0.2, // Sharper lines for technical look
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    },
+                    {
+                        label: 'Current File (Uploaded)',
+                        data: uploadedEntropy,
+                        borderColor: '#ef4444', // Red 500
+                        backgroundColor: 'rgba(239, 68, 68, 0.05)',
+                        borderWidth: 2,
+                        tension: 0.2,
+                        pointRadius: 0,
+                        borderDash: [5, 5],
+                        pointHoverRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: { boxWidth: 8, usePointStyle: true, pointStyle: 'circle', font: { family: 'Plus Jakarta Sans', size: 12 } }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: '#1e293b',
+                        titleColor: '#fff',
+                        bodyColor: '#e2e8f0',
+                        borderColor: '#334155',
+                        borderWidth: 0,
+                        padding: 12,
+                        cornerRadius: 8
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 8.0,
+                        title: { display: true, text: 'Entropy (Bits)', font: { size: 10, weight: 600 } },
+                        grid: { borderDash: [2, 2] }
+                    },
+                    x: {
+                        display: false
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+    });
+
+    function downloadPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Brand Header
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(20);
+        doc.setTextColor(15, 23, 42); // Slate 900
+        doc.text("File Integrity Audit Report", 14, 22);
+
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(100);
+        doc.text("Generated by IntegrityChecker", 14, 28);
+
+        doc.setDrawColor(226, 232, 240); // Slate 200
+        doc.line(14, 35, 196, 35);
+
+        // Metadata
+        doc.setFontSize(10);
+        doc.setTextColor(71, 85, 105); // Slate 600
+        doc.text(`File Target:`, 14, 45);
+        doc.setFont("helvetica", "bold");
+        doc.text("{{ file_name }}", 40, 45);
+
+        doc.setFont("helvetica", "normal");
+        doc.text(`Timestamp:`, 14, 52);
+        doc.text(new Date().toLocaleString(), 40, 52);
+
+        // Status Box
+        doc.setFillColor(248, 250, 252); // Slate 50
+        doc.setDrawColor(226, 232, 240);
+        doc.rect(14, 60, 182, 30, 'FD');
+
+        doc.setFontSize(11);
+        doc.text("Integrity Status", 20, 70);
+
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("{{ result.result_type }}", 20, 80);
+
+        doc.setFontSize(10);
+        doc.text("Confidence: {{ result.confidence_score }}%", 140, 80);
+
+        // Table
+        const mismatches = JSON.parse(document.getElementById('mismatch-data').textContent);
+
+        doc.setFontSize(12);
+        doc.setTextColor(30);
+        doc.text("Anomaly Details", 14, 105);
+
+        if (mismatches.length > 0) {
+            doc.autoTable({
+                startY: 110,
+                head: [['Chunk', 'Byte Range', 'Type', 'Entropy Shift']],
+                body: mismatches.map(m => [
+                    `#${m.chunk_index}`,
+                    m.byte_range,
+                    m.anomaly_type,
+                    `${m.stored_entropy} -> ${m.uploaded_entropy}`
+                ]),
+                theme: 'grid',
+                headStyles: { fillColor: [15, 23, 42], textColor: 255 }, // Dark Slate header
+                styles: { fontSize: 9, cellPadding: 4 }
+            });
+        } else {
+            doc.setFont("helvetica", "italic");
+            doc.setTextColor(100);
+            doc.text("No anomalies detected. The file signature matches the record.", 14, 115);
+        }
+
+        doc.save("Audit_Report_" + "{{ file_name }}" + ".pdf");
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+{% endblock %}

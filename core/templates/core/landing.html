@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+    <!-- Hero Section -->
+    <div class="text-center mb-24 max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-6xl font-bold tracking-tight text-primary mb-6">
+            Trust Only What You Can Verify.
+        </h1>
+        <p class="text-xl text-secondary max-w-2xl mx-auto leading-relaxed font-light">
+            Secure, privacy-preserving file forensics. Detect tampering with cryptographic precision using 4KB granular
+            analysis and Shannon entropy profiling.
+        </p>
+    </div>
+
+    <!-- Actions Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+
+        <!-- Register Card -->
+        <div
+            class="bg-surface rounded-3xl p-10 border border-border shadow-card hover:shadow-floating transition-all duration-300 group relative">
+            <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <svg class="w-32 h-32 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
+            </div>
+
+            <div
+                class="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center mb-8">
+                <svg class="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+
+            <h2 class="text-2xl font-bold text-primary mb-2">Register File</h2>
+            <p class="text-md text-secondary mb-8">Establish a cryptographic baseline. We store the "digital DNA", never
+                the file itself.</p>
+
+            <form action="{% url 'register' %}" method="post" enctype="multipart/form-data" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <input type="file" name="file" required class="block w-full text-sm text-secondary
+                        file:mr-4 file:py-3 file:px-6
+                        file:rounded-xl file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-slate-50 file:text-primary
+                        file:border file:border-slate-200
+                        hover:file:bg-slate-100 cursor-pointer
+                        focus:outline-none
+                    " />
+                </div>
+                <button type="submit"
+                    class="w-full flex justify-center py-4 px-6 border border-transparent rounded-xl shadow-soft text-sm font-bold text-white bg-primary hover:bg-slate-800 transition-all tracking-wide">
+                    Generate Profile
+                </button>
+            </form>
+        </div>
+
+        <!-- Verify Card -->
+        <div
+            class="bg-surface rounded-3xl p-10 border border-border shadow-card hover:shadow-floating transition-all duration-300 group relative">
+            <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                <svg class="w-32 h-32 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+
+            <div class="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-8">
+                <svg class="w-7 h-7 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                    </path>
+                </svg>
+            </div>
+
+            <h2 class="text-2xl font-bold text-primary mb-2">Verify Integrity</h2>
+            <p class="text-md text-secondary mb-8">Upload a suspect file to compare against the golden record. Detect
+                byte-level mutations.</p>
+
+            <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <input type="file" name="file" required class="block w-full text-sm text-secondary
+                        file:mr-4 file:py-3 file:px-6
+                        file:rounded-xl file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-slate-50 file:text-primary
+                        file:border file:border-slate-200
+                        hover:file:bg-slate-100 cursor-pointer
+                        focus:outline-none
+                    " />
+                </div>
+                <button type="submit"
+                    class="w-full flex justify-center py-4 px-6 border border-transparent rounded-xl shadow-soft text-sm font-bold text-white bg-accent hover:bg-blue-700 transition-all tracking-wide">
+                    Perform Analysis
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Success Feedback -->
+    {% if action == 'registered' and success %}
+    <div
+        class="mt-16 max-w-2xl mx-auto bg-surface border border-success/20 rounded-2xl p-8 shadow-card flex flex-col items-center text-center animate-pulse-once">
+        <div class="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mb-6">
+            <svg class="h-8 w-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        <h3 class="text-2xl font-bold text-primary mb-2">Profile Secured</h3>
+        <p class="text-secondary mb-6">
+            The profile for <span class="font-semibold text-primary px-1">{{ profile.file_name }}</span> has been
+            successfully indexed in the database.
+        </p>
+
+        <div class="w-full bg-slate-50 rounded-xl p-4 border border-border">
+            <span class="text-xs uppercase tracking-wider text-slate-400 font-bold block mb-2">SHA-256
+                Fingerprint</span>
+            <code class="font-mono text-xs text-primary break-all select-all">{{ profile.full_hash }}</code>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
