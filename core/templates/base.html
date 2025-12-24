@@ -14,13 +14,11 @@
                     colors: {
                         primary: '#ffffff',
                         dark: '#000000',
-                        surface: '#0a0a0a',
-                        'surface-light': '#111111',
-                        accent: '#3b82f6',
-                        success: '#10b981',
+                        border: 'rgba(255, 255, 255, 0.1)',
+                        secondary: '#888888',
                     },
                     fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['Inter', '"Plus Jakarta Sans"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     }
                 }
@@ -28,35 +26,53 @@
         }
     </script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #000000;
-            color: #a1a1aa;
+            color: #888888;
+            -webkit-font-smoothing: antialiased;
         }
 
-        .text-gradient {
-            background: linear-gradient(to right, #ffffff, #a1a1aa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .vercel-card {
+            background: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .glass {
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .vercel-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
         }
 
-        .bg-glow {
-            background: radial-gradient(circle at 50% -20%, rgba(59, 130, 246, 0.05) 0%, rgba(16, 185, 129, 0.03) 50%, transparent 100%);
+        .text-white {
+            color: #ffffff;
+        }
+
+        .text-secondary {
+            color: #888888;
+        }
+
+        .bg-grid {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255, 255, 255, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+
+        .glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% -20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         ::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
 
         ::-webkit-scrollbar-track {
@@ -64,7 +80,7 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #111111;
+            background: #333333;
             border-radius: 10px;
         }
 
@@ -72,7 +88,7 @@
             background: #ffffff;
         }
 
-        @keyframes fade-in {
+        @keyframes fade-up {
             from {
                 opacity: 0;
                 transform: translateY(10px);
@@ -84,45 +100,36 @@
             }
         }
 
-        .animate-in {
-            animation: fade-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        .animate-fade-up {
+            animation: fade-up 0.5s ease-out forwards;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col selection:bg-white selection:text-black overflow-x-hidden bg-glow">
+<body class="min-h-screen flex flex-col selection:bg-white selection:text-black overflow-x-hidden bg-grid">
+    <div class="glow-bg"></div>
 
     <!-- Navbar -->
-    <nav class="sticky top-0 z-50 glass border-b border-white/5">
+    <nav class="sticky top-0 z-50 bg-black/50 backdrop-blur-md border-b border-white/10">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="flex justify-between h-20 items-center">
-                <div class="flex items-center space-x-4 group">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-3 group">
                     <div
-                        class="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500 relative overflow-hidden">
-                        <div
-                            class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-emerald-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                        </div>
-                        <svg class="w-6 h-6 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                            </path>
+                        class="w-8 h-8 bg-white flex items-center justify-center rounded-sm transition-transform duration-300 group-hover:rotate-12">
+                        <svg class="w-5 h-5 text-black" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2L2 19.77h20L12 2zm0 3.5l7.5 12.77H4.5L12 5.5z" />
                         </svg>
                     </div>
-                    <div>
-                        <a href="{% url 'index' %}"
-                            class="text-xl font-black tracking-tighter text-white leading-tight block">
-                            FORENSIC<span class="opacity-30">.</span>IO
-                        </a>
-                        <span class="text-[9px] font-black text-zinc-600 uppercase tracking-[0.3em]">Integrity
-                            Intelligence</span>
-                    </div>
+                    <a href="{% url 'index' %}" class="text-lg font-bold tracking-tight text-white">
+                        Forensic<span class="text-secondary">.io</span>
+                    </a>
                 </div>
 
-                <div
-                    class="hidden md:flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                    <span
-                        class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                    <span class="text-[10px] font-black uppercase tracking-widest text-zinc-400">System Online</span>
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-2 px-3 py-1 bg-white/5 rounded-full border border-white/10">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        <span class="text-[10px] font-medium uppercase tracking-wider text-white">Online</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -134,21 +141,10 @@
         <div class="max-w-4xl mx-auto px-6 mt-8">
             {% for message in messages %}
             <div
-                class="p-5 rounded-xl glass border-l-4 shadow-2xl mb-6 animate-in
+                class="p-4 vercel-card rounded-lg border-l-2 mb-4 animate-fade-up
                 {% if message.tags == 'error' %}border-l-red-500 text-red-400{% else %}border-l-white text-white{% endif %}">
-                <div class="flex items-center">
-                    {% if message.tags == 'error' %}
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    {% else %}
-                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7">
-                        </path>
-                    </svg>
-                    {% endif %}
-                    <span class="font-bold text-sm tracking-tight">{{ message }}</span>
+                <div class="flex items-center text-sm font-medium">
+                    {{ message }}
                 </div>
             </div>
             {% endfor %}
@@ -159,14 +155,14 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 mt-24 bg-black relative z-10">
-        <div class="max-w-7xl mx-auto py-12 px-6">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-700">
-                    &copy; 2025 Forensic Intelligence Systems.
+    <footer class="border-t border-white/10 mt-24 py-12 bg-black relative z-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-xs font-medium text-secondary">
+                    &copy; 2025 Forensic Intelligence. Built with Precision.
                 </p>
-                <div class="flex space-x-6">
-                    <div class="h-px w-12 bg-gradient-to-r from-blue-500/20 to-emerald-500/20"></div>
+                <div class="flex items-center space-x-4">
+                    <div class="h-px w-8 bg-white/20"></div>
                 </div>
             </div>
         </div>

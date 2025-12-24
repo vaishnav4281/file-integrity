@@ -1,58 +1,52 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-6 py-24 relative">
+<div class="max-w-7xl mx-auto px-6 py-32 relative">
 
     <!-- Hero Section -->
-    <div class="text-center mb-32 relative z-10 animate-in">
-        <h1 class="text-6xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[0.9]">
-            Trust Only What You <br />
-            <span class="text-gradient">Can Verify.</span>
+    <div class="text-center mb-40 animate-fade-up">
+        <h1 class="text-7xl md:text-9xl font-black tracking-tighter text-white mb-8 leading-none">
+            Trust Only What <br class="hidden md:block" />
+            You Can <span class="text-secondary">Verify.</span>
         </h1>
-        <p class="text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed font-medium">
+        <p class="text-xl text-secondary max-w-2xl mx-auto leading-relaxed font-medium">
             Secure, privacy-preserving file forensics. Detect tampering with cryptographic precision using 4KB granular
             analysis and Shannon entropy profiling.
         </p>
     </div>
 
     <!-- Actions Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
 
         <!-- Register Card -->
-        <div
-            class="glass rounded-[2.5rem] p-12 hover:bg-white/[0.02] transition-all duration-500 group animate-in relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
-
-            <div
-                class="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-white/10 relative z-10">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="vercel-card rounded-2xl p-12 animate-fade-up" style="animation-delay: 0.1s;">
+            <div class="w-12 h-12 bg-white text-black flex items-center justify-center rounded-lg mb-8">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
 
-            <h2 class="text-3xl font-black text-white mb-4 tracking-tight relative z-10">Register Baseline</h2>
-            <p class="text-zinc-500 mb-10 leading-relaxed font-medium relative z-10">Establish a cryptographic "Golden
-                Record". We index the digital DNA, never the file itself.</p>
+            <h2 class="text-3xl font-bold text-white mb-4 tracking-tight">Register Baseline</h2>
+            <p class="text-secondary mb-10 leading-relaxed font-medium">Establish a cryptographic "Golden Record". We
+                index the digital DNA, never the file itself.</p>
 
-            <form action="{% url 'register' %}" method="post" enctype="multipart/form-data"
-                class="space-y-6 relative z-10">
+            <form action="{% url 'register' %}" method="post" enctype="multipart/form-data" class="space-y-6">
                 {% csrf_token %}
                 <div class="relative">
-                    <input type="file" name="file" required class="block w-full text-sm text-zinc-400
-                        file:mr-6 file:py-4 file:px-8
-                        file:rounded-xl file:border-0
-                        file:text-xs file:font-black file:uppercase file:tracking-widest
-                        file:bg-white/5 file:text-white
-                        file:border file:border-white/10
-                        hover:file:bg-white/10 cursor-pointer
-                        focus:outline-none bg-white/[0.02] rounded-xl border border-white/5
+                    <input type="file" name="file" required class="block w-full text-sm text-secondary
+                        file:mr-6 file:py-3 file:px-6
+                        file:rounded-md file:border file:border-white/10
+                        file:text-xs file:font-bold file:uppercase file:tracking-widest
+                        file:bg-white file:text-black
+                        hover:file:bg-zinc-200 cursor-pointer
+                        focus:outline-none bg-transparent rounded-md border border-white/10 p-2
                     " />
                 </div>
                 <button type="submit"
-                    class="w-full py-5 px-8 bg-white text-black rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-2xl shadow-white/5 relative overflow-hidden group/btn">
+                    class="w-full py-4 px-8 bg-white text-black rounded-md font-bold text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all active:scale-[0.98] relative overflow-hidden group/btn">
                     <div
-                        class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-emerald-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500">
+                        class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-emerald-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300">
                     </div>
                     <span class="relative z-10">Generate Forensic Profile</span>
                 </button>
@@ -60,41 +54,36 @@
         </div>
 
         <!-- Verify Card -->
-        <div
-            class="glass rounded-[2.5rem] p-12 hover:bg-white/[0.02] transition-all duration-500 group animate-in relative overflow-hidden">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 blur-3xl rounded-full -mr-16 -mt-16"></div>
-
+        <div class="vercel-card rounded-2xl p-12 animate-fade-up" style="animation-delay: 0.2s;">
             <div
-                class="w-14 h-14 rounded-2xl bg-zinc-900 text-white flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500 border border-white/10 relative z-10">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="w-12 h-12 bg-white/5 text-white flex items-center justify-center rounded-lg mb-8 border border-white/10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
                     </path>
                 </svg>
             </div>
 
-            <h2 class="text-3xl font-black text-white mb-4 tracking-tight relative z-10">Verify Integrity</h2>
-            <p class="text-zinc-500 mb-10 leading-relaxed font-medium relative z-10">Analyze a suspect file against the
-                baseline. Identify byte-level mutations and bit-rot.</p>
+            <h2 class="text-3xl font-bold text-white mb-4 tracking-tight">Verify Integrity</h2>
+            <p class="text-secondary mb-10 leading-relaxed font-medium">Analyze a suspect file against the baseline.
+                Identify byte-level mutations and bit-rot.</p>
 
-            <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data"
-                class="space-y-6 relative z-10">
+            <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data" class="space-y-6">
                 {% csrf_token %}
                 <div class="relative">
-                    <input type="file" name="file" required class="block w-full text-sm text-zinc-400
-                        file:mr-6 file:py-4 file:px-8
-                        file:rounded-xl file:border-0
-                        file:text-xs file:font-black file:uppercase file:tracking-widest
-                        file:bg-white/5 file:text-white
-                        file:border file:border-white/10
-                        hover:file:bg-white/10 cursor-pointer
-                        focus:outline-none bg-white/[0.02] rounded-xl border border-white/5
+                    <input type="file" name="file" required class="block w-full text-sm text-secondary
+                        file:mr-6 file:py-3 file:px-6
+                        file:rounded-md file:border file:border-white/10
+                        file:text-xs file:font-bold file:uppercase file:tracking-widest
+                        file:bg-white file:text-black
+                        hover:file:bg-zinc-200 cursor-pointer
+                        focus:outline-none bg-transparent rounded-md border border-white/10 p-2
                     " />
                 </div>
                 <button type="submit"
-                    class="w-full py-5 px-8 bg-white text-black rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-2xl shadow-white/5 relative overflow-hidden group/btn">
+                    class="w-full py-4 px-8 bg-white text-black rounded-md font-bold text-xs uppercase tracking-widest hover:bg-zinc-200 transition-all active:scale-[0.98] relative overflow-hidden group/btn">
                     <div
-                        class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500">
+                        class="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300">
                     </div>
                     <span class="relative z-10">Initiate Forensic Scan</span>
                 </button>
@@ -105,25 +94,21 @@
 
     <!-- Success Feedback -->
     {% if action == 'registered' and success %}
-    <div
-        class="mt-32 max-w-3xl mx-auto glass rounded-[3rem] p-12 shadow-2xl flex flex-col items-center text-center animate-in">
+    <div class="mt-32 max-w-2xl mx-auto vercel-card rounded-2xl p-12 text-center animate-fade-up">
         <div
-            class="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-8 mx-auto">
-            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 mx-auto">
+            <svg class="h-6 w-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
-        <h3 class="text-4xl font-black text-white mb-4 tracking-tight">Profile Secured</h3>
-        <p class="text-zinc-500 mb-10 text-lg font-medium">
-            The profile for <span
-                class="text-white font-black px-2 py-1 bg-white/5 rounded-lg border border-white/10">{{         profile.file_name }}</span> has been successfully indexed.
+        <h3 class="text-2xl font-bold text-white mb-2">Profile Secured</h3>
+        <p class="text-secondary mb-8 font-medium">
+            The profile for <span class="text-white">{{ profile.file_name }}</span> has been successfully indexed.
         </p>
 
-        <div class="w-full bg-black rounded-2xl p-6 border border-white/5 shadow-inner">
-            <span class="text-[10px] uppercase tracking-[0.3em] text-zinc-600 font-black block mb-4">SHA-256 Master
-                Fingerprint</span>
-            <code
-                class="font-mono text-xs text-white break-all select-all block leading-relaxed">{{ profile.full_hash }}</code>
+        <div class="bg-white/5 rounded-lg p-4 border border-white/10">
+            <span class="text-[10px] uppercase tracking-widest text-secondary font-bold block mb-2">Fingerprint</span>
+            <code class="font-mono text-xs text-white break-all select-all block">{{ profile.full_hash }}</code>
         </div>
     </div>
     {% endif %}
