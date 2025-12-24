@@ -138,23 +138,56 @@
 
     </div>
 
+    <!-- Heatmap Visualization (The Eyes) -->
+    <div class="bg-surface rounded-2xl p-8 border border-border shadow-card mb-12">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h3 class="text-lg font-bold text-primary tracking-tight">Forensic Block Map</h3>
+                <p class="text-sm text-secondary">Visual representation of 4KB blocks. Hover for detailed analysis.</p>
+            </div>
+            <div class="flex gap-4 text-xs font-semibold">
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-green-500 rounded-sm"></span> Match</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-yellow-400 rounded-sm"></span> Low Entropy
+                    Δ</div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-red-600 rounded-sm"></span> High Entropy
+                </div>
+                <div class="flex items-center gap-2"><span class="w-3 h-3 bg-purple-500 rounded-sm"></span> Appended
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-12 sm:grid-cols-16 md:grid-cols-24 lg:grid-cols-32 gap-1">
+            {% for block in result.heatmap_data %}
+            <div
+                class="aspect-square {{ block.color }} rounded-[2px] cursor-help relative group transition-opacity hover:opacity-80">
+                <!-- Tooltip -->
+                <div
+                    class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 bg-slate-800 text-white text-[10px] p-2 rounded shadow-xl z-20 pointer-events-none">
+                    <div class="font-bold border-b border-slate-600 pb-1 mb-1">{{ block.tooltip_title }}</div>
+                    <div>{{ block.tooltip_body }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <!-- Deep Forensic Analysis Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
 
         <!-- Structure Graph -->
-        <div class="bg-surface p-8 rounded-2xl border border-border shadow-card">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-lg font-bold text-primary tracking-tight">Structural Entropy Profile</h3>
+        <div class="bg-surface p-6 rounded-2xl border border-border shadow-card">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-primary tracking-tight">Temporal Entropy Mapping</h3>
                 <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-500 rounded">Visualization</span>
             </div>
-            <div class="relative h-64 w-full">
+            <div class="relative h-56 w-full">
                 <canvas id="entropyChart"></canvas>
             </div>
         </div>
 
         <!-- Magic Byte Inspector -->
-        <div class="bg-surface p-8 rounded-2xl border border-border shadow-card">
-            <div class="flex justify-between items-center mb-6">
+        <div class="bg-surface p-6 rounded-2xl border border-border shadow-card">
+            <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-bold text-primary tracking-tight">Magic Byte Verification</h3>
                 <span
                     class="text-xs font-semibold px-2 py-1 rounded
@@ -188,61 +221,63 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- Forensic Analysis Details (Only if mismatches exist) -->
-    {% if result.mismatch_count > 0 %}
-    <div class="bg-surface rounded-2xl border border-border shadow-card overflow-hidden">
-        <div class="px-8 py-6 border-b border-border bg-subtle flex justify-between items-center">
-            <h3 class="text-lg font-bold text-primary">Detailed Anomaly Report</h3>
+    <!-- Detailed Anomaly Report (Full Width) -->
+    <div class="bg-surface rounded-2xl border border-border shadow-card mb-12 overflow-hidden">
+        <div
+            class="p-6 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
+            <div>
+                <h3 class="text-lg font-bold text-primary tracking-tight">Detailed Anomaly Report</h3>
+                <p class="text-sm text-secondary mt-1">Comprehensive breakdown of all detected file discrepancies.</p>
+            </div>
             <span
                 class="bg-white border border-border text-secondary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                {{ result.mismatch_count }} Mismatches Found
+                {{ result.mismatch_count }} Events Detected
             </span>
         </div>
-
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-border">
                 <thead class="bg-slate-50">
                     <tr>
                         <th scope="col"
-                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Chunk ID</th>
+                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Block
+                            ID</th>
                         <th scope="col"
-                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Byte Range</th>
+                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Byte
+                            Range</th>
                         <th scope="col"
-                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Hash Fingerprint (SHA-256)</th>
+                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Hash
+                            Fingerprint (SHA-256)</th>
                         <th scope="col"
-                            class="px-8 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
                             Anomaly Classification</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border bg-white">
                     {% for item in result.detailed_mismatches %}
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-8 py-5 whitespace-nowrap text-primary font-mono text-sm font-medium">
-                            #{{ item.chunk_index }}
+                    <tr class="hover:bg-slate-50 transition-colors group">
+                        <td class="px-6 py-4 whitespace-nowrap text-primary font-mono text-sm font-medium">{{ item.chunk_index }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-secondary font-mono text-xs">{{ item.byte_range }}
                         </td>
-                        <td class="px-8 py-5 whitespace-nowrap text-secondary font-mono text-xs">
-                            {{ item.byte_range }}
-                        </td>
-                        <td class="px-8 py-5 whitespace-nowrap">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex flex-col space-y-1.5">
                                 <span
-                                    class="bg-green-50 text-green-700 font-mono text-xs px-2 py-0.5 rounded w-fit">Orig:
+                                    class="bg-green-50 text-green-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-green-100">Orig:
                                     {{ item.stored_hash|slice:":12" }}...</span>
-                                <span class="bg-red-50 text-red-700 font-mono text-xs px-2 py-0.5 rounded w-fit">New: {{
-                                    item.uploaded_hash|slice:":12" }}...</span>
+                                <span
+                                    class="bg-red-50 text-red-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-red-100">New:
+                                    {{ item.uploaded_hash|slice:":12" }}...</span>
                             </div>
                         </td>
-                        <td class="px-8 py-5 whitespace-nowrap">
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex flex-col gap-1">
                                 <div class="flex items-center gap-2">
                                     <span
-                                        class="text-sm font-semibold {% if 'High' in item.anomaly_type %}text-danger{% elif 'Spike' in item.anomaly_type %}text-warning{% else %}text-slate-600{% endif %}">
+                                        class="text-sm font-semibold {% if 'High' in item.anomaly_type %}text-red-600{% elif 'Spike' in item.anomaly_type %}text-amber-600{% else %}text-slate-600{% endif %}">
                                         {{ item.anomaly_type }}
                                     </span>
                                     {% if result.size_diff != 0 %}
@@ -252,8 +287,11 @@
                                     </span>
                                     {% endif %}
                                 </div>
-                                <div class="text-xs text-slate-400">
-                                    Entropy: {{ item.stored_entropy }} &rarr; {{ item.uploaded_entropy }}
+                                <div class="text-xs text-slate-400 flex items-center gap-1">
+                                    <span>Entropy:</span>
+                                    <span class="font-mono text-slate-500">{{ item.stored_entropy }}</span>
+                                    <span>&rarr;</span>
+                                    <span class="font-mono text-primary">{{ item.uploaded_entropy }}</span>
                                 </div>
                             </div>
                         </td>
@@ -262,179 +300,326 @@
                 </tbody>
             </table>
             {% if result.mismatch_count > 50 %}
-            <div class="px-8 py-4 bg-slate-50 text-center border-t border-border">
+            <div class="px-6 py-4 bg-slate-50 text-center border-t border-border">
                 <p class="text-xs text-slate-500 italic">...and {{ result.mismatch_count|add:"-50" }} more mismatches
-                    hidden for clarity.</p>
+                    hidden
+                    for clarity.</p>
             </div>
             {% endif %}
         </div>
     </div>
-    {% endif %}
 
-</div>
+    <!-- Chart.js Integration -->
+    {{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
+    {{ result.full_entropy_profile.uploaded|json_script:"uploaded-entropy-data" }}
+    {{ result.detailed_mismatches|json_script:"mismatch-data" }}
+    {{ result.heatmap_data|json_script:"heatmap-data" }}
 
-<!-- Chart.js Integration -->
-{{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
-{{ result.full_entropy_profile.uploaded|json_script:"uploaded-entropy-data" }}
-{{ result.detailed_mismatches|json_script:"mismatch-data" }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('entropyChart').getContext('2d');
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('entropyChart').getContext('2d');
+            // robust data loading
+            const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
+            const uploadedEntropy = JSON.parse(document.getElementById('uploaded-entropy-data').textContent);
+            const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
 
-        // robust data loading
-        const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
-        const uploadedEntropy = JSON.parse(document.getElementById('uploaded-entropy-data').textContent);
-        const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
+            // Calculate Conflict Zone
+            const conflictZoneData = labels.map((_, i) => {
+                const s = storedEntropy[i] || 0;
+                const u = uploadedEntropy[i] || 0;
+                // Threshold: Deviation > 15% (1.2 entropy units)
+                if (Math.abs(s - u) > 1.2) {
+                    return u; // Fill to this point
+                }
+                return s; // No fill (on top of stored)
+            });
 
-        // Light theme chart config
-        Chart.defaults.color = '#64748b'; // Slate 500
-        Chart.defaults.borderColor = '#e2e8f0'; // Slate 200
+            // Light theme chart config
+            Chart.defaults.color = '#64748b'; // Slate 500
+            Chart.defaults.borderColor = '#e2e8f0'; // Slate 200
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: labels,
-                datasets: [
-                    {
-                        label: 'Original Profile (Stored)',
-                        data: storedEntropy,
-                        borderColor: '#10b981', // Emerald 500
-                        backgroundColor: 'rgba(16, 185, 129, 0.05)',
-                        borderWidth: 2,
-                        tension: 0.2, // Sharper lines for technical look
-                        pointRadius: 0,
-                        pointHoverRadius: 4
-                    },
-                    {
-                        label: 'Current File (Uploaded)',
-                        data: uploadedEntropy,
-                        borderColor: '#ef4444', // Red 500
-                        backgroundColor: 'rgba(239, 68, 68, 0.05)',
-                        borderWidth: 2,
-                        tension: 0.2,
-                        pointRadius: 0,
-                        borderDash: [5, 5],
-                        pointHoverRadius: 4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        align: 'end',
-                        labels: { boxWidth: 8, usePointStyle: true, pointStyle: 'circle', font: { family: 'Plus Jakarta Sans', size: 12 } }
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                        backgroundColor: '#1e293b',
-                        titleColor: '#fff',
-                        bodyColor: '#e2e8f0',
-                        borderColor: '#334155',
-                        borderWidth: 0,
-                        padding: 12,
-                        cornerRadius: 8
-                    }
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Original Profile (Shadow Baseline)',
+                            data: storedEntropy,
+                            borderColor: '#10b981', // Emerald 500
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            borderDash: [5, 5], // Dashed Line
+                            tension: 0.2,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            order: 2
+                        },
+                        {
+                            label: 'Current File (Uploaded)',
+                            data: uploadedEntropy,
+                            borderColor: '#3b82f6', // Blue 500
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.2,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            order: 1
+                        },
+                        {
+                            label: 'Forensic Conflict Zone',
+                            data: conflictZoneData,
+                            borderColor: 'transparent',
+                            backgroundColor: 'rgba(239, 68, 68, 0.3)', // Red with opacity
+                            fill: 0, // Fill to Dataset 0 (Stored)
+                            pointRadius: 0,
+                            borderWidth: 0,
+                            order: 3
+                        }
+                    ]
                 },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 8.0,
-                        title: { display: true, text: 'Entropy (Bits)', font: { size: 10, weight: 600 } },
-                        grid: { borderDash: [2, 2] }
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                boxWidth: 12, usePointStyle: true, pointStyle: 'rectRounded', font: {
+                                    family: 'Plus Jakarta Sans',
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: '#1e293b',
+                            titleColor: '#fff',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#334155',
+                            borderWidth: 0,
+                            padding: 12,
+                            cornerRadius: 8,
+                            filter: function (tooltipItem) {
+                                return tooltipItem.datasetIndex !== 2; // Hide Conflict Zone from tooltip
+                            }
+                        }
                     },
-                    x: {
-                        display: false
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 8.0,
+                            title: { display: true, text: 'Entropy (Bits)', font: { size: 10, weight: 600 } },
+                            grid: { borderDash: [2, 2] }
+                        },
+                        x: {
+                            display: false
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
                     }
-                },
-                interaction: {
-                    mode: 'nearest',
-                    axis: 'x',
-                    intersect: false
+                }
+            });
+        });
+
+        window.downloadPDF = function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 14;
+            let yPos = 20;
+
+            // Helper for page breaks
+            function checkPageBreak(heightNeeded) {
+                if (yPos + heightNeeded > pageHeight - margin) {
+                    doc.addPage();
+                    yPos = 20; // Reset to top margin
+                    return true;
+                }
+                return false;
+            }
+
+            // --- Header ---
+            doc.setFillColor(15, 23, 42); // Slate 900
+            doc.rect(0, 0, pageWidth, 40, 'F');
+
+            doc.setTextColor(255, 255, 255);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(18);
+            doc.text("Forensic Integrity Audit", margin, 20);
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(148, 163, 184); // Slate 400
+            doc.text("Generated by IntegrityChecker", margin, 26);
+
+            doc.text(new Date().toLocaleString(), pageWidth - margin, 20, { align: 'right' });
+
+            yPos = 55;
+
+            // --- File Metadata & Verdict (Side by Side) ---
+            doc.setTextColor(15, 23, 42);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("Target File Profile", margin, yPos);
+
+            yPos += 8;
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(71, 85, 105);
+
+            doc.text(`Filename: {{ file_name }}`, margin, yPos);
+            doc.text(`Size: {{ profile.file_size }} bytes`, margin, yPos + 6);
+            doc.text(`ID: {{ result.header_analysis.stored | slice:":16" }}...`, margin, yPos + 12);
+
+            // Verdict Box (Right side)
+            const boxX = pageWidth - margin - 80;
+            doc.setFillColor(241, 245, 249); // Slate 100
+            doc.setDrawColor(226, 232, 240);
+            doc.roundedRect(boxX, 50, 80, 25, 3, 3, 'FD');
+
+            doc.setFontSize(9);
+            doc.setTextColor(100);
+            doc.text("Integrity Verdict", boxX + 5, 58);
+
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            const resultType = "{{ result.result_type }}";
+            if (resultType === 'NO_CHANGE') doc.setTextColor(22, 163, 74); // Green
+            else if (resultType === 'PARTIAL_MODIFICATION') doc.setTextColor(234, 179, 8); // Yellow
+            else doc.setTextColor(220, 38, 38); // Red
+
+            doc.text(resultType.replace(/_/g, ' '), boxX + 5, 66);
+
+            doc.setFontSize(9);
+            doc.setTextColor(71, 85, 105);
+            doc.text("Confidence: {{ result.confidence_score }}%", boxX + 5, 72);
+
+            yPos += 30;
+
+            // --- Entropy Chart ---
+            checkPageBreak(80);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(15, 23, 42);
+            doc.text("Temporal Entropy Map", margin, yPos);
+            yPos += 6;
+
+            const canvas = document.getElementById('entropyChart');
+            if (canvas) {
+                try {
+                    const imgData = canvas.toDataURL("image/png");
+                    // Maintain aspect ratio, fit width
+                    const imgWidth = pageWidth - (margin * 2);
+                    const imgHeight = 60;
+                    doc.addImage(imgData, 'PNG', margin, yPos, imgWidth, imgHeight);
+                    yPos += imgHeight + 10;
+                } catch (e) {
+                    console.error("Chart capture failed", e);
                 }
             }
-        });
-    });
 
-    function downloadPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+            // --- Heatmap ---
+            checkPageBreak(60);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(15, 23, 42);
+            doc.text("Forensic Block Map", margin, yPos);
+            yPos += 8;
 
-        // Brand Header
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(20);
-        doc.setTextColor(15, 23, 42); // Slate 900
-        doc.text("File Integrity Audit Report", 14, 22);
+            const heatmapData = JSON.parse(document.getElementById('heatmap-data').textContent);
+            const boxSize = 3;
+            const gap = 0.5;
+            const blocksPerRow = 50; // Adjust based on page width
 
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(10);
-        doc.setTextColor(100);
-        doc.text("Generated by IntegrityChecker", 14, 28);
+            let x = margin;
+            let startY = yPos;
 
-        doc.setDrawColor(226, 232, 240); // Slate 200
-        doc.line(14, 35, 196, 35);
+            // Limit to first 400
+            heatmapData.slice(0, 400).forEach((block, i) => {
+                if (i % blocksPerRow === 0 && i !== 0) {
+                    x = margin;
+                    startY += (boxSize + gap);
+                }
 
-        // Metadata
-        doc.setFontSize(10);
-        doc.setTextColor(71, 85, 105); // Slate 600
-        doc.text(`File Target:`, 14, 45);
-        doc.setFont("helvetica", "bold");
-        doc.text("{{ file_name }}", 40, 45);
+                let rgb = [156, 163, 175]; // Default Gray
+                if (block.color.includes('green')) rgb = [34, 197, 94];
+                else if (block.color.includes('yellow')) rgb = [250, 204, 21];
+                else if (block.color.includes('red-600')) rgb = [220, 38, 38];
+                else if (block.color.includes('red')) rgb = [239, 68, 68];
+                else if (block.color.includes('purple')) rgb = [168, 85, 247];
 
-        doc.setFont("helvetica", "normal");
-        doc.text(`Timestamp:`, 14, 52);
-        doc.text(new Date().toLocaleString(), 40, 52);
-
-        // Status Box
-        doc.setFillColor(248, 250, 252); // Slate 50
-        doc.setDrawColor(226, 232, 240);
-        doc.rect(14, 60, 182, 30, 'FD');
-
-        doc.setFontSize(11);
-        doc.text("Integrity Status", 20, 70);
-
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text("{{ result.result_type }}", 20, 80);
-
-        doc.setFontSize(10);
-        doc.text("Confidence: {{ result.confidence_score }}%", 140, 80);
-
-        // Table
-        const mismatches = JSON.parse(document.getElementById('mismatch-data').textContent);
-
-        doc.setFontSize(12);
-        doc.setTextColor(30);
-        doc.text("Anomaly Details", 14, 105);
-
-        if (mismatches.length > 0) {
-            doc.autoTable({
-                startY: 110,
-                head: [['Chunk', 'Byte Range', 'Type', 'Entropy Shift']],
-                body: mismatches.map(m => [
-                    `#${m.chunk_index}`,
-                    m.byte_range,
-                    m.anomaly_type,
-                    `${m.stored_entropy} -> ${m.uploaded_entropy}`
-                ]),
-                theme: 'grid',
-                headStyles: { fillColor: [15, 23, 42], textColor: 255 }, // Dark Slate header
-                styles: { fontSize: 9, cellPadding: 4 }
+                doc.setFillColor(...rgb);
+                doc.rect(x, startY, boxSize, boxSize, 'F');
+                x += (boxSize + gap);
             });
-        } else {
-            doc.setFont("helvetica", "italic");
-            doc.setTextColor(100);
-            doc.text("No anomalies detected. The file signature matches the record.", 14, 115);
-        }
 
-        doc.save("Audit_Report_" + "{{ file_name }}" + ".pdf");
-    }
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-{% endblock %}
+            yPos = startY + 15;
+
+            // --- Magic Bytes ---
+            checkPageBreak(40);
+            doc.setFontSize(12);
+            doc.setTextColor(15, 23, 42);
+            doc.setFont("helvetica", "bold");
+            doc.text("Magic Byte Analysis", margin, yPos);
+            yPos += 6;
+
+            doc.setFontSize(9);
+            doc.setFont("courier", "normal");
+            doc.setFillColor(248, 250, 252);
+            doc.rect(margin, yPos, pageWidth - (margin * 2), 16, 'F');
+
+            doc.setTextColor(71, 85, 105);
+            doc.text("Stored: {{ result.header_analysis.stored }}", margin + 2, yPos + 5);
+            doc.text("Uploaded: {{ result.header_analysis.uploaded }}", margin + 2, yPos + 11);
+
+            yPos += 25;
+
+            // --- Detailed Table ---
+            const mismatches = JSON.parse(document.getElementById('mismatch-data').textContent);
+
+            if (mismatches.length > 0) {
+                checkPageBreak(30);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.setTextColor(15, 23, 42);
+                doc.text("Detailed Anomaly Report", margin, yPos);
+
+                doc.autoTable({
+                    startY: yPos + 5,
+                    head: [['Block', 'Byte Range', 'Type', 'Entropy Delta']],
+                    body: mismatches.map(m => [
+                        `${m.chunk_index}`,
+                        m.byte_range,
+                        m.anomaly_type,
+                        `${m.stored_entropy} -> ${m.uploaded_entropy}`
+                    ]),
+                    theme: 'grid',
+                    headStyles: { fillColor: [15, 23, 42], textColor: 255 },
+                    styles: { fontSize: 8, cellPadding: 3 },
+                    margin: { left: margin, right: margin },
+                    didDrawPage: function (data) {
+                        // Resets yPos for next content if table spans multiple pages
+                        yPos = data.cursor.y;
+                    }
+                });
+            } else {
+                doc.setFont("helvetica", "italic");
+                doc.setTextColor(100);
+                doc.text("No anomalies detected. The file signature matches the record.", margin, yPos);
+            }
+
+            doc.save("Forensic_Report_{{ file_name }}.pdf");
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    {% endblock %}

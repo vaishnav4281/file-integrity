@@ -115,10 +115,44 @@ def generate_file_hashes(file_obj):
         'file_header': file_header
     }
 
+def classify_anomaly(original_meta, current_meta, file_context):
+    """
+    Heuristic Decision Matrix (The Brain)
+    """
+    hash_mismatch = original_meta['hash'] != current_meta['hash']
+    entropy_delta = abs(current_meta['entropy'] - original_meta['entropy'])
+    current_entropy = current_meta['entropy']
+    
+    size_change = file_context['size_change']
+    is_block_0 = original_meta['index'] == 0
+    block_0_stable = file_context['block_0_stable']
+
+    # Default Verdict
+    verdict = "Modification Detected"
+
+    # Bit-Rot: Hash Mismatch == True AND Size Change == 0 AND Entropy Delta < 0.05
+    # Note: "Hamming Distance < 10 bits" is a data-level check. 
+    # With SHA-256, we cannot verify this without the original data. 
+    # We use Entropy Delta < 0.05 as a strong proxy for minimal change.
+    if hash_mismatch and size_change == 0 and entropy_delta < 0.05:
+        verdict = "Hardware-level Bit-Rot detected. Minimal data loss, no structural threat."
+
+    # Injection/Trojan: Hash Mismatch == True AND Size Change > 0 AND Block 0 Entropy is stable
+    # This logic implies that if the file grew but the header (Block 0) is largely untouched, 
+    # something might have been appended or injected elsewhere.
+    elif hash_mismatch and size_change > 0 and block_0_stable:
+        verdict = "Unauthorized Data Insertion. New blocks detected. Potential File Binder or Trojan payload."
+
+    # Ransomware/Encryption: Entropy Delta > 1.0 OR Current Entropy > 7.5
+    elif entropy_delta > 1.0 or current_entropy > 7.5:
+        verdict = "Critical Alert: Cryptographic Anomaly. Entropy spike suggests block-level encryption (Ransomware signature)."
+
+    return verdict
+
 def compare_hashes(stored_profile, uploaded_file_data):
     """
     Compares stored profile with uploaded file data.
-    Includes forensic entropy analysis and hex dumps.
+    Includes forensic entropy analysis, hex dumps, and heatmap generation.
     """
     matched_chunks = 0
     total_chunks = len(stored_profile.chunk_hashes)
@@ -126,94 +160,142 @@ def compare_hashes(stored_profile, uploaded_file_data):
     upload_entropies = uploaded_file_data['chunk_entropies']
     stored_entropies = stored_profile.chunk_entropies
     
-    min_len = min(total_chunks, len(upload_chunks))
-    max_len = max(total_chunks, len(upload_chunks))
-    
-    chunk_status = [] # List of booleans or status codes for visualization
-    detailed_mismatches = []
-    
     # Default stored entropies to 0.0 if old data doesn't have them
     if not stored_entropies:
         stored_entropies = [0.0] * total_chunks
 
-    for i in range(min_len):
-        if stored_profile.chunk_hashes[i] == upload_chunks[i]:
-            matched_chunks += 1
-            chunk_status.append(True)
+    min_len = min(total_chunks, len(upload_chunks))
+    max_len = max(total_chunks, len(upload_chunks))
+    
+    detailed_mismatches = []
+    heatmap_data = [] # For Task 2: The "Heatmap" Visualization
+    
+    size_change = uploaded_file_data['file_size'] - stored_profile.file_size
+    
+    # Check Block 0 stability for context
+    block_0_stable = False
+    if total_chunks > 0 and len(upload_chunks) > 0:
+        if stored_profile.chunk_hashes[0] == upload_chunks[0]:
+            block_0_stable = True
+        elif abs(stored_entropies[0] - upload_entropies[0]) < 0.05:
+             block_0_stable = True
+
+    file_context = {
+        'size_change': size_change,
+        'block_0_stable': block_0_stable
+    }
+
+    for i in range(max_len):
+        # Determine status for Heatmap and Analysis
+        
+        # Case 1: Exists in both
+        if i < min_len:
+            stored_h = stored_profile.chunk_hashes[i]
+            uploaded_h = upload_chunks[i]
+            stored_e = stored_entropies[i]
+            uploaded_e = upload_entropies[i]
+            
+            if stored_h == uploaded_h:
+                matched_chunks += 1
+                heatmap_data.append({
+                    'index': i + 1,
+                    'status': 'MATCH',
+                    'color': 'bg-green-500',
+                    'tooltip_title': f"Block #{i+1}",
+                    'tooltip_body': "Verified Match"
+                })
+            else:
+                # Mismatch Logic
+                entropy_delta = abs(uploaded_e - stored_e)
+                
+                # Heatmap Color Logic
+                if uploaded_e > 7.5:
+                    color = 'bg-red-600' # High Entropy
+                    short_status = "High Entropy"
+                elif entropy_delta < 0.05: # Low Entropy Change
+                    color = 'bg-yellow-400'
+                    short_status = "Low Entropy Change"
+                else:
+                    color = 'bg-red-500' # General Mismatch
+                    short_status = "Mismatch"
+                
+                # Classify Anomaly
+                verdict = classify_anomaly(
+                    {'hash': stored_h, 'entropy': stored_e, 'index': i, 'size': stored_profile.file_size},
+                    {'hash': uploaded_h, 'entropy': uploaded_e, 'size': uploaded_file_data['file_size']},
+                    file_context
+                )
+                
+                heatmap_data.append({
+                    'index': i + 1,
+                    'status': 'MISMATCH',
+                    'color': color,
+                    'tooltip_title': f"Block #{i+1}",
+                    'tooltip_body': f"{short_status} (ΔE: {round(entropy_delta, 4)}) - {verdict}"
+                })
+                
+                start_byte = i * CHUNK_SIZE
+                end_byte = start_byte + CHUNK_SIZE
+                
+                detailed_mismatches.append({
+                    'chunk_index': i + 1,
+                    'byte_range': f"{start_byte:,} - {end_byte:,}",
+                    'stored_hash': stored_h,
+                    'uploaded_hash': uploaded_h,
+                    'stored_entropy': stored_e,
+                    'uploaded_entropy': uploaded_e,
+                    'anomaly_type': verdict
+                })
+
+        # Case 2: Missing in Uploaded (File truncated)
+        elif i < total_chunks:
+            heatmap_data.append({
+                'index': i + 1,
+                'status': 'MISSING',
+                'color': 'bg-gray-400',
+                'tooltip_title': f"Block #{i+1}",
+                'tooltip_body': "Missing (Truncated)"
+            })
+            # We treat this as a mismatch too
+            detailed_mismatches.append({
+                'chunk_index': i + 1,
+                'byte_range': "N/A",
+                'stored_hash': stored_profile.chunk_hashes[i],
+                'uploaded_hash': "MISSING",
+                'stored_entropy': stored_entropies[i],
+                'uploaded_entropy': 0.0,
+                'anomaly_type': "Data Truncation"
+            })
+
+        # Case 3: New in Uploaded (File appended)
         else:
-            chunk_status.append(False)
-            # Calculate byte range
+            heatmap_data.append({
+                'index': i + 1,
+                'status': 'APPENDED',
+                'color': 'bg-purple-500',
+                'tooltip_title': f"Block #{i+1}",
+                'tooltip_body': "New Data (Appended)"
+            })
+            
             start_byte = i * CHUNK_SIZE
             end_byte = start_byte + CHUNK_SIZE
-            
-            # Entropy Analysis
-            stored_e = stored_entropies[i] if i < len(stored_entropies) else 0.0
-            uploaded_e = upload_entropies[i]
-            diff_e = uploaded_e - stored_e
-            
-            anomaly_type = "Modification"
-            if uploaded_e > 7.5:
-                anomaly_type = "High Entropy (Potential Encryption/Compression)"
-            elif diff_e > 2.0:
-                anomaly_type = "Entropy Spike (Injection)"
-            elif abs(diff_e) < 0.1:
-                anomaly_type = "Low Entropy Change (Text/Config)"
-            
-            # Note: We cannot provide TRUE hex dump of the stored file because we don't store it!
-            # We can only show the Uploaded file's hex dump if we had access to the file content at this point.
-            # Ideally, detailed analysis would require re-hashing or storing sample bytes.
-            # Limitation: We can only "guess" based on what we have.
-            # Wait, for the uploaded file, we verify it in memory. We can't access the specific chunk bytes easily 
-            # unless we kept them or re-read them.
-            # Design Decision: Since we stream read for hashes, we can't rewind easily for every mismatch without cost.
-            # But the user wants "Hex Dump Comparison". 
-            # We can't show the ORIGINAL hex dump (stored) aside from header.
-            # We CAN show the NEW hex dump if we re-read the file or buffer it.
-            # Given constraints, I will mock the "Stored" hex as "Hidden/Privacy Protected" 
-            # but provide the "Uploaded" sample if possible?
-            # Actually, `generate_file_hashes` consumes the file.
-            # Let's adjust views to passing the file object to compare? No, simpler: 
-            # Just show what we can derived.
-            # OR, we just show header comparison, which IS stored.
             
             detailed_mismatches.append({
                 'chunk_index': i + 1,
                 'byte_range': f"{start_byte:,} - {end_byte:,}",
-                'stored_hash': stored_profile.chunk_hashes[i],
+                'stored_hash': "N/A",
                 'uploaded_hash': upload_chunks[i],
-                'stored_entropy': stored_e,
-                'uploaded_entropy': uploaded_e,
-                'anomaly_type': anomaly_type
+                'stored_entropy': 0.0,
+                'uploaded_entropy': upload_entropies[i],
+                'anomaly_type': "Appended Data"
             })
-            
+
     # File Header Analysis
     header_status = "MATCH"
     if hasattr(stored_profile, 'file_header') and stored_profile.file_header:
         if stored_profile.file_header != uploaded_file_data['file_header']:
              header_status = "MISMATCH (Type Tampering Detected)"
     
-    # For remaining chunks (if file size changed)
-    for i in range(min_len, max_len):
-        chunk_status.append(False)
-        start_byte = i * CHUNK_SIZE
-        end_byte = start_byte + CHUNK_SIZE
-        
-        uploaded_h = upload_chunks[i] if i < len(upload_chunks) else "N/A (Missing)"
-        stored_h = stored_profile.chunk_hashes[i] if i < len(stored_profile.chunk_hashes) else "N/A (Missing)"
-        
-        uploaded_e = upload_entropies[i] if i < len(upload_chunks) else 0.0
-        stored_e = stored_entropies[i] if i < len(stored_entropies) else 0.0
-        
-        detailed_mismatches.append({
-            'chunk_index': i + 1,
-            'byte_range': f"{start_byte:,} - {end_byte:,}",
-            'stored_hash': stored_h,
-            'uploaded_hash': uploaded_h,
-            'stored_entropy': stored_e,
-            'uploaded_entropy': uploaded_e,
-            'anomaly_type': "Structural Change"
-        })
-
     confidence_score = (matched_chunks / max_len) * 100 if max_len > 0 else 0
     
     result_type = "NO_CHANGE"
@@ -226,12 +308,12 @@ def compare_hashes(stored_profile, uploaded_file_data):
     return {
         'result_type': result_type,
         'confidence_score': round(confidence_score, 2),
-        'chunk_status': chunk_status,
+        'heatmap_data': heatmap_data, # New field
         'total_chunks': max_len,
         'matched_chunks': matched_chunks,
         'detailed_mismatches': detailed_mismatches[:50], # Limit to top 50
         'mismatch_count': len(detailed_mismatches),
-        'size_diff': uploaded_file_data['file_size'] - stored_profile.file_size,
+        'size_diff': size_change,
         'full_entropy_profile': {
             'stored': stored_entropies,
             'uploaded': upload_entropies
