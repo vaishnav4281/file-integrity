@@ -138,129 +138,150 @@
 
     </div>
 
-    <!-- Forensic Analysis Dashboard -->
-    <div class="bg-surface rounded-2xl border border-border shadow-card mb-12 overflow-hidden">
-        <!-- Dashboard Header -->
-        <div
-            class="p-6 border-b border-border bg-gradient-to-r from-slate-50 to-white flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-                <div class="flex items-center gap-2 mb-1">
-                    <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                    <h3 class="text-xl font-bold text-primary tracking-tight">Forensic Analysis Dashboard</h3>
+    <!-- Forensic Overview Dashboard -->
+    <div class="bg-surface rounded-2xl border border-border shadow-card mb-8 overflow-hidden">
+        <div class="p-6 border-b border-border bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h3 class="text-xl font-bold text-primary tracking-tight flex items-center gap-2">
+                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                        Forensic Overview
+                    </h3>
+                    <p class="text-sm text-secondary">Block-level integrity mapping and analysis</p>
                 </div>
-                <p class="text-sm text-secondary">Real-time block-level integrity verification & anomaly detection</p>
-            </div>
-            <div class="flex flex-wrap items-center gap-3">
-                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm flex flex-col">
-                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Integrity Score</span>
-                    <span
-                        class="text-lg font-mono font-bold {% if result.confidence_score >= 80 %}text-green-600{% elif result.confidence_score >= 50 %}text-yellow-600{% else %}text-red-600{% endif %}">{{ result.confidence_score }}%</span>
-                </div>
-                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm flex flex-col">
-                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Detected
-                        Anomalies</span>
-                    <span class="text-lg font-mono font-bold text-red-600">{{ result.mismatch_count }}</span>
-                </div>
-                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm flex flex-col">
-                    <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Total Blocks</span>
-                    <span class="text-lg font-mono font-bold text-primary">{{ result.heatmap_data|length }}</span>
+                <div class="flex flex-wrap gap-3">
+                    <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Integrity</div>
+                        <div
+                            class="text-lg font-mono font-bold {% if result.confidence_score >= 80 %}text-green-600{% elif result.confidence_score >= 50 %}text-yellow-600{% else %}text-red-600{% endif %}">
+                            {{ result.confidence_score }}%</div>
+                    </div>
+                    <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Anomalies</div>
+                        <div class="text-lg font-mono font-bold text-red-600">{{ result.mismatch_count }}</div>
+                    </div>
+                    <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Blocks</div>
+                        <div class="text-lg font-mono font-bold text-primary">{{ result.heatmap_data|length }}</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-border">
-            <!-- Left: Block Map Grid (2/3 width) -->
-            <div class="lg:col-span-2 p-6 bg-white">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-                    <div>
-                        <h4 class="text-sm font-bold text-primary">File Structure Heatmap</h4>
-                        <p class="text-xs text-secondary">Visual representation of 4KB data blocks</p>
+        <div class="p-6">
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Forensic Block Map</h4>
+                <div class="flex flex-wrap gap-3 text-[10px] font-bold">
+                    <div
+                        class="flex items-center gap-1.5 px-2 py-1 bg-green-50 text-green-700 rounded-md border border-green-100">
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span> Verified
                     </div>
-                    <div class="flex flex-wrap gap-3 text-[10px] font-bold">
-                        <div
-                            class="flex items-center gap-1.5 px-2 py-1 bg-green-50 text-green-700 rounded-md border border-green-100">
-                            <span class="w-2 h-2 bg-green-500 rounded-full"></span> Verified
-                        </div>
-                        <div
-                            class="flex items-center gap-1.5 px-2 py-1 bg-yellow-50 text-yellow-700 rounded-md border border-yellow-100">
-                            <span class="w-2 h-2 bg-yellow-400 rounded-full"></span> Modified
-                        </div>
-                        <div
-                            class="flex items-center gap-1.5 px-2 py-1 bg-red-50 text-red-700 rounded-md border border-red-100">
-                            <span class="w-2 h-2 bg-red-500 rounded-full"></span> Critical
-                        </div>
-                        <div
-                            class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 text-purple-700 rounded-md border border-purple-100">
-                            <span class="w-2 h-2 bg-purple-500 rounded-full"></span> Appended
-                        </div>
+                    <div
+                        class="flex items-center gap-1.5 px-2 py-1 bg-yellow-50 text-yellow-700 rounded-md border border-yellow-100">
+                        <span class="w-2 h-2 bg-yellow-400 rounded-full"></span> Modified
                     </div>
-                </div>
-
-                <div class="grid grid-cols-10 sm:grid-cols-15 md:grid-cols-20 lg:grid-cols-25 gap-2">
-                    {% for block in result.heatmap_data %}
-                    <div class="aspect-square {{ block.color }} rounded-md cursor-help transition-all hover:scale-110 hover:ring-2 hover:ring-slate-900 hover:z-10"
-                        title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
-                    {% endfor %}
-                </div>
-
-                <div
-                    class="mt-8 p-4 bg-slate-50 rounded-xl border border-dashed border-slate-200 flex justify-between items-center text-[11px] text-secondary font-mono">
-                    <div class="flex items-center gap-4">
-                        <span><span class="font-bold">SCAN_START:</span> 0x00000000</span>
-                        <span><span class="font-bold">BLOCK_SIZE:</span> 4096B</span>
+                    <div
+                        class="flex items-center gap-1.5 px-2 py-1 bg-red-50 text-red-700 rounded-md border border-red-100">
+                        <span class="w-2 h-2 bg-red-500 rounded-full"></span> Critical
                     </div>
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                        <span>SYSTEM_IDLE</span>
+                    <div
+                        class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 text-purple-700 rounded-md border border-purple-100">
+                        <span class="w-2 h-2 bg-purple-500 rounded-full"></span> Appended
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Anomaly Log (1/3 width) -->
-            <div class="bg-slate-50/50 flex flex-col">
-                <div class="p-4 border-b border-border bg-white flex justify-between items-center">
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Forensic Event Log</h4>
-                    <span class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full">{{ result.mismatch_count }} Events</span>
-                </div>
-                <div class="flex-1 overflow-y-auto max-h-[500px] divide-y divide-slate-200">
+            <div class="grid grid-cols-10 sm:grid-cols-15 md:grid-cols-20 lg:grid-cols-30 xl:grid-cols-40 gap-1.5">
+                {% for block in result.heatmap_data %}
+                <div class="aspect-square {{ block.color }} rounded-sm cursor-help transition-all hover:scale-125 hover:ring-2 hover:ring-slate-900 hover:z-10"
+                    title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
+                {% endfor %}
+            </div>
+
+            <div
+                class="mt-6 pt-4 border-t border-border flex justify-between items-center text-[10px] text-secondary font-mono">
+                <span>SCAN_RANGE: 0x0000 - {{ result.heatmap_data|length|add:"-1" }}</span>
+                <span>BLOCK_SIZE: 4096 BYTES</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Anomaly Report -->
+    <div class="bg-surface rounded-2xl border border-border shadow-card mb-12 overflow-hidden">
+        <div class="p-6 border-b border-border flex justify-between items-center bg-slate-50/50">
+            <div>
+                <h3 class="text-lg font-bold text-primary tracking-tight">Detailed Anomaly Report</h3>
+                <p class="text-sm text-secondary mt-1">Comprehensive forensic log of all detected discrepancies</p>
+            </div>
+            <span
+                class="px-3 py-1 bg-white border border-border text-secondary text-xs font-bold rounded-full shadow-sm">
+                {{ result.mismatch_count }} Events Detected
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-border">
+                <thead class="bg-slate-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Block</th>
+                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Byte Range</th>
+                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Entropy Change</th>
+                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Classification</th>
+                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                            Fingerprint (Stored/Uploaded)</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-border">
                     {% if result.detailed_mismatches %}
                     {% for item in result.detailed_mismatches %}
-                    <div
-                        class="p-4 hover:bg-white transition-all group border-l-4 {% if 'Critical' in item.anomaly_type %}border-red-500{% elif 'Appended' in item.anomaly_type %}border-purple-500{% else %}border-yellow-400{% endif %}">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[10px] font-mono font-bold text-slate-400">EVT_{{ item.chunk_index |                 stringformat:"03d" }}</span>
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 py-1 bg-slate-900 text-white font-mono text-[10px] font-bold rounded">#{{
+                                item.chunk_index }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-secondary">{{ item.byte_range }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <span
-                                class="text-[10px] font-mono font-bold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">{{ item.change_summary }}</span>
-                        </div>
-                        <div class="text-sm font-bold text-primary mb-1 group-hover:text-blue-600 transition-colors">{{ item.anomaly_type }}</div>
-                        <div class="flex items-center justify-between mt-2">
+                                class="text-xs font-mono font-bold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">{{
+                                item.change_summary }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
                             <span
-                                class="text-[10px] text-secondary font-mono bg-white px-1.5 py-0.5 rounded border border-slate-200">Offset:
-                                {{ item.byte_range }}</span>
-                            <span class="text-[10px] font-bold text-slate-900">BLOCK #{{ item.chunk_index }}</span>
-                        </div>
-                    </div>
+                                class="text-xs font-bold {% if 'Critical' in item.anomaly_type %}text-red-600{% elif 'Appended' in item.anomaly_type %}text-purple-600{% else %}text-yellow-600{% endif %}">{{
+                                item.anomaly_type }}</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex flex-col gap-1">
+                                <span
+                                    class="text-[9px] font-mono text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-100 w-fit">S:
+                                    {{ item.stored_hash|slice:":12" }}...</span>
+                                <span
+                                    class="text-[9px] font-mono text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 w-fit">U:
+                                    {{ item.uploaded_hash|slice:":12" }}...</span>
+                            </div>
+                        </td>
+                    </tr>
                     {% endfor %}
                     {% else %}
-                    <div class="p-12 text-center">
-                        <div
-                            class="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4 rotate-3">
-                            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h5 class="text-sm font-bold text-primary mb-1">Integrity Verified</h5>
-                        <p class="text-xs text-secondary">No anomalies detected in the forensic scan.</p>
-                    </div>
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center">
+                            <p class="text-sm text-secondary italic">No anomalies detected in this file.</p>
+                        </td>
+                    </tr>
                     {% endif %}
-                </div>
-                <div class="p-4 border-t border-border bg-white text-center">
-                    <p class="text-[10px] text-slate-400 font-medium italic">End of Forensic Audit Trail</p>
-                </div>
-            </div>
+                </tbody>
+            </table>
         </div>
+        {% if result.mismatch_count > 50 %}
+        <div class="p-4 bg-slate-50 text-center border-t border-border">
+            <p class="text-[10px] text-slate-400 font-medium italic">Showing top 50 anomalies. See full report for
+                complete details.</p>
+        </div>
+        {% endif %}
     </div>
 
     <!-- Deep Forensic Analysis Grid -->
