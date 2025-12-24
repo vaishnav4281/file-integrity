@@ -16,10 +16,10 @@
                     {{ file_name }}
                 </h1>
                 <div
-                    class="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-md">
+                    class="flex items-center gap-3 px-5 py-2 bg-white/5 rounded-full border border-white/10 backdrop-blur-2xl">
                     <span
-                        class="w-2 h-2 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]{% else %}bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]{% endif %}"></span>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-white">
+                        class="w-2 h-2 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.6)]{% else %}bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.6)]{% endif %}"></span>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-white">
                         {% if result.result_type == 'NO_CHANGE' %}Verified{% else %}Compromised{% endif %}
                     </span>
                 </div>
@@ -29,7 +29,7 @@
             <button onclick="window.print()"
                 class="px-10 py-5 bg-white text-black rounded-2xl font-bold text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all shadow-2xl relative overflow-hidden group/btn">
                 <div
-                    class="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-emerald-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500">
+                    class="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-blue-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-700">
                 </div>
                 <span class="relative z-10 flex items-center gap-3">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,53 +50,58 @@
         <div class="lg:col-span-8 space-y-10">
 
             <!-- Executive Summary -->
-            <div class="premium-card rounded-[3rem] p-16 relative overflow-hidden report-card">
-                <div class="absolute top-0 right-0 w-96 h-96 bg-white/[0.02] blur-3xl rounded-full -mr-48 -mt-48"></div>
+            <div class="premium-card rounded-[3.5rem] p-16 relative overflow-hidden report-card">
+                <div
+                    class="absolute top-0 right-0 w-[500px] h-[500px] bg-violet-500/5 blur-[120px] rounded-full -mr-64 -mt-64">
+                </div>
                 <div class="relative flex flex-col md:flex-row items-center gap-20">
                     <div class="relative shrink-0">
                         <div
-                            class="w-56 h-56 rounded-full border-[12px] border-white/5 flex items-center justify-center bg-black shadow-2xl">
+                            class="w-60 h-60 rounded-full border-[14px] border-white/5 flex items-center justify-center bg-black shadow-2xl">
                             <div class="text-center">
                                 <span class="block text-6xl font-black text-white tracking-tighter">{{                   result.confidence_score }}%</span>
                                 <span
-                                    class="text-[10px] font-bold uppercase tracking-[0.3em] text-secondary">Confidence</span>
+                                    class="text-[10px] font-bold uppercase tracking-[0.4em] text-secondary">Confidence</span>
                             </div>
                         </div>
-                        <svg class="absolute top-0 left-0 w-56 h-56 -rotate-90">
-                            <circle cx="112" cy="112" r="100" fill="none" stroke="currentColor" stroke-width="12"
+                        <svg class="absolute top-0 left-0 w-60 h-60 -rotate-90">
+                            <circle cx="120" cy="120" r="106" fill="none" stroke="currentColor" stroke-width="14"
                                 stroke-linecap="round"
-                                class="{% if result.confidence_score >= 80 %}text-emerald-500{% elif result.confidence_score >= 50 %}text-amber-500{% else %}text-red-500{% endif %}"
-                                stroke-dasharray="628.32"
-                                style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(628.32 - (628.32 * var(--score) / 100)); transition: stroke-dashoffset 2s ease-out;" />
+                                class="{% if result.confidence_score >= 80 %}text-emerald-500{% elif result.confidence_score >= 50 %}text-amber-500{% else %}text-rose-500{% endif %}"
+                                stroke-dasharray="666.02"
+                                style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(666.02 - (666.02 * var(--score) / 100)); transition: stroke-dashoffset 2.5s cubic-bezier(0.16, 1, 0.3, 1);" />
                         </svg>
                     </div>
                     <div class="flex-1 space-y-8">
                         <h2 class="text-5xl font-bold text-white tracking-tight leading-tight">
                             {% if result.result_type == 'NO_CHANGE' %}Integrity Verified{% elif result.result_type ==               'PARTIAL_MODIFICATION' %}Anomalies Detected{% else %}Critical Failure{% endif %}
                         </h2>
-                        <p class="text-secondary text-xl leading-relaxed font-medium opacity-80">
+                        <p class="text-secondary text-xl leading-relaxed font-medium opacity-70">
                             {% if result.result_type == 'NO_CHANGE' %}The cryptographic signature aligns perfectly with
-                            the baseline. No discrepancies identified.{% else %}Heuristic analysis identified {{               result.mismatch_count }} structural discrepancies. The file has been flagged.{% endif %}
+                            the baseline. No structural or byte-level discrepancies identified.{% else %}Heuristic
+                            analysis identified {{ result.mismatch_count }} structural discrepancies. The file has been
+                            flagged for potential tampering.{% endif %}
                         </p>
                         <div class="grid grid-cols-2 sm:grid-cols-4 gap-10 pt-10 border-t border-white/10">
                             <div>
-                                <p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Units</p>
+                                <p class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-3">Units
+                                </p>
                                 <p class="text-xl font-bold text-white font-mono">{{ result.heatmap_data|length }}</p>
                             </div>
                             <div>
-                                <p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">
+                                <p class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-3">
                                     Mismatches</p>
                                 <p
-                                    class="text-xl font-bold {% if result.mismatch_count > 0 %}text-red-500{% else %}text-emerald-500{% endif %} font-mono">
+                                    class="text-xl font-bold {% if result.mismatch_count > 0 %}text-rose-500{% else %}text-emerald-500{% endif %} font-mono">
                                     {{ result.mismatch_count }}</p>
                             </div>
                             <div>
-                                <p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Size</p>
+                                <p class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-3">Size</p>
                                 <p class="text-xl font-bold text-white font-mono">{{ profile.file_size|filesizeformat }}
                                 </p>
                             </div>
                             <div>
-                                <p class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-3">Algo</p>
+                                <p class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em] mb-3">Algo</p>
                                 <p class="text-xl font-bold text-white font-mono">SHA256</p>
                             </div>
                         </div>
@@ -105,17 +110,19 @@
             </div>
 
             <!-- Entropy Profile -->
-            <div class="premium-card rounded-[3rem] p-12 report-card">
-                <div class="flex justify-between items-center mb-12">
-                    <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.4em]">Entropy Distribution</h3>
-                    <div class="flex items-center gap-6 text-[9px] font-bold uppercase tracking-widest">
-                        <div class="flex items-center gap-2"><span
-                                class="w-2 h-2 rounded-full border border-white/20 border-dashed"></span> Baseline</div>
-                        <div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-white"></span> Current
+            <div class="premium-card rounded-[3.5rem] p-12 report-card">
+                <div class="flex justify-between items-center mb-12 px-4">
+                    <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.5em]">Entropy Distribution</h3>
+                    <div class="flex items-center gap-8 text-[9px] font-bold uppercase tracking-[0.2em]">
+                        <div class="flex items-center gap-3"><span
+                                class="w-2.5 h-2.5 rounded-full border border-white/30 border-dashed"></span> Baseline
                         </div>
+                        <div class="flex items-center gap-3"><span
+                                class="w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.3)]"></span>
+                            Current</div>
                     </div>
                 </div>
-                <div class="h-80">
+                <div class="h-[400px] px-4">
                     <canvas id="entropyChart"></canvas>
                 </div>
             </div>
@@ -124,24 +131,27 @@
         <!-- Right Column -->
         <div class="lg:col-span-4 space-y-10">
             <!-- Header Inspector -->
-            <div class="premium-card rounded-[3rem] p-10 report-card">
-                <div class="flex justify-between items-center mb-10">
-                    <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.4em]">Header</h3>
+            <div class="premium-card rounded-[3.5rem] p-10 report-card relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-violet-500/5 blur-2xl rounded-full -mr-16 -mt-16"></div>
+                <div class="flex justify-between items-center mb-10 relative z-10">
+                    <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.5em]">Header</h3>
                     <span
-                        class="px-3 py-1 bg-white/5 text-[9px] font-bold rounded-full border border-white/10 uppercase tracking-widest text-secondary">{{             result.header_analysis.status }}</span>
+                        class="px-4 py-1.5 bg-white/5 text-[9px] font-bold rounded-full border border-white/10 uppercase tracking-[0.2em] text-secondary">{{             result.header_analysis.status }}</span>
                 </div>
-                <div class="space-y-8">
+                <div class="space-y-8 relative z-10">
                     <div class="space-y-3">
-                        <p class="text-[9px] font-bold text-secondary uppercase tracking-widest">Baseline Signature</p>
+                        <p class="text-[9px] font-bold text-secondary uppercase tracking-widest opacity-50">Baseline
+                            Signature</p>
                         <div
-                            class="bg-white/[0.02] rounded-2xl p-5 font-mono text-[11px] text-secondary border border-white/5 overflow-hidden text-ellipsis">
+                            class="bg-white/[0.02] rounded-2xl p-6 font-mono text-[11px] text-secondary border border-white/5 overflow-hidden text-ellipsis">
                             {{ result.header_analysis.stored }}
                         </div>
                     </div>
                     <div class="space-y-3">
-                        <p class="text-[9px] font-bold text-secondary uppercase tracking-widest">Sample Signature</p>
+                        <p class="text-[9px] font-bold text-secondary uppercase tracking-widest opacity-50">Sample
+                            Signature</p>
                         <div
-                            class="bg-white/[0.02] rounded-2xl p-5 font-mono text-[11px] {% if 'MISMATCH' in result.header_analysis.status %}text-red-400{% else %}text-emerald-400{% endif %} border border-white/10 overflow-hidden text-ellipsis">
+                            class="bg-white/[0.02] rounded-2xl p-6 font-mono text-[11px] {% if 'MISMATCH' in result.header_analysis.status %}text-rose-400{% else %}text-emerald-400{% endif %} border border-white/10 overflow-hidden text-ellipsis">
                             {{ result.header_analysis.uploaded }}
                         </div>
                     </div>
@@ -149,23 +159,25 @@
             </div>
 
             <!-- Threat Matrix -->
-            <div class="premium-card rounded-[3rem] p-10 report-card">
-                <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.4em] mb-10">Threat Matrix</h3>
-                <div class="space-y-6">
+            <div class="premium-card rounded-[3.5rem] p-10 report-card relative overflow-hidden">
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-rose-500/5 blur-2xl rounded-full -ml-16 -mb-16"></div>
+                <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.5em] mb-10 relative z-10">Threat
+                    Matrix</h3>
+                <div class="space-y-6 relative z-10">
                     <div
-                        class="flex items-center justify-between p-4 bg-white/[0.02] rounded-2xl border border-white/5">
-                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Verified</span>
-                        <span class="text-lg font-bold text-white font-mono">{{               result.heatmap_data|length|add:result.mismatch_count|add:"-1" }}</span>
+                        class="flex items-center justify-between p-5 bg-white/[0.02] rounded-[2rem] border border-white/5 hover:border-emerald-500/20 transition-colors duration-500">
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em]">Verified</span>
+                        <span class="text-xl font-bold text-white font-mono">{{               result.heatmap_data|length|add:result.mismatch_count|add:"-1" }}</span>
                     </div>
                     <div
-                        class="flex items-center justify-between p-4 bg-white/[0.02] rounded-2xl border border-white/5">
-                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Modified</span>
-                        <span class="text-lg font-bold text-white font-mono">{{ result.mismatch_count }}</span>
+                        class="flex items-center justify-between p-5 bg-white/[0.02] rounded-[2rem] border border-white/5 hover:border-rose-500/20 transition-colors duration-500">
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em]">Modified</span>
+                        <span class="text-xl font-bold text-white font-mono">{{ result.mismatch_count }}</span>
                     </div>
                     <div
-                        class="flex items-center justify-between p-4 bg-white/[0.02] rounded-2xl border border-white/5">
-                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Critical</span>
-                        <span class="text-lg font-bold text-white font-mono">0</span>
+                        class="flex items-center justify-between p-5 bg-white/[0.02] rounded-[2rem] border border-white/5 hover:border-violet-500/20 transition-colors duration-500">
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-[0.2em]">Critical</span>
+                        <span class="text-xl font-bold text-white font-mono">0</span>
                     </div>
                 </div>
             </div>
@@ -173,30 +185,30 @@
     </div>
 
     <!-- 3. Forensic Block Map -->
-    <div class="premium-card rounded-[3.5rem] mb-16 overflow-hidden report-card">
+    <div class="premium-card rounded-[4rem] mb-16 overflow-hidden report-card">
         <div
-            class="px-12 py-10 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-8 bg-white/[0.01]">
+            class="px-12 py-12 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-10 bg-white/[0.01]">
             <div>
-                <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.4em] mb-2">Block Map</h3>
-                <p class="text-[9px] font-bold text-secondary uppercase tracking-widest opacity-60">Spatial distribution
-                    of data integrity</p>
+                <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.5em] mb-3">Block Map</h3>
+                <p class="text-[9px] font-bold text-secondary uppercase tracking-[0.2em] opacity-40">Spatial
+                    distribution of data integrity</p>
             </div>
-            <div class="flex gap-8 text-[9px] font-bold text-secondary uppercase tracking-widest">
-                <div class="flex items-center gap-2.5"><span
-                        class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.3)]"></span>
+            <div class="flex gap-10 text-[9px] font-bold text-secondary uppercase tracking-[0.2em]">
+                <div class="flex items-center gap-3"><span
+                        class="w-3 h-3 bg-emerald-500 rounded-full shadow-[0_0_12px_rgba(16,185,129,0.4)]"></span>
                     Verified</div>
-                <div class="flex items-center gap-2.5"><span
-                        class="w-2.5 h-2.5 bg-amber-400 rounded-full shadow-[0_0_10px_rgba(251,191,36,0.3)]"></span>
+                <div class="flex items-center gap-3"><span
+                        class="w-3 h-3 bg-amber-400 rounded-full shadow-[0_0_12px_rgba(251,191,36,0.4)]"></span>
                     Modified</div>
-                <div class="flex items-center gap-2.5"><span
-                        class="w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.3)]"></span>
-                    Critical</div>
+                <div class="flex items-center gap-3"><span
+                        class="w-3 h-3 bg-rose-500 rounded-full shadow-[0_0_12px_rgba(244,63,94,0.4)]"></span> Critical
+                </div>
             </div>
         </div>
         <div class="p-12">
-            <div class="grid grid-cols-12 sm:grid-cols-20 md:grid-cols-30 lg:grid-cols-40 xl:grid-cols-50 gap-2.5">
+            <div class="grid grid-cols-12 sm:grid-cols-20 md:grid-cols-30 lg:grid-cols-40 xl:grid-cols-50 gap-3">
                 {% for block in result.heatmap_data %}
-                <div class="aspect-square {{ block.color }} rounded-sm opacity-60 hover:opacity-100 hover:scale-125 transition-all duration-300 cursor-crosshair"
+                <div class="aspect-square {{ block.color }} rounded-sm opacity-50 hover:opacity-100 hover:scale-150 transition-all duration-500 cursor-crosshair shadow-sm"
                     title="{{ block.tooltip_title }}"></div>
                 {% endfor %}
             </div>
@@ -205,48 +217,48 @@
 
     <!-- 4. Detailed Anomaly Log -->
     {% if result.detailed_mismatches %}
-    <div class="premium-card rounded-[3.5rem] overflow-hidden report-card">
-        <div class="px-12 py-10 border-b border-white/5 bg-white/[0.01]">
-            <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.4em]">Anomaly Trace Log</h3>
+    <div class="premium-card rounded-[4rem] overflow-hidden report-card">
+        <div class="px-12 py-12 border-b border-white/5 bg-white/[0.01]">
+            <h3 class="text-[11px] font-bold text-white uppercase tracking-[0.5em]">Anomaly Trace Log</h3>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr class="bg-white/[0.01] text-[10px] font-bold text-secondary uppercase tracking-[0.3em]">
-                        <th class="px-12 py-6">Block Index</th>
-                        <th class="px-12 py-6">Byte Range</th>
-                        <th class="px-12 py-6">Threat Analysis</th>
-                        <th class="px-12 py-6">Fingerprint Trace</th>
+                    <tr class="bg-white/[0.01] text-[10px] font-bold text-secondary uppercase tracking-[0.4em]">
+                        <th class="px-12 py-8">Block Index</th>
+                        <th class="px-12 py-8">Byte Range</th>
+                        <th class="px-12 py-8">Threat Analysis</th>
+                        <th class="px-12 py-8">Fingerprint Trace</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-white/5">
                     {% for item in result.detailed_mismatches %}
                     <tr class="hover:bg-white/[0.01] transition-colors group">
-                        <td class="px-12 py-10">
-                            <span class="px-4 py-2 bg-white text-black font-mono text-[11px] font-bold rounded-lg">#{{                 item.chunk_index }}</span>
+                        <td class="px-12 py-12">
+                            <span
+                                class="px-5 py-2.5 bg-white text-black font-mono text-[11px] font-bold rounded-xl shadow-lg">#{{                 item.chunk_index }}</span>
                         </td>
-                        <td class="px-12 py-10 text-[11px] font-mono text-secondary font-medium">{{ item.byte_range }}
-                        </td>
-                        <td class="px-12 py-10">
-                            <div class="flex flex-col gap-2">
+                        <td class="px-12 py-12 text-[11px] font-mono text-secondary font-medium opacity-60">{{               item.byte_range }}</td>
+                        <td class="px-12 py-12">
+                            <div class="flex flex-col gap-3">
                                 <span
-                                    class="text-[10px] font-bold uppercase tracking-widest {% if item.severity == 'critical' %}text-red-400{% else %}text-amber-400{% endif %}">
+                                    class="text-[10px] font-bold uppercase tracking-[0.2em] {% if item.severity == 'critical' %}text-rose-400{% else %}text-amber-400{% endif %}">
                                     {{ item.anomaly_type }}
                                 </span>
-                                <p class="text-[12px] text-secondary leading-tight font-medium opacity-60">{{                   item.threat_description }}</p>
+                                <p class="text-[13px] text-secondary leading-relaxed font-medium opacity-50">{{                   item.threat_description }}</p>
                             </div>
                         </td>
-                        <td class="px-12 py-10">
-                            <div class="flex flex-col gap-2">
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[8px] font-bold text-secondary uppercase w-4">S</span>
+                        <td class="px-12 py-12">
+                            <div class="flex flex-col gap-3">
+                                <div class="flex items-center gap-4">
+                                    <span class="text-[8px] font-bold text-secondary uppercase w-4 opacity-30">S</span>
                                     <span
-                                        class="text-[10px] font-mono text-emerald-400 bg-emerald-500/5 px-3 py-1 rounded border border-emerald-500/10">{{                     item.stored_hash|slice:":24" }}...</span>
+                                        class="text-[10px] font-mono text-emerald-400 bg-emerald-400/5 px-4 py-1.5 rounded-lg border border-emerald-400/10">{{                     item.stored_hash|slice:":32" }}...</span>
                                 </div>
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[8px] font-bold text-secondary uppercase w-4">U</span>
+                                <div class="flex items-center gap-4">
+                                    <span class="text-[8px] font-bold text-secondary uppercase w-4 opacity-30">U</span>
                                     <span
-                                        class="text-[10px] font-mono text-red-400 bg-red-500/5 px-3 py-1 rounded border border-red-500/10">{{                     item.uploaded_hash|slice:":24" }}...</span>
+                                        class="text-[10px] font-mono text-rose-400 bg-rose-400/5 px-4 py-1.5 rounded-lg border border-rose-400/10">{{                     item.uploaded_hash|slice:":32" }}...</span>
                                 </div>
                             </div>
                         </td>
@@ -280,35 +292,52 @@
                     {
                         label: 'Baseline',
                         data: storedEntropy,
-                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: 'rgba(255, 255, 255, 0.15)',
                         borderWidth: 2,
-                        borderDash: [8, 8],
+                        borderDash: [10, 10],
                         pointRadius: 0,
-                        tension: 0.4
+                        tension: 0.4,
+                        order: 2
                     },
                     {
                         label: 'Current',
                         data: uploadedEntropy,
                         borderColor: '#ffffff',
-                        backgroundColor: 'rgba(255, 255, 255, 0.02)',
+                        backgroundColor: 'rgba(255, 255, 255, 0.03)',
                         fill: true,
-                        borderWidth: 2,
+                        borderWidth: 3,
                         pointRadius: 0,
-                        tension: 0.4
+                        tension: 0.4,
+                        order: 1
                     }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                interaction: { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        backdropFilter: 'blur(10px)',
+                        titleColor: '#ffffff',
+                        bodyColor: '#a1a1aa',
+                        titleFont: { family: 'Geist Sans', size: 12, weight: 'bold' },
+                        bodyFont: { family: 'Geist Mono', size: 11 },
+                        padding: 16,
+                        cornerRadius: 12,
+                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderWidth: 1
+                    }
+                },
                 scales: {
                     x: { display: false },
                     y: {
                         beginAtZero: true,
                         max: 8,
-                        grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
-                        ticks: { font: { family: 'Geist Mono', size: 10 }, color: '#555', padding: 15 }
+                        grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false },
+                        ticks: { font: { family: 'Geist Mono', size: 10 }, color: '#444', padding: 20 }
                     }
                 }
             }
@@ -339,7 +368,7 @@
             border: 1px solid #eee !important;
             box-shadow: none !important;
             background: white !important;
-            border-radius: 1.5rem !important;
+            border-radius: 2rem !important;
         }
 
         .text-white,
@@ -373,8 +402,8 @@
             print-color-adjust: exact;
         }
 
-        div[class*="bg-red-500"] {
-            background-color: #ef4444 !important;
+        div[class*="bg-rose-500"] {
+            background-color: #f43f5e !important;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
