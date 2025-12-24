@@ -15,10 +15,10 @@
                 {{ file_name }}
                 {% if result.result_type == 'NO_CHANGE' %}
                 <span
-                    class="px-4 py-1.5 bg-emerald-500/10 text-emerald-600 text-[11px] font-black rounded-full border border-emerald-500/20 uppercase tracking-widest shadow-sm shadow-emerald-500/5">Verified</span>
+                    class="px-4 py-1.5 bg-emerald-500/10 text-emerald-600 text-[11px] font-black rounded-full border border-emerald-500/20 uppercase tracking-widest">Verified</span>
                 {% else %}
                 <span
-                    class="px-4 py-1.5 bg-red-500/10 text-red-600 text-[11px] font-black rounded-full border border-red-500/20 uppercase tracking-widest shadow-sm shadow-red-500/5">Compromised</span>
+                    class="px-4 py-1.5 bg-red-500/10 text-red-600 text-[11px] font-black rounded-full border border-red-500/20 uppercase tracking-widest">Compromised</span>
                 {% endif %}
             </h1>
         </div>
@@ -47,21 +47,18 @@
 
     <!-- 2. Executive Summary Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-
         <!-- Main Verdict Card -->
         <div
             class="lg:col-span-8 bg-white rounded-[3rem] p-12 border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-xl hover:border-slate-300 transition-all duration-700">
             <div
                 class="absolute top-0 right-0 w-80 h-80 bg-slate-50 rounded-full -mr-40 -mt-40 transition-transform group-hover:scale-150 duration-1000 ease-out opacity-60">
             </div>
-
             <div class="relative flex flex-col md:flex-row items-center gap-16">
                 <div class="relative shrink-0">
                     <div
                         class="w-48 h-48 rounded-full border-[16px] border-slate-50 flex items-center justify-center shadow-inner bg-white">
                         <span class="text-6xl font-black text-slate-900 tracking-tighter">{{ result.confidence_score               }}<span class="text-2xl opacity-20 ml-1">%</span></span>
                     </div>
-                    <!-- Animated SVG Progress Ring -->
                     <svg class="absolute top-0 left-0 w-48 h-48 -rotate-90 drop-shadow-md">
                         <defs>
                             <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -76,7 +73,6 @@
                             style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(502.65 - (502.65 * var(--score) / 100)); transition: stroke-dashoffset 2s cubic-bezier(0.34, 1.56, 0.64, 1);" />
                     </svg>
                 </div>
-
                 <div class="flex-1 text-center md:text-left">
                     <div
                         class="inline-flex items-center gap-3 px-4 py-2 bg-slate-50 rounded-full border border-slate-100 mb-8">
@@ -115,7 +111,7 @@
             <div
                 class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm flex items-center gap-8 group hover:border-primary/20 hover:shadow-xl transition-all duration-500">
                 <div
-                    class="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all duration-500 group-hover:rotate-6">
+                    class="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
@@ -129,7 +125,7 @@
             <div
                 class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm flex items-center gap-8 group hover:border-primary/20 hover:shadow-xl transition-all duration-500">
                 <div
-                    class="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all duration-500 group-hover:-rotate-6">
+                    class="w-16 h-16 rounded-3xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 group-hover:bg-primary group-hover:text-white transition-all duration-500">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
@@ -145,7 +141,7 @@
             <div
                 class="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm flex items-center gap-8 group hover:border-primary/20 hover:shadow-xl transition-all duration-500">
                 <div
-                    class="w-16 h-16 rounded-3xl {% if result.mismatch_count > 0 %}bg-red-50 text-red-500{% else %}bg-emerald-50 text-emerald-500{% endif %} flex items-center justify-center border border-current border-opacity-10 group-hover:bg-current group-hover:text-white transition-all duration-500 group-hover:scale-110">
+                    class="w-16 h-16 rounded-3xl {% if result.mismatch_count > 0 %}bg-red-50 text-red-500{% else %}bg-emerald-50 text-emerald-500{% endif %} flex items-center justify-center border border-current border-opacity-10 group-hover:bg-current group-hover:text-white transition-all duration-500">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
@@ -161,7 +157,70 @@
         </div>
     </div>
 
-    <!-- 3. Forensic Visualization -->
+    <!-- 3. Deep Dive Analysis -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Entropy Chart -->
+        <div
+            class="bg-white rounded-[3rem] border border-slate-200 shadow-sm p-12 hover:shadow-2xl transition-all duration-700">
+            <div class="flex justify-between items-center mb-12">
+                <div>
+                    <h3 class="text-lg font-black text-slate-900 uppercase tracking-[0.25em] mb-1.5">Entropy Profile
+                    </h3>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Structural complexity
+                        mapping</p>
+                </div>
+                <span
+                    class="text-[11px] font-black px-4 py-1.5 bg-slate-50 text-slate-400 rounded-full border border-slate-100 uppercase tracking-widest">Heuristic</span>
+            </div>
+            <div class="h-80">
+                <canvas id="entropyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Magic Byte Inspector -->
+        <div
+            class="bg-white rounded-[3rem] border border-slate-200 shadow-sm p-12 hover:shadow-2xl transition-all duration-700">
+            <div class="flex justify-between items-center mb-12">
+                <div>
+                    <h3 class="text-lg font-black text-slate-900 uppercase tracking-[0.25em] mb-1.5">Header Verification
+                    </h3>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Magic byte sequence
+                        analysis</p>
+                </div>
+                <span
+                    class="text-[11px] font-black px-4 py-1.5 {% if 'MISMATCH' in result.header_analysis.status %}bg-red-50 text-red-500{% else %}bg-emerald-50 text-emerald-500{% endif %} rounded-full border border-current border-opacity-10 uppercase tracking-widest">
+                    {{ result.header_analysis.status }}
+                </span>
+            </div>
+            <div class="space-y-10">
+                <div>
+                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Stored Baseline</p>
+                    <div
+                        class="bg-slate-950 rounded-3xl p-6 font-mono text-xs text-slate-500 break-all leading-relaxed opacity-60 border border-slate-800 shadow-inner">
+                        {{ result.header_analysis.stored }}
+                    </div>
+                </div>
+                <div class="flex justify-center -my-5 relative z-10">
+                    <div
+                        class="w-12 h-12 rounded-full bg-white border border-slate-200 shadow-xl flex items-center justify-center text-slate-300">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Uploaded Sample</p>
+                    <div
+                        class="bg-slate-950 rounded-3xl p-6 font-mono text-xs {% if 'MISMATCH' in result.header_analysis.status %}text-red-400{% else %}text-emerald-400{% endif %} break-all leading-relaxed border-l-8 {% if 'MISMATCH' in result.header_analysis.status %}border-red-500{% else %}border-emerald-500{% endif %} shadow-2xl">
+                        {{ result.header_analysis.uploaded }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Forensic Visualization (Moved here) -->
     <div
         class="bg-white rounded-[3rem] border border-slate-200 shadow-sm mb-12 overflow-hidden hover:shadow-2xl transition-all duration-700">
         <div
@@ -190,7 +249,7 @@
         <div class="p-12">
             <div class="grid grid-cols-10 sm:grid-cols-15 md:grid-cols-20 lg:grid-cols-30 xl:grid-cols-40 gap-2.5">
                 {% for block in result.heatmap_data %}
-                <div class="aspect-square {{ block.color }} rounded-lg cursor-help transition-all duration-500 hover:scale-[1.75] hover:z-20 hover:shadow-2xl hover:ring-4 hover:ring-slate-900/10"
+                <div class="aspect-square {{ block.color }} rounded-lg cursor-help transition-all duration-300"
                     title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
                 {% endfor %}
             </div>
@@ -198,70 +257,6 @@
                 class="mt-12 pt-10 border-t border-slate-50 flex justify-between items-center text-[11px] font-mono text-slate-400 uppercase tracking-[0.25em] font-black">
                 <span>Scan Range: 0x0000 - {{ result.heatmap_data|length|add:"-1" }}</span>
                 <span>Block Size: 4096 Bytes</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. Deep Dive Analysis -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-
-        <!-- Entropy Chart -->
-        <div
-            class="bg-white rounded-[3rem] border border-slate-200 shadow-sm p-12 hover:shadow-2xl transition-all duration-700">
-            <div class="flex justify-between items-center mb-12">
-                <div>
-                    <h3 class="text-lg font-black text-slate-900 uppercase tracking-[0.25em] mb-1.5">Entropy Profile
-                    </h3>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Structural complexity
-                        mapping and heuristic analysis</p>
-                </div>
-                <span
-                    class="text-[11px] font-black px-4 py-1.5 bg-slate-50 text-slate-400 rounded-full border border-slate-100 uppercase tracking-widest">Heuristic</span>
-            </div>
-            <div class="h-80">
-                <canvas id="entropyChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Magic Byte Inspector -->
-        <div
-            class="bg-white rounded-[3rem] border border-slate-200 shadow-sm p-12 hover:shadow-2xl transition-all duration-700">
-            <div class="flex justify-between items-center mb-12">
-                <div>
-                    <h3 class="text-lg font-black text-slate-900 uppercase tracking-[0.25em] mb-1.5">Header Verification
-                    </h3>
-                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Magic byte sequence and
-                        file signature analysis</p>
-                </div>
-                <span
-                    class="text-[11px] font-black px-4 py-1.5 {% if 'MISMATCH' in result.header_analysis.status %}bg-red-50 text-red-500{% else %}bg-emerald-50 text-emerald-500{% endif %} rounded-full border border-current border-opacity-10 uppercase tracking-widest">
-                    {{ result.header_analysis.status }}
-                </span>
-            </div>
-            <div class="space-y-10">
-                <div>
-                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Stored Baseline</p>
-                    <div
-                        class="bg-slate-950 rounded-3xl p-6 font-mono text-xs text-slate-500 break-all leading-relaxed opacity-60 border border-slate-800 shadow-inner">
-                        {{ result.header_analysis.stored }}
-                    </div>
-                </div>
-                <div class="flex justify-center -my-5 relative z-10">
-                    <div
-                        class="w-12 h-12 rounded-full bg-white border border-slate-200 shadow-xl flex items-center justify-center text-slate-300 hover:text-primary transition-colors duration-300 cursor-default">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-                        </svg>
-                    </div>
-                </div>
-                <div>
-                    <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-5">Uploaded Sample</p>
-                    <div
-                        class="bg-slate-950 rounded-3xl p-6 font-mono text-xs {% if 'MISMATCH' in result.header_analysis.status %}text-red-400{% else %}text-emerald-400{% endif %} break-all leading-relaxed border-l-8 {% if 'MISMATCH' in result.header_analysis.status %}border-red-500{% else %}border-emerald-500{% endif %} shadow-2xl">
-                        {{ result.header_analysis.uploaded }}
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -456,17 +451,13 @@
             padding: 0 !important;
         }
 
-        .rounded-[3rem],
-        .rounded-[2.5rem],
-        .rounded-3xl {
+        /* Use standard selectors for print styles to avoid Tailwind bracket issues in style tags */
+        div[class*="rounded-"] {
             border-radius: 1.5rem !important;
         }
 
-        .shadow-sm,
-        .shadow-md,
-        .shadow-lg,
-        .shadow-xl,
-        .shadow-2xl {
+        /* Fix shadow property and use standard box-shadow */
+        div[class*="shadow-"] {
             box-shadow: none !important;
         }
 
@@ -475,6 +466,7 @@
             background-color: #0f172a !important;
             color: white !important;
             -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
     }
 
