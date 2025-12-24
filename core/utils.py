@@ -237,6 +237,10 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 start_byte = i * CHUNK_SIZE
                 end_byte = start_byte + CHUNK_SIZE
                 
+                entropy_change = round(uploaded_e - stored_e, 4)
+                change_dir = '↑' if entropy_change > 0 else '↓' if entropy_change < 0 else '→'
+                change_summary = f"{change_dir} {abs(entropy_change):.2f} bits"
+                
                 detailed_mismatches.append({
                     'chunk_index': i + 1,
                     'byte_range': f"{start_byte:,} - {end_byte:,}",
@@ -244,6 +248,8 @@ def compare_hashes(stored_profile, uploaded_file_data):
                     'uploaded_hash': uploaded_h,
                     'stored_entropy': stored_e,
                     'uploaded_entropy': uploaded_e,
+                    'entropy_delta': entropy_change,
+                    'change_summary': change_summary,
                     'anomaly_type': verdict
                 })
 
@@ -257,6 +263,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 'tooltip_body': "Missing (Truncated)"
             })
             # We treat this as a mismatch too
+            entropy_change = -stored_entropies[i]
             detailed_mismatches.append({
                 'chunk_index': i + 1,
                 'byte_range': "N/A",
@@ -264,6 +271,8 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 'uploaded_hash': "MISSING",
                 'stored_entropy': stored_entropies[i],
                 'uploaded_entropy': 0.0,
+                'entropy_delta': entropy_change,
+                'change_summary': f"↓ {abs(entropy_change):.2f} bits (removed)",
                 'anomaly_type': "Data Truncation"
             })
 
@@ -280,6 +289,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
             start_byte = i * CHUNK_SIZE
             end_byte = start_byte + CHUNK_SIZE
             
+            entropy_change = upload_entropies[i]
             detailed_mismatches.append({
                 'chunk_index': i + 1,
                 'byte_range': f"{start_byte:,} - {end_byte:,}",
@@ -287,6 +297,8 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 'uploaded_hash': upload_chunks[i],
                 'stored_entropy': 0.0,
                 'uploaded_entropy': upload_entropies[i],
+                'entropy_delta': entropy_change,
+                'change_summary': f"↑ {entropy_change:.2f} bits (new)",
                 'anomaly_type': "Appended Data"
             })
 

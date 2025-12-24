@@ -241,59 +241,50 @@
                 <thead class="bg-slate-50">
                     <tr>
                         <th scope="col"
-                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Block
-                            ID</th>
+                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Block</th>
                         <th scope="col"
-                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Byte
-                            Range</th>
+                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Byte Range</th>
                         <th scope="col"
-                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Hash
-                            Fingerprint (SHA-256)</th>
+                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Change</th>
                         <th scope="col"
-                            class="px-6 py-4 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Anomaly Classification</th>
+                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Hash Fingerprint</th>
+                        <th scope="col"
+                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
+                            Classification</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border bg-white">
                     {% for item in result.detailed_mismatches %}
-                    <tr class="hover:bg-slate-50 transition-colors group">
-                        <td class="px-6 py-4 whitespace-nowrap text-primary font-mono text-sm font-medium">{{ item.chunk_index }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-secondary font-mono text-xs">{{ item.byte_range }}
+                    <tr class="hover:bg-slate-50 transition-colors">
+                        <td class="px-4 py-3 whitespace-nowrap text-primary font-mono text-sm font-medium">{{
+                            item.chunk_index }}</td>
+                        <td class="px-4 py-3 whitespace-nowrap text-secondary font-mono text-xs">{{ item.byte_range }}
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex flex-col space-y-1.5">
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <span
+                                class="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold {% if item.entropy_delta > 0 %}bg-red-50 text-red-600 border border-red-100{% elif item.entropy_delta < 0 %}bg-blue-50 text-blue-600 border border-blue-100{% else %}bg-slate-50 text-slate-500 border border-slate-200{% endif %}">
+                                {{ item.change_summary }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3 whitespace-nowrap">
+                            <div class="flex flex-col space-y-1">
                                 <span
-                                    class="bg-green-50 text-green-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-green-100">Orig:
-                                    {{ item.stored_hash|slice:":12" }}...</span>
+                                    class="bg-green-50 text-green-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-green-100">{{
+                                    item.stored_hash|slice:":10" }}...</span>
                                 <span
-                                    class="bg-red-50 text-red-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-red-100">New:
-                                    {{ item.uploaded_hash|slice:":12" }}...</span>
+                                    class="bg-red-50 text-red-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-red-100">{{
+                                    item.uploaded_hash|slice:":10" }}...</span>
                             </div>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex flex-col gap-1">
-                                <div class="flex items-center gap-2">
-                                    <span
-                                        class="text-sm font-semibold {% if 'High' in item.anomaly_type %}text-red-600{% elif 'Spike' in item.anomaly_type %}text-amber-600{% else %}text-slate-600{% endif %}">
-                                        {{ item.anomaly_type }}
-                                    </span>
-                                    {% if result.size_diff != 0 %}
-                                    <span
-                                        class="px-1.5 py-0.5 rounded text-[10px] font-bold border {% if result.size_diff > 0 %}bg-red-50 text-red-600 border-red-100{% else %}bg-orange-50 text-orange-600 border-orange-100{% endif %}">
-                                        {% if result.size_diff > 0 %}+{% endif %}{{ result.size_diff }}B
-                                    </span>
-                                    {% endif %}
-                                </div>
-                                <div class="text-xs text-slate-400 flex items-center gap-1">
-                                    <span>Entropy:</span>
-                                    <span class="font-mono text-slate-500">{{ item.stored_entropy }}</span>
-                                    <span>&rarr;</span>
-                                    <span class="font-mono text-primary">{{ item.uploaded_entropy }}</span>
-                                </div>
-                            </div>
+                        <td class="px-4 py-3">
+                            <span
+                                class="text-xs font-medium {% if 'Critical' in item.anomaly_type %}text-red-600{% elif 'Appended' in item.anomaly_type %}text-purple-600{% elif 'Truncation' in item.anomaly_type %}text-blue-600{% else %}text-slate-600{% endif %}">
+                                {{ item.anomaly_type }}
+                            </span>
                         </td>
                     </tr>
                     {% endfor %}
@@ -595,12 +586,12 @@
 
                 doc.autoTable({
                     startY: yPos + 5,
-                    head: [['Block', 'Byte Range', 'Type', 'Entropy Delta']],
+                    head: [['Block', 'Byte Range', 'Change', 'Classification']],
                     body: mismatches.map(m => [
                         `${m.chunk_index}`,
                         m.byte_range,
-                        m.anomaly_type,
-                        `${m.stored_entropy} -> ${m.uploaded_entropy}`
+                        m.change_summary,
+                        m.anomaly_type
                     ]),
                     theme: 'grid',
                     headStyles: { fillColor: [15, 23, 42], textColor: 255 },
