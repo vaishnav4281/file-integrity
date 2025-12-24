@@ -14,34 +14,33 @@
                     colors: {
                         primary: '#ffffff',
                         dark: '#000000',
-                        surface: '#050505',
-                        border: 'rgba(255, 255, 255, 0.03)',
-                        secondary: '#888888',
-                        accent: '#0070f3',
-                        success: '#00ffbd',
-                        warning: '#feb144',
-                        danger: '#ff4d4d',
-                        violet: '#7928ca',
-                        rose: '#ff0080',
-                        cyan: '#50e3c2',
+                        surface: '#09090b',
+                        border: 'rgba(255, 255, 255, 0.08)',
+                        secondary: '#a1a1aa',
+                        accent: '#3b82f6',
+                        success: '#10b981',
+                        warning: '#f59e0b',
+                        danger: '#ef4444',
+                        violet: '#8b5cf6',
+                        rose: '#f43f5e',
                     },
                     fontFamily: {
-                        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+                        sans: ['"Inter"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     animation: {
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 6s ease-in-out infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'reveal': 'reveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
                         },
-                        glow: {
-                            '0%': { boxShadow: '0 0 5px rgba(0, 112, 243, 0.2)' },
-                            '100%': { boxShadow: '0 0 20px rgba(0, 112, 243, 0.6)' },
+                        reveal: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
                         }
                     }
                 }
@@ -53,7 +52,7 @@
         rel="stylesheet">
     <style>
         :root {
-            --accent-glow: rgba(0, 112, 243, 0.3);
+            --glow-color: rgba(59, 130, 246, 0.5);
         }
 
         body {
@@ -62,30 +61,32 @@
             color: #ffffff;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.01em;
         }
 
         .glass {
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: saturate(180%) blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .glass-card:hover {
-            background: rgba(255, 255, 255, 0.04);
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.15);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+            transform: translateY(-5px);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
         }
 
         .text-gradient {
-            background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0.5) 100%);
+            background: linear-gradient(to bottom right, #ffffff 30%, #71717a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -97,9 +98,9 @@
             width: 100%;
             height: 100%;
             background:
-                radial-gradient(at 0% 0%, rgba(0, 112, 243, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(121, 40, 202, 0.15) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(0, 255, 189, 0.05) 0px, transparent 50%);
+                radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
             z-index: -1;
         }
 
@@ -109,40 +110,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 32px 32px;
-            mask-image: linear-gradient(to bottom, black, transparent);
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
             z-index: -1;
-        }
-
-        .btn-premium {
-            background: #ffffff;
-            color: #000000;
-            font-weight: 700;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.39);
-        }
-
-        .btn-premium:hover {
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.23);
-            transform: translateY(-1px);
-        }
-
-        .reveal {
-            animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes reveal {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .noise {
@@ -156,6 +129,61 @@
             pointer-events: none;
             z-index: 9999;
         }
+
+        .btn-premium {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .btn-premium::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-premium:hover::before {
+            left: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #333;
+        }
+
+        .reveal {
+            opacity: 0;
+            animation: reveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -165,32 +193,33 @@
     <div class="noise"></div>
 
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 glass py-4">
+    <nav class="sticky top-0 z-50 glass border-b border-white/5 py-4">
         <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-            <a href="{% url 'index' %}" class="flex items-center gap-3 group">
+            <a href="/" class="flex items-center gap-4 group cursor-pointer">
                 <div
-                    class="w-9 h-9 bg-white rounded-lg flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.5)]">
-                    <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                    class="w-10 h-10 bg-white rounded-lg flex items-center justify-center transition-transform duration-500 group-hover:rotate-12">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                 </div>
-                <div class="flex flex-col">
-                    <span class="text-lg font-black tracking-tighter text-white leading-none">FORΞNSIC</span>
-                    <span class="text-[8px] font-bold tracking-[0.4em] text-accent uppercase">Intelligence Lab</span>
+                <div>
+                    <span class="text-xl font-black tracking-tighter text-white">FORΞNSIC</span>
+                    <span class="text-xs font-bold tracking-[0.3em] text-accent block -mt-1">INTELLIGENCE</span>
                 </div>
             </a>
 
             <div class="flex items-center gap-8">
                 <div
                     class="hidden md:flex items-center gap-6 text-[10px] font-bold tracking-[0.2em] text-secondary uppercase">
-                    <a href="#" class="hover:text-white transition-colors">Forensics</a>
-                    <a href="#" class="hover:text-white transition-colors">Network</a>
-                    <a href="#" class="hover:text-white transition-colors">Vault</a>
+                    <a href="#" class="hover:text-white transition-colors">Documentation</a>
+                    <a href="#" class="hover:text-white transition-colors">API</a>
+                    <a href="#" class="hover:text-white transition-colors">Enterprise</a>
                 </div>
-                <div class="flex items-center gap-3 px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
-                    <div class="w-1.5 h-1.5 rounded-full bg-success animate-pulse"></div>
-                    <span class="text-[9px] font-bold tracking-widest text-white uppercase">Node: Secure</span>
+                <div class="h-8 w-px bg-white/10 hidden md:block"></div>
+                <div class="flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10">
+                    <div class="w-2 h-2 rounded-full bg-success animate-pulse"></div>
+                    <span class="text-[10px] font-bold tracking-widest text-white uppercase">System Active</span>
                 </div>
             </div>
         </div>
@@ -199,18 +228,16 @@
     <!-- Main Content -->
     <main class="flex-grow relative z-10">
         {% if messages %}
-        <div class="max-w-4xl mx-auto px-6 mt-8 space-y-3">
+        <div class="max-w-4xl mx-auto px-6 mt-8 space-y-4">
             {% for message in messages %}
             <div
-                class="glass-card p-4 rounded-xl border-l-2 {% if message.tags == 'error' %}border-danger bg-danger/5{% else %}border-accent bg-accent/5{% endif %} flex items-center gap-4 reveal">
-                <div
-                    class="w-8 h-8 rounded-lg flex items-center justify-center {% if message.tags == 'error' %}bg-danger/10 text-danger{% else %}bg-accent/10 text-accent{% endif %}">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <span class="text-xs font-semibold tracking-tight">{{ message }}</span>
+                class="glass-card p-4 rounded-xl border-l-4 {% if message.tags == 'error' %}border-danger bg-danger/5{% else %}border-accent bg-accent/5{% endif %} flex items-center gap-4 reveal">
+                <svg class="w-5 h-5 {% if message.tags == 'error' %}text-danger{% else %}text-accent{% endif %}"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm font-medium">{{ message }}</span>
             </div>
             {% endfor %}
         </div>
@@ -220,50 +247,23 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 py-16 mt-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
-                <div class="max-w-xs">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-6 h-6 bg-white rounded flex items-center justify-center">
-                            <svg class="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2L2 19.77h20L12 2z" />
-                            </svg>
-                        </div>
-                        <span class="text-sm font-black tracking-tighter">FORΞNSIC.AI</span>
-                    </div>
-                    <p class="text-xs text-secondary leading-relaxed font-medium">
-                        Advanced cryptographic file integrity verification system. Built for high-stakes security
-                        environments.
-                    </p>
+    <footer class="border-t border-white/5 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="flex items-center gap-3 opacity-50">
+                <div class="w-6 h-6 bg-white/10 rounded flex items-center justify-center">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2L2 19.77h20L12 2z" />
+                    </svg>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-12">
-                    <div class="space-y-4">
-                        <h4 class="text-[10px] font-black text-white uppercase tracking-widest">Platform</h4>
-                        <ul class="space-y-2 text-[10px] font-bold text-secondary uppercase tracking-widest">
-                            <li><a href="#" class="hover:text-white transition-colors">Overview</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">API</a></li>
-                        </ul>
-                    </div>
-                    <div class="space-y-4">
-                        <h4 class="text-[10px] font-black text-white uppercase tracking-widest">Resources</h4>
-                        <ul class="space-y-2 text-[10px] font-bold text-secondary uppercase tracking-widest">
-                            <li><a href="#" class="hover:text-white transition-colors">Docs</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">Guides</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors">Support</a></li>
-                        </ul>
-                    </div>
-                </div>
+                <span class="text-xs font-bold tracking-[0.2em] uppercase">FORΞNSIC.AI</span>
             </div>
-            <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-                <div class="text-[9px] font-bold text-secondary uppercase tracking-[0.3em]">
-                    &copy; 2025 Cryptographic Trust Protocol.
-                </div>
-                <div class="flex gap-8 text-[9px] font-bold text-secondary uppercase tracking-widest">
-                    <a href="#" class="hover:text-white">Privacy Policy</a>
-                    <a href="#" class="hover:text-white">Terms of Service</a>
-                </div>
+            <div class="text-[10px] font-medium text-secondary uppercase tracking-[0.2em]">
+                &copy; 2025 Cryptographic Trust Protocol. All Rights Reserved.
+            </div>
+            <div class="flex gap-6 text-[10px] font-bold text-secondary uppercase tracking-widest">
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Terms</a>
+                <a href="#" class="hover:text-white">Security</a>
             </div>
         </div>
     </footer>
