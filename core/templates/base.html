@@ -1,73 +1,129 @@
 <!DOCTYPE html>
-<html lang="en" class="antialiased">
+<html lang="en" class="dark">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Integrity Checker</title>
+    <title>File Integrity Checker | Forensic Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0f172a', // Slate 900
-                        secondary: '#475569', // Slate 600
-                        accent: '#2563eb', // Blue 600
-                        surface: '#ffffff',
-                        subtle: '#f8fafc', // Slate 50
-                        border: '#e2e8f0', // Slate 200
-                        success: '#10b981',
-                        danger: '#ef4444',
-                        warning: '#f59e0b',
+                        primary: '#3b82f6', // Blue 500
+                        dark: '#0a0c10',
+                        surface: '#11141b',
+                        'surface-light': '#1a1f29',
+                        accent: '#10b981', // Emerald 500
                     },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
-                    boxShadow: {
-                        'soft': '0 2px 10px rgba(0, 0, 0, 0.03)',
-                        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
-                        'floating': '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02)',
+                    animation: {
+                        'glow': 'glow 4s ease-in-out infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        glow: {
+                            '0%, 100%': { opacity: 0.3, transform: 'scale(1)' },
+                            '50%': { opacity: 0.6, transform: 'scale(1.1)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
                     }
                 }
             }
         }
     </script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
+            background-color: #0a0c10;
+            color: #94a3b8;
+        }
+
+        .glass {
+            background: rgba(17, 20, 27, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0c10;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #1a1f29;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2563eb;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col selection:bg-accent selection:text-white">
+<body class="min-h-screen flex flex-col selection:bg-primary/30 selection:text-white overflow-x-hidden">
+
+    <!-- Ambient Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-glow">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/5 rounded-full blur-[120px] animate-glow"
+            style="animation-delay: -2s;"></div>
+    </div>
 
     <!-- Navbar -->
-    <nav class="bg-surface border-b border-border sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-18 items-center py-4">
-                <div class="flex items-center space-x-3">
+    <nav class="glass sticky top-0 z-50 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex items-center space-x-4 group">
                     <div
-                        class="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center shadow-soft">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center shadow-2xl shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
                             </path>
                         </svg>
                     </div>
                     <div>
                         <a href="{% url 'index' %}"
-                            class="text-lg font-bold tracking-tight text-primary leading-tight block">
-                            File Integrity Checker
+                            class="text-xl font-black tracking-tighter text-white leading-tight block">
+                            FORENSIC<span class="text-primary">.</span>IO
                         </a>
-                        <span class="text-xs font-medium text-secondary uppercase tracking-wider">Enterprise
-                            Forensics</span>
+                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">Integrity
+                            Intelligence</span>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'index' %}"
+                        class="text-xs font-black uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Dashboard</a>
+                    <div class="h-4 w-px bg-white/10"></div>
+                    <div class="flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
+                        <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                        <span class="text-[10px] font-black uppercase tracking-widest text-white">System Online</span>
                     </div>
                 </div>
             </div>
@@ -75,25 +131,26 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow">
+    <main class="flex-grow relative z-10">
         {% if messages %}
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+        <div class="max-w-4xl mx-auto px-6 mt-8">
             {% for message in messages %}
             <div
-                class="p-4 rounded-xl border border-l-4 shadow-sm mb-4 bg-white
-                {% if message.tags == 'error' %}border-l-danger border-border text-danger{% else %}border-l-success border-border text-success{% endif %}">
+                class="p-5 rounded-2xl glass border-l-4 shadow-2xl mb-6 animate-in fade-in slide-in-from-top-4 duration-500
+                {% if message.tags == 'error' %}border-l-red-500 text-red-400{% else %}border-l-accent text-accent{% endif %}">
                 <div class="flex items-center">
                     {% if message.tags == 'error' %}
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                             d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     {% else %}
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7">
+                        </path>
                     </svg>
                     {% endif %}
-                    <span class="font-medium text-sm">{{ message }}</span>
+                    <span class="font-bold text-sm tracking-tight">{{ message }}</span>
                 </div>
             </div>
             {% endfor %}
@@ -104,12 +161,30 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-border mt-24 bg-white">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <p class="text-sm text-secondary font-medium">
-                    &copy; 2025 File Integrity Checker.
-                </p>
+    <footer class="border-t border-white/5 mt-24 bg-dark/50 backdrop-blur-md relative z-10">
+        <div class="max-w-7xl mx-auto py-16 px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center space-x-4">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-slate-500">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-600">
+                        &copy; 2025 Forensic Intelligence Systems. All Rights Reserved.
+                    </p>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <a href="#"
+                        class="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-white transition-colors">Documentation</a>
+                    <a href="#"
+                        class="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-white transition-colors">API
+                        Status</a>
+                    <a href="#"
+                        class="text-[10px] font-black uppercase tracking-widest text-slate-600 hover:text-white transition-colors">Security</a>
+                </div>
             </div>
         </div>
     </footer>
