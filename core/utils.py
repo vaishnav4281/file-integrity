@@ -238,8 +238,12 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 end_byte = start_byte + CHUNK_SIZE
                 
                 entropy_change = round(uploaded_e - stored_e, 4)
-                change_dir = '↑' if entropy_change > 0 else '↓' if entropy_change < 0 else '→'
-                change_summary = f"{change_dir} {abs(entropy_change):.2f} bits"
+                if entropy_change > 0:
+                    change_summary = f"+{abs(entropy_change):.2f} (Higher)"
+                elif entropy_change < 0:
+                    change_summary = f"-{abs(entropy_change):.2f} (Lower)"
+                else:
+                    change_summary = "No Change"
                 
                 detailed_mismatches.append({
                     'chunk_index': i + 1,
@@ -272,7 +276,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 'stored_entropy': stored_entropies[i],
                 'uploaded_entropy': 0.0,
                 'entropy_delta': entropy_change,
-                'change_summary': f"↓ {abs(entropy_change):.2f} bits (removed)",
+                'change_summary': f"-{abs(entropy_change):.2f} (Removed)",
                 'anomaly_type': "Data Truncation"
             })
 
@@ -298,7 +302,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 'stored_entropy': 0.0,
                 'uploaded_entropy': upload_entropies[i],
                 'entropy_delta': entropy_change,
-                'change_summary': f"↑ {entropy_change:.2f} bits (new)",
+                'change_summary': f"+{entropy_change:.2f} (New Block)",
                 'anomaly_type': "Appended Data"
             })
 
