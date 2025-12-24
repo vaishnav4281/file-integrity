@@ -233,7 +233,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 heatmap_data.append({
                     'index': i + 1,
                     'status': 'MATCH',
-                    'color': 'bg-emerald-500',
+                    'color': 'bg-success',
                     'tooltip_title': f"Block #{i+1}",
                     'tooltip_body': "Verified Match"
                 })
@@ -257,13 +257,13 @@ def compare_hashes(stored_profile, uploaded_file_data):
                 
                 # Heatmap Color Logic
                 if uploaded_e > 7.5:
-                    color = 'bg-rose-600' # High Entropy
+                    color = 'bg-rose' # High Entropy
                     short_status = "High Entropy"
                 elif entropy_delta < 0.05: # Low Entropy Change
-                    color = 'bg-amber-400'
+                    color = 'bg-warning'
                     short_status = "Low Entropy Change"
                 else:
-                    color = 'bg-rose-500' # General Mismatch
+                    color = 'bg-rose' # General Mismatch
                     short_status = "Mismatch"
                 
                 # Classify Anomaly
@@ -303,7 +303,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
             heatmap_data.append({
                 'index': i + 1,
                 'status': 'MISSING',
-                'color': 'bg-zinc-600',
+                'color': 'bg-white/10',
                 'tooltip_title': f"Block #{i+1} - Truncation",
                 'tooltip_body': "Data removed from file (Truncated)"
             })
@@ -331,7 +331,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
             heatmap_data.append({
                 'index': i + 1,
                 'status': 'APPENDED',
-                'color': 'bg-violet-500',
+                'color': 'bg-violet',
                 'tooltip_title': f"Block #{i+1} - Appended",
                 'tooltip_body': "New data added to the end of the file"
             })

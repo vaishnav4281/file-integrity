@@ -25,7 +25,8 @@
                     <span
                         class="w-2.5 h-2.5 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-success shadow-[0_0_20px_rgba(16,185,129,0.5)]{% else %}bg-danger shadow-[0_0_20px_rgba(239,68,68,0.5)]{% endif %}"></span>
                     <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{% endif %}
+                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{%
+                        endif %}
                     </span>
                 </div>
                 <div class="text-[10px] font-bold tracking-widest text-secondary uppercase opacity-50">
@@ -66,10 +67,12 @@
                             style="--offset: calc(691 - (691 * {{ result.confidence_score|default:0 }}) / 100); stroke-dashoffset: var(--offset); transition: stroke-dashoffset 2s cubic-bezier(0.23, 1, 0.32, 1);" />
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
-                        <span class="text-7xl font-black text-white tracking-tighter">{{ result.confidence_score
-                            }}%</span>
                         <span
-                            class="text-[10px] font-black text-secondary uppercase tracking-[0.4em] opacity-50">Confidence</span>
+                            class="text-8xl font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">{{
+                            result.confidence_score }}%</span>
+                        <span
+                            class="text-[11px] font-black text-secondary uppercase tracking-[0.5em] opacity-50 mt-2">Confidence
+                            Score</span>
                     </div>
                 </div>
 
@@ -128,10 +131,12 @@
                 </div>
                 <div class="grid grid-cols-2 gap-8">
                     <div>
-                        <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Size
+                        <p class="text-[11px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Size
                             Delta</p>
-                        <p class="text-4xl font-black text-white font-mono">{% if result.size_diff > 0 %}+{% endif %}{{
-                            result.size_diff|filesizeformat }}</p>
+                        <p class="text-4xl font-black text-white font-mono tracking-tighter">
+                            {% if result.size_diff > 0 %}<span class="text-violet">+</span>{% elif result.size_diff < 0
+                                %}<span class="text-rose">-</span>{% endif %}{{ result.size_diff|abs|filesizeformat }}
+                        </p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
@@ -213,27 +218,27 @@
                 <div class="flex-grow overflow-y-auto pr-4 custom-scrollbar">
                     <div class="grid grid-cols-8 gap-2">
                         {% for block in result.heatmap_data %}
-                        <div class="aspect-square {{ block.color }} rounded-sm opacity-40 hover:opacity-100 hover:scale-125 transition-all duration-300 cursor-crosshair"
+                        <div class="aspect-square {{ block.color }} rounded-sm opacity-60 hover:opacity-100 hover:scale-125 transition-all duration-300 cursor-crosshair"
                             title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
                         {% endfor %}
                     </div>
                 </div>
                 <div class="mt-8 pt-8 border-t border-white/5 grid grid-cols-2 gap-4">
                     <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 bg-success rounded-full"></span>
-                        <span class="text-[9px] font-bold text-secondary uppercase tracking-widest">Verified</span>
+                        <span class="w-3 h-3 bg-success rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)]"></span>
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Verified</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 bg-rose-500 rounded-full"></span>
-                        <span class="text-[9px] font-bold text-secondary uppercase tracking-widest">Tampered</span>
+                        <span class="w-3 h-3 bg-rose rounded-full shadow-[0_0_10px_rgba(244,63,94,0.4)]"></span>
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Tampered</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 bg-violet-500 rounded-full"></span>
-                        <span class="text-[9px] font-bold text-secondary uppercase tracking-widest">Appended</span>
+                        <span class="w-3 h-3 bg-violet rounded-full shadow-[0_0_10px_rgba(139,92,246,0.4)]"></span>
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Appended</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="w-2 h-2 bg-zinc-600 rounded-full"></span>
-                        <span class="text-[9px] font-bold text-secondary uppercase tracking-widest">Missing</span>
+                        <span class="w-3 h-3 bg-white/20 rounded-full"></span>
+                        <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Missing</span>
                     </div>
                 </div>
             </div>
@@ -273,7 +278,7 @@
                         <td class="px-10 py-10">
                             <div class="flex items-center gap-4">
                                 <div
-                                    class="w-1 h-8 rounded-full {% if item.status == 'MATCH' %}bg-success{% elif item.status == 'MISMATCH' %}bg-danger{% else %}bg-violet-500{% endif %} opacity-40 group-hover:opacity-100 transition-opacity">
+                                    class="w-1.5 h-10 rounded-full {% if item.status == 'MATCH' %}bg-success{% elif item.status == 'MISMATCH' %}bg-rose{% else %}bg-violet{% endif %} opacity-40 group-hover:opacity-100 transition-opacity">
                                 </div>
                                 <span class="font-mono text-lg font-black text-white">#{{ item.chunk_index }}</span>
                             </div>
@@ -307,10 +312,10 @@
                             <div class="flex flex-col gap-3 max-w-md">
                                 <div class="flex items-center gap-3">
                                     <span class="text-[10px] font-black uppercase tracking-[0.2em] 
-                                        {% if item.severity == 'critical' or item.severity == 'high' %}text-danger
+                                        {% if item.severity == 'critical' or item.severity == 'high' %}text-rose
                                         {% elif item.severity == 'medium' %}text-warning
                                         {% elif item.severity == 'safe' %}text-success
-                                        {% else %}text-violet-500{% endif %}">
+                                        {% else %}text-violet{% endif %}">
                                         {{ item.anomaly_type }}
                                     </span>
                                     {% if item.severity == 'critical' %}
