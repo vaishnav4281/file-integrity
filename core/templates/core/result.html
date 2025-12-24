@@ -186,28 +186,29 @@
         <!-- Block Details List (Always Visible) -->
         {% if result.detailed_mismatches %}
         <div class="border-t border-border">
-            <div class="px-5 py-3 bg-slate-100 border-b border-border">
+            <div class="px-5 py-3 bg-slate-100 border-b border-border flex justify-between items-center">
                 <h4 class="text-sm font-bold text-primary">Block Anomaly Details</h4>
+                <span class="text-xs text-secondary">{{ result.mismatch_count }} issues found</span>
             </div>
-            <div class="divide-y divide-border max-h-64 overflow-y-auto">
-                {% for item in result.detailed_mismatches|slice:":10" %}
+            <div class="divide-y divide-border max-h-80 overflow-y-auto">
+                {% for item in result.detailed_mismatches %}
                 <div class="px-5 py-3 flex items-center gap-4 hover:bg-slate-50">
                     <div
-                        class="w-8 h-8 rounded-lg flex items-center justify-center font-mono text-sm font-bold text-white
+                        class="w-10 h-10 rounded-lg flex items-center justify-center font-mono text-sm font-bold text-white shrink-0
                         {% if 'Critical' in item.anomaly_type %}bg-red-500{% elif 'Appended' in item.anomaly_type %}bg-purple-500{% elif 'Truncation' in item.anomaly_type %}bg-gray-500{% else %}bg-yellow-500{% endif %}">
                         {{ item.chunk_index }}
                     </div>
                     <div class="flex-1 min-w-0">
-                        <div class="text-sm font-medium text-primary truncate">{{ item.anomaly_type }}</div>
-                        <div class="text-xs text-secondary">{{ item.byte_range }} • {{ item.change_summary }}</div>
+                        <div class="text-sm font-semibold text-primary">{{ item.anomaly_type }}</div>
+                        <div class="text-xs text-secondary mt-0.5">Bytes {{ item.byte_range }}</div>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <div
+                            class="text-sm font-mono font-semibold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">
+                            {{ item.change_summary }}</div>
                     </div>
                 </div>
                 {% endfor %}
-                {% if result.mismatch_count > 10 %}
-                <div class="px-5 py-2 text-center text-xs text-slate-500 bg-slate-50">
-                    + {{ result.mismatch_count|add:"-10" }} more anomalies (see full table below)
-                </div>
-                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -265,82 +266,6 @@
         </div>
     </div>
 
-    <!-- Detailed Anomaly Report (Full Width) -->
-    <div class="bg-surface rounded-2xl border border-border shadow-card mb-12 overflow-hidden">
-        <div
-            class="p-6 border-b border-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
-            <div>
-                <h3 class="text-lg font-bold text-primary tracking-tight">Detailed Anomaly Report</h3>
-                <p class="text-sm text-secondary mt-1">Comprehensive breakdown of all detected file discrepancies.</p>
-            </div>
-            <span
-                class="bg-white border border-border text-secondary text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                {{ result.mismatch_count }} Events Detected
-            </span>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-border">
-                <thead class="bg-slate-50">
-                    <tr>
-                        <th scope="col"
-                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Block</th>
-                        <th scope="col"
-                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Byte Range</th>
-                        <th scope="col"
-                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Change</th>
-                        <th scope="col"
-                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Hash Fingerprint</th>
-                        <th scope="col"
-                            class="px-4 py-3 text-left font-semibold text-slate-500 uppercase tracking-wider text-xs">
-                            Classification</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-border bg-white">
-                    {% for item in result.detailed_mismatches %}
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-4 py-3 whitespace-nowrap text-primary font-mono text-sm font-medium">{{
-                            item.chunk_index }}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-secondary font-mono text-xs">{{ item.byte_range }}
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                            <span
-                                class="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-semibold {% if item.entropy_delta > 0 %}bg-red-50 text-red-600 border border-red-100{% elif item.entropy_delta < 0 %}bg-blue-50 text-blue-600 border border-blue-100{% else %}bg-slate-50 text-slate-500 border border-slate-200{% endif %}">
-                                {{ item.change_summary }}
-                            </span>
-                        </td>
-                        <td class="px-4 py-3 whitespace-nowrap">
-                            <div class="flex flex-col space-y-1">
-                                <span
-                                    class="bg-green-50 text-green-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-green-100">{{
-                                    item.stored_hash|slice:":10" }}...</span>
-                                <span
-                                    class="bg-red-50 text-red-700 font-mono text-[10px] px-2 py-0.5 rounded w-fit border border-red-100">{{
-                                    item.uploaded_hash|slice:":10" }}...</span>
-                            </div>
-                        </td>
-                        <td class="px-4 py-3">
-                            <span
-                                class="text-xs font-medium {% if 'Critical' in item.anomaly_type %}text-red-600{% elif 'Appended' in item.anomaly_type %}text-purple-600{% elif 'Truncation' in item.anomaly_type %}text-blue-600{% else %}text-slate-600{% endif %}">
-                                {{ item.anomaly_type }}
-                            </span>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% if result.mismatch_count > 50 %}
-            <div class="px-6 py-4 bg-slate-50 text-center border-t border-border">
-                <p class="text-xs text-slate-500 italic">...and {{ result.mismatch_count|add:"-50" }} more mismatches
-                    hidden
-                    for clarity.</p>
-            </div>
-            {% endif %}
-        </div>
-    </div>
 
     <!-- Chart.js Integration -->
     {{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
