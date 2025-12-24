@@ -1,389 +1,309 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="min-h-screen bg-[#0a0c10] text-slate-400 font-sans selection:bg-primary/30 selection:text-white">
-    <div class="max-w-[1600px] mx-auto px-6 py-10 animate-in fade-in duration-1000">
+<div class="max-w-[1400px] mx-auto px-6 py-12 animate-in fade-in duration-1000">
 
-        <!-- 1. Top Navigation & Status Bar -->
-        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-12">
-            <div class="space-y-3">
-                <nav class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">
-                    <a href="{% url 'index' %}" class="hover:text-primary transition-colors">Terminal</a>
-                    <span class="w-1 h-1 rounded-full bg-slate-700"></span>
-                    <span class="text-slate-400">Forensic Analysis</span>
-                </nav>
-                <div class="flex items-center gap-6">
-                    <h1 class="text-5xl font-black text-white tracking-tight leading-none">
-                        {{ file_name }}
-                    </h1>
-                    <div
-                        class="flex items-center gap-2 px-4 py-2 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl">
-                        <span
-                            class="w-2 h-2 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)]{% else %}bg-red-500 animate-pulse shadow-[0_0_12px_rgba(239,68,68,0.5)]{% endif %}"></span>
-                        <span class="text-[10px] font-black uppercase tracking-widest text-white">
-                            {% if result.result_type == 'NO_CHANGE' %}Verified{% else %}Compromised{% endif %}
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="flex items-center gap-4">
-                <div class="hidden xl:flex flex-col items-end px-6 border-r border-white/5">
-                    <span class="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-1">System
-                        Entropy</span>
-                    <span class="text-sm font-mono font-bold text-white">7.942 bits/byte</span>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button onclick="window.print()"
-                        class="p-4 bg-white/5 border border-white/10 rounded-2xl text-slate-400 hover:text-white hover:bg-white/10 transition-all group">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
-                            </path>
-                        </svg>
-                    </button>
-                    <button onclick="downloadPDF()"
-                        class="flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-2xl hover:brightness-110 transition-all shadow-2xl shadow-primary/20 font-black text-xs uppercase tracking-widest">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                            </path>
-                        </svg>
-                        Export Report
-                    </button>
+    <!-- 1. Header & Actions -->
+    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8 mb-12 no-print">
+        <div class="space-y-3">
+            <nav class="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
+                <a href="{% url 'index' %}" class="hover:text-black transition-colors">Forensics</a>
+                <span class="w-1 h-1 rounded-full bg-slate-200"></span>
+                <span>Analysis Report</span>
+            </nav>
+            <div class="flex items-center gap-6">
+                <h1 class="text-4xl font-black text-black tracking-tight leading-none">
+                    {{ file_name }}
+                </h1>
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-slate-50 rounded-lg border border-slate-100">
+                    <span
+                        class="w-2 h-2 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500{% else %}bg-red-500{% endif %}"></span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-black">
+                        {% if result.result_type == 'NO_CHANGE' %}Verified{% else %}Compromised{% endif %}
+                    </span>
                 </div>
             </div>
         </div>
-
-        <!-- 2. Main Dashboard Grid -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-
-            <!-- Left Column: Primary Analysis -->
-            <div class="lg:col-span-9 space-y-8">
-
-                <!-- Executive Intelligence Card -->
-                <div class="bg-[#11141b] rounded-[3rem] p-10 border border-white/5 relative overflow-hidden group">
-                    <div
-                        class="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full -mr-64 -mt-64 blur-[100px]">
-                    </div>
-                    <div class="relative flex flex-col md:flex-row items-center gap-16">
-                        <div class="relative shrink-0">
-                            <div
-                                class="w-56 h-56 rounded-full border-[16px] border-white/5 flex items-center justify-center bg-[#0a0c10] shadow-2xl">
-                                <div class="text-center">
-                                    <span class="block text-6xl font-black text-white tracking-tighter">{{           result.confidence_score }}<span class="text-2xl opacity-20 ml-1">%</span></span>
-                                    <span
-                                        class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-500">Confidence</span>
-                                </div>
-                            </div>
-                            <svg class="absolute top-0 left-0 w-56 h-56 -rotate-90">
-                                <circle cx="112" cy="112" r="96" fill="none" stroke="currentColor" stroke-width="16"
-                                    stroke-linecap="round"
-                                    class="{% if result.confidence_score >= 80 %}text-emerald-500{% elif result.confidence_score >= 50 %}text-amber-500{% else %}text-red-500{% endif %}"
-                                    stroke-dasharray="603.18"
-                                    style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(603.18 - (603.18 * var(--score) / 100)); transition: stroke-dashoffset 2.5s cubic-bezier(0.34, 1.56, 0.64, 1);" />
-                            </svg>
-                        </div>
-                        <div class="flex-1 space-y-6">
-                            <div
-                                class="inline-flex items-center gap-3 px-4 py-2 bg-white/5 rounded-full border border-white/10">
-                                <span
-                                    class="w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
-                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-300">Heuristic
-                                    Engine v4.2</span>
-                            </div>
-                            <h2 class="text-5xl font-black text-white tracking-tight leading-tight">
-                                {% if result.result_type == 'NO_CHANGE' %}Integrity Verified{% elif result.result_type         == 'PARTIAL_MODIFICATION' %}Anomalies Detected{% else %}Critical Failure{% endif %}
-                            </h2>
-                            <p class="text-slate-400 text-lg leading-relaxed font-medium max-w-2xl">
-                                {% if result.result_type == 'NO_CHANGE' %}The cryptographic signature of the uploaded
-                                sample aligns perfectly with the registered baseline. No structural or byte-level
-                                discrepancies were identified.{% else %}Heuristic analysis identified {{         result.mismatch_count }} structural discrepancies. The file has been flagged for
-                                potential unauthorized modification or data corruption.{% endif %}
-                            </p>
-                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-8 border-t border-white/5">
-                                <div>
-                                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Scan
-                                        Units</p>
-                                    <p class="text-xl font-black text-white font-mono">{{ result.heatmap_data|length }}
-                                        <span class="text-[10px] opacity-30">BLKS</span>
-                                    </p>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">
-                                        Mismatches</p>
-                                    <p
-                                        class="text-xl font-black {% if result.mismatch_count > 0 %}text-red-500{% else %}text-emerald-500{% endif %} font-mono">
-                                        {{ result.mismatch_count }} <span class="text-[10px] opacity-30">EVTS</span></p>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Data
-                                        Volume</p>
-                                    <p class="text-xl font-black text-white font-mono">{{           profile.file_size|filesizeformat }}</p>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">
-                                        Latency</p>
-                                    <p class="text-xl font-black text-white font-mono">14ms</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Visualization Row -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="bg-[#11141b] rounded-[2.5rem] p-8 border border-white/5">
-                        <div class="flex justify-between items-center mb-10">
-                            <h3 class="text-[11px] font-black text-white uppercase tracking-[0.3em]">Entropy Profile
-                            </h3>
-                            <div class="flex items-center gap-2">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span class="text-[9px] font-bold text-slate-500 uppercase">Live Mapping</span>
-                            </div>
-                        </div>
-                        <div class="h-64">
-                            <canvas id="entropyChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="bg-[#11141b] rounded-[2.5rem] p-8 border border-white/5">
-                        <div class="flex justify-between items-center mb-10">
-                            <h3 class="text-[11px] font-black text-white uppercase tracking-[0.3em]">Header Inspector
-                            </h3>
-                            <span
-                                class="px-3 py-1 {% if 'MISMATCH' in result.header_analysis.status %}bg-red-500/10 text-red-500{% else %}bg-emerald-500/10 text-emerald-500{% endif %} text-[9px] font-black rounded-lg border border-current border-opacity-20 uppercase tracking-widest">{{         result.header_analysis.status }}</span>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="space-y-3">
-                                <p class="text-[9px] font-black text-slate-600 uppercase tracking-widest">Baseline
-                                    Signature</p>
-                                <div
-                                    class="bg-[#0a0c10] rounded-2xl p-5 font-mono text-[11px] text-slate-500 border border-white/5 shadow-inner overflow-hidden whitespace-nowrap text-ellipsis">
-                                    {{ result.header_analysis.stored }}
-                                </div>
-                            </div>
-                            <div class="space-y-3">
-                                <p class="text-[9px] font-black text-slate-600 uppercase tracking-widest">Sample
-                                    Signature</p>
-                                <div
-                                    class="bg-[#0a0c10] rounded-2xl p-5 font-mono text-[11px] {% if 'MISMATCH' in result.header_analysis.status %}text-red-400{% else %}text-emerald-400{% endif %} border-l-4 {% if 'MISMATCH' in result.header_analysis.status %}border-red-500{% else %}border-emerald-500{% endif %} shadow-2xl overflow-hidden whitespace-nowrap text-ellipsis">
-                                    {{ result.header_analysis.uploaded }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Metadata & Intelligence -->
-            <div class="lg:col-span-3 space-y-8">
-
-                <!-- System Specs -->
-                <div
-                    class="bg-primary rounded-[2.5rem] p-8 text-white shadow-2xl shadow-primary/20 relative overflow-hidden group">
-                    <div
-                        class="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -mr-20 -mt-20 transition-transform group-hover:scale-150 duration-1000">
-                    </div>
-                    <h3 class="text-[11px] font-black uppercase tracking-[0.3em] mb-8 opacity-60">Scan Parameters</h3>
-                    <div class="space-y-6">
-                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
-                            <span class="text-[10px] font-bold opacity-60">Block Size</span>
-                            <span class="text-xs font-mono font-bold">4096 B</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
-                            <span class="text-[10px] font-bold opacity-60">Heuristics</span>
-                            <span class="text-xs font-mono font-bold">ENABLED</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
-                            <span class="text-[10px] font-bold opacity-60">Deep Scan</span>
-                            <span class="text-xs font-mono font-bold">ACTIVE</span>
-                        </div>
-                        <div class="flex justify-between items-center border-b border-white/10 pb-4">
-                            <span class="text-[10px] font-bold opacity-60">Algorithm</span>
-                            <span class="text-xs font-mono font-bold">SHA-256</span>
-                        </div>
-                        <div class="pt-4">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="text-[10px] font-black uppercase tracking-widest opacity-60">Security
-                                    Level</span>
-                                <span class="text-[10px] font-black">HIGH</span>
-                            </div>
-                            <div class="h-2 w-full bg-white/20 rounded-full overflow-hidden">
-                                <div class="h-full bg-white w-4/5 shadow-[0_0_15px_rgba(255,255,255,0.5)]"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Threat Distribution -->
-                <div class="bg-[#11141b] rounded-[2.5rem] p-8 border border-white/5">
-                    <h3 class="text-[11px] font-black text-white uppercase tracking-[0.3em] mb-8">Threat Matrix</h3>
-                    <div class="space-y-6">
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M5 13l4 4L19 7"></path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5">
-                                    Verified</p>
-                                <p class="text-sm font-black text-white font-mono">{{          result.heatmap_data|length|add:result.mismatch_count|add:"-1" }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/20">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5">
-                                    Modified</p>
-                                <p class="text-sm font-black text-white font-mono">{{ result.mismatch_count }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div
-                                class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-500 border border-red-500/20">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
-                                        d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
-                                    </path>
-                                </svg>
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-0.5">
-                                    Critical</p>
-                                <p class="text-sm font-black text-white font-mono">0</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="flex items-center gap-3">
+            <button onclick="window.print()"
+                class="p-4 bg-white border border-slate-200 rounded-xl text-slate-400 hover:text-black hover:border-black transition-all group">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                    </path>
+                </svg>
+            </button>
+            <button onclick="window.print()"
+                class="flex items-center gap-3 px-8 py-4 bg-black text-white rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-black/10 font-black text-xs uppercase tracking-widest">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                    </path>
+                </svg>
+                Export Report
+            </button>
         </div>
-
-        <!-- 3. Forensic Block Map -->
-        <div class="bg-[#11141b] rounded-[3rem] border border-white/5 mb-12 overflow-hidden shadow-2xl">
-            <div
-                class="px-10 py-8 border-b border-white/5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-white/[0.02]">
-                <div>
-                    <h3 class="text-sm font-black text-white uppercase tracking-[0.4em] mb-2">Forensic Block Map</h3>
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Spatial distribution of
-                        data integrity across 4KB segments</p>
-                </div>
-                <div
-                    class="flex flex-wrap items-center gap-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                    <div class="flex items-center gap-2.5"><span
-                            class="w-2.5 h-2.5 bg-emerald-500 rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)]"></span>
-                        Verified</div>
-                    <div class="flex items-center gap-2.5"><span
-                            class="w-2.5 h-2.5 bg-amber-400 rounded-full shadow-[0_0_10px_rgba(251,191,36,0.4)]"></span>
-                        Modified</div>
-                    <div class="flex items-center gap-2.5"><span
-                            class="w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_10px_rgba(239,68,68,0.4)]"></span>
-                        Critical</div>
-                    <div class="flex items-center gap-2.5"><span
-                            class="w-2.5 h-2.5 bg-purple-500 rounded-full shadow-[0_0_10px_rgba(168,85,247,0.4)]"></span>
-                        Appended</div>
-                </div>
-            </div>
-            <div class="p-10">
-                <div class="grid grid-cols-12 sm:grid-cols-20 md:grid-cols-30 lg:grid-cols-40 xl:grid-cols-50 gap-2">
-                    {% for block in result.heatmap_data %}
-                    <div class="aspect-square {{ block.color }} rounded-sm cursor-help transition-all duration-300 hover:brightness-125"
-                        title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
-                    {% endfor %}
-                </div>
-                <div
-                    class="mt-10 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-slate-600 uppercase tracking-[0.3em] font-black">
-                    <span>Range: 0x0000 - {{ result.heatmap_data|length|add:"-1" }}</span>
-                    <span>Segment: 4096 Bytes</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Detailed Anomaly Log -->
-        {% if result.detailed_mismatches %}
-        <div class="bg-[#11141b] rounded-[3rem] border border-white/5 overflow-hidden shadow-2xl">
-            <div class="px-10 py-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
-                <div>
-                    <h3 class="text-sm font-black text-white uppercase tracking-[0.4em] mb-2">Detailed Anomaly Log</h3>
-                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Sequential event trace and
-                        threat classification</p>
-                </div>
-                <span
-                    class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white/5 px-5 py-2 rounded-xl border border-white/10">{{      result.mismatch_count }} Events Logged</span>
-            </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-white/[0.01] text-[10px] font-black text-slate-500 uppercase tracking-[0.3em]">
-                            <th class="px-10 py-6">Block</th>
-                            <th class="px-10 py-6">Byte Range</th>
-                            <th class="px-10 py-6">Entropy Δ</th>
-                            <th class="px-10 py-6">Threat Analysis</th>
-                            <th class="px-10 py-6">Fingerprint (Stored vs Uploaded)</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5">
-                        {% for item in result.detailed_mismatches %}
-                        <tr class="hover:bg-white/[0.02] transition-colors">
-                            <td class="px-10 py-8">
-                                <span
-                                    class="px-3 py-1.5 bg-white/5 text-white font-mono text-[11px] font-black rounded-lg border border-white/10">#{{          item.chunk_index }}</span>
-                            </td>
-                            <td class="px-10 py-8 text-[11px] font-mono text-slate-500 font-bold">{{ item.byte_range }}
-                            </td>
-                            <td class="px-10 py-8">
-                                <span
-                                    class="text-[11px] font-mono font-black {% if item.entropy_delta > 0 %}text-red-500{% elif item.entropy_delta < 0 %}text-blue-500{% else %}text-slate-400{% endif %}">
-                                    {{ item.change_summary }}
-                                </span>
-                            </td>
-                            <td class="px-10 py-8">
-                                <div class="flex flex-col gap-2">
-                                    <span
-                                        class="text-[10px] font-black uppercase tracking-widest {% if item.severity == 'critical' %}text-red-500{% elif item.severity == 'high' %}text-orange-500{% else %}text-amber-500{% endif %}">
-                                        {{ item.anomaly_type }}
-                                    </span>
-                                    <p class="text-[12px] text-slate-400 leading-tight font-medium max-w-sm opacity-60">
-                                        {{ item.threat_description }}</p>
-                                </div>
-                            </td>
-                            <td class="px-10 py-8">
-                                <div class="flex flex-col gap-2">
-                                    <div class="flex items-center gap-3">
-                                        <span class="text-[8px] font-black text-slate-700 uppercase w-4">S</span>
-                                        <span
-                                            class="text-[10px] font-mono font-black text-emerald-500/80 bg-emerald-500/5 px-3 py-1 rounded-lg border border-emerald-500/10">{{            item.stored_hash|slice:":32" }}...</span>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <span class="text-[8px] font-black text-slate-700 uppercase w-4">U</span>
-                                        <span
-                                            class="text-[10px] font-mono font-black text-red-500/80 bg-red-500/5 px-3 py-1 rounded-lg border border-red-500/10">{{            item.uploaded_hash|slice:":32" }}...</span>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% if result.mismatch_count > 50 %}
-            <div class="p-10 bg-white/[0.01] text-center border-t border-white/5">
-                <p class="text-[10px] text-slate-600 font-black uppercase tracking-[0.3em] italic">Showing top 50
-                    anomalies. Full forensic data available in export.</p>
-            </div>
-            {% endif %}
-        </div>
-        {% endif %}
-
     </div>
+
+    <!-- 2. Report Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12 print-container">
+
+        <!-- Left Column -->
+        <div class="lg:col-span-9 space-y-8">
+
+            <!-- Executive Summary -->
+            <div
+                class="bg-white rounded-[2rem] p-10 border border-slate-100 shadow-sm relative overflow-hidden report-card">
+                <div class="relative flex flex-col md:flex-row items-center gap-16">
+                    <div class="relative shrink-0">
+                        <div
+                            class="w-48 h-48 rounded-full border-[12px] border-slate-50 flex items-center justify-center bg-white">
+                            <div class="text-center">
+                                <span class="block text-5xl font-black text-black tracking-tighter">{{                   result.confidence_score }}<span class="text-xl opacity-20 ml-1">%</span></span>
+                                <span
+                                    class="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Confidence</span>
+                            </div>
+                        </div>
+                        <svg class="absolute top-0 left-0 w-48 h-48 -rotate-90">
+                            <circle cx="96" cy="96" r="84" fill="none" stroke="currentColor" stroke-width="12"
+                                stroke-linecap="round"
+                                class="{% if result.confidence_score >= 80 %}text-emerald-500{% elif result.confidence_score >= 50 %}text-amber-500{% else %}text-red-500{% endif %}"
+                                stroke-dasharray="527.78"
+                                style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(527.78 - (527.78 * var(--score) / 100)); transition: stroke-dashoffset 2s ease-out;" />
+                        </svg>
+                    </div>
+                    <div class="flex-1 space-y-6">
+                        <h2 class="text-4xl font-black text-black tracking-tight leading-tight">
+                            {% if result.result_type == 'NO_CHANGE' %}Integrity Verified{% elif result.result_type ==               'PARTIAL_MODIFICATION' %}Anomalies Detected{% else %}Critical Failure{% endif %}
+                        </h2>
+                        <p class="text-slate-500 text-lg leading-relaxed font-medium">
+                            {% if result.result_type == 'NO_CHANGE' %}The cryptographic signature of the uploaded sample
+                            aligns perfectly with the registered baseline. No structural or byte-level discrepancies
+                            were identified.{% else %}Heuristic analysis identified {{ result.mismatch_count }}
+                            structural discrepancies. The file has been flagged for potential unauthorized modification
+                            or data corruption.{% endif %}
+                        </p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-8 border-t border-slate-50">
+                            <div>
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Scan
+                                    Units</p>
+                                <p class="text-lg font-black text-black font-mono">{{ result.heatmap_data|length }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">
+                                    Mismatches</p>
+                                <p
+                                    class="text-lg font-black {% if result.mismatch_count > 0 %}text-red-500{% else %}text-emerald-500{% endif %} font-mono">
+                                    {{ result.mismatch_count }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Data
+                                    Volume</p>
+                                <p class="text-lg font-black text-black font-mono">{{ profile.file_size|filesizeformat                   }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2">Algorithm
+                                </p>
+                                <p class="text-lg font-black text-black font-mono">SHA-256</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visualization Row -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm report-card">
+                    <h3 class="text-[11px] font-black text-black uppercase tracking-[0.3em] mb-10">Entropy Profile</h3>
+                    <div class="h-56">
+                        <canvas id="entropyChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm report-card">
+                    <div class="flex justify-between items-center mb-10">
+                        <h3 class="text-[11px] font-black text-black uppercase tracking-[0.3em]">Header Inspector</h3>
+                        <span
+                            class="px-3 py-1 bg-slate-50 text-[9px] font-black rounded border border-slate-100 uppercase tracking-widest">{{               result.header_analysis.status }}</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="space-y-3">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Baseline Signature
+                            </p>
+                            <div
+                                class="bg-slate-50 rounded-xl p-4 font-mono text-[10px] text-slate-500 border border-slate-100 overflow-hidden whitespace-nowrap text-ellipsis">
+                                {{ result.header_analysis.stored }}
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Sample Signature
+                            </p>
+                            <div
+                                class="bg-slate-50 rounded-xl p-4 font-mono text-[10px] {% if 'MISMATCH' in result.header_analysis.status %}text-red-600{% else %}text-emerald-600{% endif %} border-l-4 {% if 'MISMATCH' in result.header_analysis.status %}border-red-500{% else %}border-emerald-500{% endif %} overflow-hidden whitespace-nowrap text-ellipsis">
+                                {{ result.header_analysis.uploaded }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="lg:col-span-3 space-y-8">
+            <div class="bg-black rounded-[2rem] p-8 text-white shadow-xl report-card">
+                <h3 class="text-[11px] font-black uppercase tracking-[0.3em] mb-8 opacity-50">Scan Metadata</h3>
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                        <span class="text-[10px] font-bold opacity-50">Block Size</span>
+                        <span class="text-xs font-mono font-bold">4096 B</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                        <span class="text-[10px] font-bold opacity-50">Heuristics</span>
+                        <span class="text-xs font-mono font-bold">ACTIVE</span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                        <span class="text-[10px] font-bold opacity-50">Entropy</span>
+                        <span class="text-xs font-mono font-bold">SHANNON</span>
+                    </div>
+                    <div class="pt-4">
+                        <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-3">Security Level
+                        </p>
+                        <div class="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                            <div class="h-full bg-white w-4/5"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm report-card">
+                <h3 class="text-[11px] font-black text-black uppercase tracking-[0.3em] mb-8">Threat Matrix</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
+                        <div class="flex-1">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Verified</p>
+                            <p class="text-sm font-black text-black font-mono">{{                 result.heatmap_data|length|add:result.mismatch_count|add:"-1" }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-2 h-2 rounded-full bg-amber-400"></div>
+                        <div class="flex-1">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Modified</p>
+                            <p class="text-sm font-black text-black font-mono">{{ result.mismatch_count }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                        <div class="flex-1">
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Critical</p>
+                            <p class="text-sm font-black text-black font-mono">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Forensic Block Map -->
+    <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm mb-12 overflow-hidden report-card">
+        <div
+            class="px-10 py-8 border-b border-slate-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-slate-50/30">
+            <div>
+                <h3 class="text-xs font-black text-black uppercase tracking-[0.4em] mb-2">Forensic Block Map</h3>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Spatial distribution of data
+                    integrity</p>
+            </div>
+            <div
+                class="flex flex-wrap items-center gap-6 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                <div class="flex items-center gap-2.5"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full"></span>
+                    Verified</div>
+                <div class="flex items-center gap-2.5"><span class="w-2.5 h-2.5 bg-amber-400 rounded-full"></span>
+                    Modified</div>
+                <div class="flex items-center gap-2.5"><span class="w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+                    Critical</div>
+            </div>
+        </div>
+        <div class="p-10">
+            <div class="grid grid-cols-12 sm:grid-cols-20 md:grid-cols-30 lg:grid-cols-40 xl:grid-cols-50 gap-2">
+                {% for block in result.heatmap_data %}
+                <div class="aspect-square {{ block.color }} rounded-sm cursor-help transition-all duration-300"
+                    title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
+                {% endfor %}
+            </div>
+            <div
+                class="mt-10 pt-8 border-t border-slate-50 flex justify-between items-center text-[10px] font-mono text-slate-400 uppercase tracking-[0.3em] font-black">
+                <span>Range: 0x0000 - {{ result.heatmap_data|length|add:"-1" }}</span>
+                <span>Segment: 4096 Bytes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Detailed Anomaly Log -->
+    {% if result.detailed_mismatches %}
+    <div class="bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden shadow-sm report-card">
+        <div class="px-10 py-8 border-b border-slate-50 flex justify-between items-center bg-slate-50/30">
+            <div>
+                <h3 class="text-xs font-black text-black uppercase tracking-[0.4em] mb-2">Detailed Anomaly Log</h3>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sequential event trace</p>
+            </div>
+            <span
+                class="text-[10px] font-black text-slate-400 uppercase tracking-widest bg-white px-5 py-2 rounded-lg border border-slate-100 shadow-sm">{{         result.mismatch_count }} Events</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50/50 text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">
+                        <th class="px-10 py-6">Block</th>
+                        <th class="px-10 py-6">Byte Range</th>
+                        <th class="px-10 py-6">Entropy Δ</th>
+                        <th class="px-10 py-6">Threat Analysis</th>
+                        <th class="px-10 py-6">Fingerprint</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    {% for item in result.detailed_mismatches %}
+                    <tr>
+                        <td class="px-10 py-8">
+                            <span
+                                class="px-3 py-1.5 bg-black text-white font-mono text-[11px] font-black rounded-lg">#{{                 item.chunk_index }}</span>
+                        </td>
+                        <td class="px-10 py-8 text-[11px] font-mono text-slate-500 font-bold">{{ item.byte_range }}</td>
+                        <td class="px-10 py-8">
+                            <span
+                                class="text-[11px] font-mono font-black {% if item.entropy_delta > 0 %}text-red-500{% elif item.entropy_delta < 0 %}text-blue-500{% else %}text-slate-400{% endif %}">
+                                {{ item.change_summary }}
+                            </span>
+                        </td>
+                        <td class="px-10 py-8">
+                            <div class="flex flex-col gap-2">
+                                <span
+                                    class="text-[10px] font-black uppercase tracking-widest {% if item.severity == 'critical' %}text-red-500{% elif item.severity == 'high' %}text-orange-500{% else %}text-amber-500{% endif %}">
+                                    {{ item.anomaly_type }}
+                                </span>
+                                <p class="text-[12px] text-slate-500 leading-tight font-medium max-w-sm opacity-60">{{                   item.threat_description }}</p>
+                            </div>
+                        </td>
+                        <td class="px-10 py-8">
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-[8px] font-black text-slate-300 uppercase w-4">S</span>
+                                    <span
+                                        class="text-[10px] font-mono font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded border border-emerald-100">{{                     item.stored_hash|slice:":24" }}...</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-[8px] font-black text-slate-300 uppercase w-4">U</span>
+                                    <span
+                                        class="text-[10px] font-mono font-black text-red-600 bg-red-50 px-3 py-1 rounded border border-red-100">{{                     item.uploaded_hash|slice:":24" }}...</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
 
 <!-- Chart.js Integration -->
@@ -406,7 +326,7 @@
                     {
                         label: 'Baseline',
                         data: storedEntropy,
-                        borderColor: 'rgba(16, 185, 129, 0.5)',
+                        borderColor: '#e2e8f0',
                         borderWidth: 2,
                         borderDash: [5, 5],
                         pointRadius: 0,
@@ -416,18 +336,10 @@
                     {
                         label: 'Current',
                         data: uploadedEntropy,
-                        borderColor: '#3b82f6',
-                        backgroundColor: (context) => {
-                            const chart = context.chart;
-                            const { ctx, chartArea } = chart;
-                            if (!chartArea) return null;
-                            const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
-                            gradient.addColorStop(0, 'rgba(59, 130, 246, 0)');
-                            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.1)');
-                            return gradient;
-                        },
+                        borderColor: '#000000',
+                        backgroundColor: 'rgba(0, 0, 0, 0.02)',
                         fill: true,
-                        borderWidth: 3,
+                        borderWidth: 2,
                         pointRadius: 0,
                         tension: 0.4,
                         order: 1
@@ -441,14 +353,15 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(10, 12, 16, 0.95)',
-                        backdropBlur: 12,
+                        backgroundColor: '#ffffff',
+                        titleColor: '#000000',
+                        bodyColor: '#64748b',
                         titleFont: { family: 'JetBrains Mono', size: 11, weight: '900' },
                         bodyFont: { family: 'JetBrains Mono', size: 11 },
-                        padding: 16,
-                        cornerRadius: 16,
+                        padding: 12,
+                        cornerRadius: 8,
                         displayColors: false,
-                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: '#e2e8f0',
                         borderWidth: 1
                     }
                 },
@@ -457,24 +370,20 @@
                     y: {
                         beginAtZero: true,
                         max: 8,
-                        grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
-                        ticks: { font: { family: 'JetBrains Mono', size: 10, weight: '700' }, color: '#475569', padding: 10 }
+                        grid: { color: '#f1f5f9', drawBorder: false },
+                        ticks: { font: { family: 'JetBrains Mono', size: 10, weight: '700' }, color: '#94a3b8', padding: 10 }
                     }
                 }
             }
         });
     });
-
-    function downloadPDF() {
-        window.print();
-    }
 </script>
 
 <style>
     @keyframes fade-in {
         from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(10px);
         }
 
         to {
@@ -484,67 +393,78 @@
     }
 
     .animate-in {
-        animation: fade-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     @media print {
         .no-print {
-            display: none;
+            display: none !important;
         }
 
         body {
             background: white !important;
             color: black !important;
+            padding: 0 !important;
+            margin: 0 !important;
         }
 
-        .min-h-screen {
-            background: white !important;
-        }
-
-        div[class*="max-w-"] {
+        .max-w-\[1400px\] {
             max-width: 100% !important;
             width: 100% !important;
             padding: 0 !important;
         }
 
-        div[class*="rounded-"] {
+        .report-card {
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: none !important;
             border-radius: 1rem !important;
+            break-inside: avoid;
+            margin-bottom: 2rem !important;
+        }
+
+        .bg-black {
+            background-color: white !important;
+            color: black !important;
+            border: 1px solid black !important;
+        }
+
+        .text-white {
+            color: black !important;
+        }
+
+        table {
             border: 1px solid #e2e8f0 !important;
         }
 
-        div[class*="shadow-"] {
-            box-shadow: none !important;
-        }
-
-        div[class*="bg-"] {
-            background: white !important;
+        th {
+            background-color: #f8fafc !important;
             color: black !important;
+            border-bottom: 1px solid #e2e8f0 !important;
         }
 
-        span[class*="text-"],
-        p[class*="text-"],
-        h1[class*="text-"],
-        h2[class*="text-"],
-        h3[class*="text-"] {
-            color: black !important;
+        /* Ensure charts and maps are visible but clean */
+        canvas {
+            max-width: 100% !important;
         }
-    }
 
-    .overflow-x-auto::-webkit-scrollbar {
-        height: 6px;
-    }
+        .grid {
+            gap: 1px !important;
+        }
 
-    .overflow-x-auto::-webkit-scrollbar-track {
-        background: transparent;
-    }
+        div[class*="bg-emerald-500"] {
+            background-color: #10b981 !important;
+            -webkit-print-color-adjust: exact;
+        }
 
-    .overflow-x-auto::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 10px;
-    }
+        div[class*="bg-amber-400"] {
+            background-color: #fbbf24 !important;
+            -webkit-print-color-adjust: exact;
+        }
 
-    .overflow-x-auto::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.1);
+        div[class*="bg-red-500"] {
+            background-color: #ef4444 !important;
+            -webkit-print-color-adjust: exact;
+        }
     }
 </style>
 {% endblock %}
