@@ -135,7 +135,7 @@
                             Delta</p>
                         <p class="text-4xl font-black text-white font-mono tracking-tighter">
                             {% if result.size_diff > 0 %}<span class="text-violet">+</span>{% elif result.size_diff < 0
-                                %}<span class="text-rose">-</span>{% endif %}{{ result.size_diff|abs|filesizeformat }}
+                                %><span class="text-rose">-</span>{% endif %}{{ result.size_diff_abs|filesizeformat }}
                         </p>
                     </div>
                     <div>

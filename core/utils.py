@@ -382,6 +382,7 @@ def compare_hashes(stored_profile, uploaded_file_data):
         'full_analysis': full_analysis[:200], # Limit to 200 for UI performance
         'mismatch_count': len(detailed_mismatches),
         'size_diff': size_change,
+        'size_diff_abs': abs(size_change),
         'full_entropy_profile': {
             'stored': stored_entropies,
             'uploaded': upload_entropies
