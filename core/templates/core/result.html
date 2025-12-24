@@ -239,29 +239,24 @@
                     {% for item in result.detailed_mismatches %}
                     <tr class="hover:bg-slate-50 transition-colors">
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 bg-slate-900 text-white font-mono text-[10px] font-bold rounded">#{{
-                                item.chunk_index }}</span>
+                            <span class="px-2 py-1 bg-slate-900 text-white font-mono text-[10px] font-bold rounded">#{{                 item.chunk_index }}</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-secondary">{{ item.byte_range }}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span
-                                class="text-xs font-mono font-bold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">{{
-                                item.change_summary }}</span>
+                                class="text-xs font-mono font-bold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">{{                 item.change_summary }}</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span
-                                class="text-xs font-bold {% if 'Critical' in item.anomaly_type %}text-red-600{% elif 'Appended' in item.anomaly_type %}text-purple-600{% else %}text-yellow-600{% endif %}">{{
-                                item.anomaly_type }}</span>
+                                class="text-xs font-bold {% if 'Critical' in item.anomaly_type %}text-red-600{% elif 'Appended' in item.anomaly_type %}text-purple-600{% else %}text-yellow-600{% endif %}">{{                 item.anomaly_type }}</span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex flex-col gap-1">
                                 <span
-                                    class="text-[9px] font-mono text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-100 w-fit">S:
-                                    {{ item.stored_hash|slice:":12" }}...</span>
+                                    class="text-[9px] font-mono text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-100 w-fit">S: {{ item.stored_hash|slice:":12" }}...</span>
                                 <span
-                                    class="text-[9px] font-mono text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 w-fit">U:
-                                    {{ item.uploaded_hash|slice:":12" }}...</span>
+                                    class="text-[9px] font-mono text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 w-fit">U: {{ item.uploaded_hash|slice:":12" }}...</span>
                             </div>
                         </td>
                     </tr>
