@@ -49,53 +49,53 @@
         <div class="lg:col-span-8 space-y-8">
 
             <!-- Executive Summary -->
-            <div class="vercel-card rounded-2xl p-10 relative overflow-hidden report-card">
-                <div class="relative flex flex-col md:flex-row items-center gap-12">
+            <div class="vercel-card rounded-2xl p-12 relative overflow-hidden report-card">
+                <div class="relative flex flex-col md:flex-row items-center gap-16">
                     <div class="relative shrink-0">
                         <div
-                            class="w-40 h-40 rounded-full border-8 border-white/5 flex items-center justify-center bg-black">
+                            class="w-44 h-44 rounded-full border-[10px] border-white/5 flex items-center justify-center bg-black">
                             <div class="text-center">
-                                <span class="block text-4xl font-black text-white tracking-tighter">{{                   result.confidence_score }}%</span>
+                                <span class="block text-5xl font-black text-white tracking-tighter">{{                   result.confidence_score }}%</span>
                                 <span
-                                    class="text-[8px] font-bold uppercase tracking-widest text-secondary">Confidence</span>
+                                    class="text-[9px] font-bold uppercase tracking-widest text-secondary">Confidence</span>
                             </div>
                         </div>
-                        <svg class="absolute top-0 left-0 w-40 h-40 -rotate-90">
-                            <circle cx="80" cy="80" r="72" fill="none" stroke="currentColor" stroke-width="8"
+                        <svg class="absolute top-0 left-0 w-44 h-44 -rotate-90">
+                            <circle cx="88" cy="88" r="78" fill="none" stroke="currentColor" stroke-width="10"
                                 stroke-linecap="round"
                                 class="{% if result.confidence_score >= 80 %}text-emerald-500{% elif result.confidence_score >= 50 %}text-amber-500{% else %}text-red-500{% endif %}"
-                                stroke-dasharray="452.39"
-                                style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(452.39 - (452.39 * var(--score) / 100)); transition: stroke-dashoffset 2s ease-out;" />
+                                stroke-dasharray="490.09"
+                                style="--score: {{ result.confidence_score }}; stroke-dashoffset: calc(490.09 - (490.09 * var(--score) / 100)); transition: stroke-dashoffset 2s ease-out;" />
                         </svg>
                     </div>
-                    <div class="flex-1 space-y-4">
-                        <h2 class="text-3xl font-bold text-white tracking-tight">
+                    <div class="flex-1 space-y-6">
+                        <h2 class="text-4xl font-black text-white tracking-tight">
                             {% if result.result_type == 'NO_CHANGE' %}Integrity Verified{% elif result.result_type ==               'PARTIAL_MODIFICATION' %}Anomalies Detected{% else %}Critical Failure{% endif %}
                         </h2>
-                        <p class="text-secondary text-base leading-relaxed font-medium">
+                        <p class="text-secondary text-lg leading-relaxed font-medium">
                             {% if result.result_type == 'NO_CHANGE' %}The cryptographic signature aligns perfectly with
                             the baseline. No discrepancies identified.{% else %}Heuristic analysis identified {{               result.mismatch_count }} structural discrepancies. The file has been flagged.{% endif %}
                         </p>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-white/10">
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 pt-8 border-t border-white/10">
                             <div>
-                                <p class="text-[8px] font-bold text-secondary uppercase tracking-widest mb-1">Units</p>
-                                <p class="text-sm font-bold text-white font-mono">{{ result.heatmap_data|length }}</p>
+                                <p class="text-[9px] font-bold text-secondary uppercase tracking-widest mb-2">Units</p>
+                                <p class="text-lg font-bold text-white font-mono">{{ result.heatmap_data|length }}</p>
                             </div>
                             <div>
-                                <p class="text-[8px] font-bold text-secondary uppercase tracking-widest mb-1">Mismatches
+                                <p class="text-[9px] font-bold text-secondary uppercase tracking-widest mb-2">Mismatches
                                 </p>
                                 <p
-                                    class="text-sm font-bold {% if result.mismatch_count > 0 %}text-red-500{% else %}text-emerald-500{% endif %} font-mono">
+                                    class="text-lg font-bold {% if result.mismatch_count > 0 %}text-red-500{% else %}text-emerald-500{% endif %} font-mono">
                                     {{ result.mismatch_count }}</p>
                             </div>
                             <div>
-                                <p class="text-[8px] font-bold text-secondary uppercase tracking-widest mb-1">Size</p>
-                                <p class="text-sm font-bold text-white font-mono">{{ profile.file_size|filesizeformat }}
+                                <p class="text-[9px] font-bold text-secondary uppercase tracking-widest mb-2">Size</p>
+                                <p class="text-lg font-bold text-white font-mono">{{ profile.file_size|filesizeformat }}
                                 </p>
                             </div>
                             <div>
-                                <p class="text-[8px] font-bold text-secondary uppercase tracking-widest mb-1">Algo</p>
-                                <p class="text-sm font-bold text-white font-mono">SHA256</p>
+                                <p class="text-[9px] font-bold text-secondary uppercase tracking-widest mb-2">Algo</p>
+                                <p class="text-lg font-bold text-white font-mono">SHA256</p>
                             </div>
                         </div>
                     </div>
