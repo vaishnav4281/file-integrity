@@ -105,7 +105,8 @@
                                     <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Scan
                                         Units</p>
                                     <p class="text-xl font-black text-white font-mono">{{ result.heatmap_data|length }}
-                                        <span class="text-[10px] opacity-30">BLKS</span></p>
+                                        <span class="text-[10px] opacity-30">BLKS</span>
+                                    </p>
                                 </div>
                                 <div>
                                     <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">
@@ -500,7 +501,7 @@
             background: white !important;
         }
 
-        .max-w-[1600px] {
+        div[class*="max-w-"] {
             max-width: 100% !important;
             width: 100% !important;
             padding: 0 !important;
@@ -515,19 +516,17 @@
             box-shadow: none !important;
         }
 
-        .bg-[#11141b],
-        .bg-[#0a0c10] {
+        div[class*="bg-"] {
             background: white !important;
             color: black !important;
         }
 
-        .text-white {
+        span[class*="text-"],
+        p[class*="text-"],
+        h1[class*="text-"],
+        h2[class*="text-"],
+        h3[class*="text-"] {
             color: black !important;
-        }
-
-        .text-slate-400,
-        .text-slate-500 {
-            color: #64748b !important;
         }
     }
 
