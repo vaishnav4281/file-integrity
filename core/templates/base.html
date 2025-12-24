@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Integrity Checker | Forensic Intelligence</title>
+    <title>Forensic.IO | Advanced File Integrity</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -12,15 +12,25 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#ffffff',
-                        dark: '#050505',
-                        surface: '#0a0a0a',
-                        'surface-light': '#111111',
-                        accent: '#ffffff',
+                        primary: '#3b82f6', // Blue 500
+                        success: '#10b981', // Emerald 500
+                        dark: '#020617', // Slate 950
+                        surface: '#0f172a', // Slate 900
+                        'surface-light': '#1e293b', // Slate 800
                     },
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -32,15 +42,29 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #050505;
-            color: #a1a1aa;
+            background-color: #020617;
+            color: #94a3b8;
         }
 
         .text-gradient {
-            background: linear-gradient(to right, #ffffff, #52525b);
+            background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        .bg-gradient-premium {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%);
+        }
+
+        .border-gradient {
+            border-image: linear-gradient(135deg, #3b82f6, #10b981) 1;
+        }
+
+        .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         ::-webkit-scrollbar {
@@ -48,27 +72,30 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: #050505;
+            background: #020617;
         }
 
         ::-webkit-scrollbar-thumb {
-            background: #18181b;
+            background: #1e293b;
             border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #ffffff;
-        }
-
-        .glass {
-            background: rgba(10, 10, 10, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: #3b82f6;
         }
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col selection:bg-white selection:text-black overflow-x-hidden">
+<body class="min-h-screen flex flex-col selection:bg-primary/30 selection:text-white overflow-x-hidden">
+
+    <!-- Ambient Glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-success/10 rounded-full blur-[120px] animate-pulse-slow"
+            style="animation-delay: -2s;"></div>
+    </div>
 
     <!-- Navbar -->
     <nav class="sticky top-0 z-50 glass border-b border-white/5">
@@ -76,8 +103,8 @@
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center space-x-4 group">
                     <div
-                        class="w-10 h-10 rounded-lg bg-white text-black flex items-center justify-center shadow-2xl group-hover:scale-105 transition-transform duration-500">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-success text-white flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                                 d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
                             </path>
@@ -85,12 +112,18 @@
                     </div>
                     <div>
                         <a href="{% url 'index' %}"
-                            class="text-lg font-black tracking-tighter text-white leading-tight block">
-                            FORENSIC<span class="opacity-30">.</span>IO
+                            class="text-xl font-black tracking-tighter text-white leading-tight block">
+                            FORENSIC<span class="text-primary">.</span>IO
                         </a>
-                        <span class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em]">Integrity
+                        <span class="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em]">Integrity
                             Intelligence</span>
                     </div>
+                </div>
+
+                <div
+                    class="hidden md:flex items-center space-x-2 px-4 py-2 bg-white/5 rounded-full border border-white/10">
+                    <span class="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+                    <span class="text-[10px] font-black uppercase tracking-widest text-white">System Online</span>
                 </div>
             </div>
         </div>
@@ -102,8 +135,8 @@
         <div class="max-w-4xl mx-auto px-6 mt-8">
             {% for message in messages %}
             <div
-                class="p-5 rounded-xl glass border-l-4 shadow-2xl mb-6 animate-in fade-in slide-in-from-top-4 duration-500
-                {% if message.tags == 'error' %}border-l-red-500 text-red-400{% else %}border-l-white text-white{% endif %}">
+                class="p-5 rounded-2xl glass border-l-4 shadow-2xl mb-6 animate-in fade-in slide-in-from-top-4 duration-500
+                {% if message.tags == 'error' %}border-l-red-500 text-red-400{% else %}border-l-primary text-primary{% endif %}">
                 <div class="flex items-center">
                     {% if message.tags == 'error' %}
                     <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -127,13 +160,14 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-white/5 mt-24 bg-black relative z-10">
+    <footer class="border-t border-white/5 mt-24 bg-dark/50 backdrop-blur-md relative z-10">
         <div class="max-w-7xl mx-auto py-12 px-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-8">
-                <div class="flex items-center space-x-4">
-                    <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
-                        &copy; 2025 Forensic Intelligence Systems.
-                    </p>
+                <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">
+                    &copy; 2025 Forensic Intelligence Systems.
+                </p>
+                <div class="flex space-x-6">
+                    <div class="h-1 w-12 bg-gradient-to-r from-primary to-success rounded-full opacity-20"></div>
                 </div>
             </div>
         </div>

@@ -5,11 +5,16 @@
 
     <!-- Hero Section -->
     <div class="text-center mb-32 relative z-10 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+        <div class="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 rounded-full border border-primary/20 mb-8">
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            <span class="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Advanced Forensic
+                Intelligence</span>
+        </div>
         <h1 class="text-6xl md:text-8xl font-black tracking-tight text-white mb-8 leading-[0.9]">
             Trust Only What You <br />
             <span class="text-gradient">Can Verify.</span>
         </h1>
-        <p class="text-xl text-zinc-500 max-w-2xl mx-auto leading-relaxed font-medium">
+        <p class="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed font-medium opacity-80">
             Secure, privacy-preserving file forensics. Detect tampering with cryptographic precision using 4KB granular
             analysis and Shannon entropy profiling.
         </p>
@@ -22,32 +27,36 @@
         <div
             class="glass rounded-[3rem] p-12 hover:bg-white/[0.02] transition-all duration-500 group animate-in fade-in slide-in-from-left-10 duration-1000">
             <div
-                class="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500 shadow-2xl shadow-white/10">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-primary/10 transition-colors duration-700">
+            </div>
+
+            <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-blue-600 text-white flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500 shadow-xl shadow-primary/20">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
 
             <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Register Baseline</h2>
-            <p class="text-zinc-500 mb-10 leading-relaxed font-medium">Establish a cryptographic "Golden Record". We
-                index the digital DNA, never the file itself.</p>
+            <p class="text-slate-400 mb-10 leading-relaxed font-medium opacity-70">Establish a cryptographic "Golden
+                Record". We index the digital DNA, never the file itself.</p>
 
             <form action="{% url 'register' %}" method="post" enctype="multipart/form-data" class="space-y-6">
                 {% csrf_token %}
-                <div class="relative">
-                    <input type="file" name="file" required class="block w-full text-sm text-zinc-400
+                <div class="relative group/input">
+                    <input type="file" name="file" required class="block w-full text-sm text-slate-400
                         file:mr-6 file:py-4 file:px-8
-                        file:rounded-xl file:border-0
+                        file:rounded-2xl file:border-0
                         file:text-xs file:font-black file:uppercase file:tracking-widest
                         file:bg-white/5 file:text-white
                         file:border file:border-white/10
                         hover:file:bg-white/10 cursor-pointer
-                        focus:outline-none bg-white/[0.02] rounded-xl border border-white/5
+                        focus:outline-none bg-white/[0.02] rounded-2xl border border-white/5
                     " />
                 </div>
                 <button type="submit"
-                    class="w-full py-5 px-8 bg-white text-black rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-2xl shadow-white/5">
+                    class="w-full py-5 px-8 bg-gradient-to-r from-primary to-blue-600 text-white rounded-2xl shadow-2xl shadow-primary/20 font-black text-xs uppercase tracking-[0.2em] hover:brightness-110 transition-all active:scale-[0.98]">
                     Generate Forensic Profile
                 </button>
             </form>
@@ -57,8 +66,12 @@
         <div
             class="glass rounded-[3rem] p-12 hover:bg-white/[0.02] transition-all duration-500 group animate-in fade-in slide-in-from-right-10 duration-1000">
             <div
-                class="w-14 h-14 rounded-2xl bg-zinc-800 text-white flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500 border border-white/10">
-                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                class="absolute top-0 right-0 w-64 h-64 bg-success/5 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-success/10 transition-colors duration-700">
+            </div>
+
+            <div
+                class="w-16 h-16 rounded-2xl bg-gradient-to-br from-success to-emerald-600 text-white flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500 shadow-xl shadow-success/20">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
                     </path>
@@ -66,24 +79,24 @@
             </div>
 
             <h2 class="text-3xl font-black text-white mb-4 tracking-tight">Verify Integrity</h2>
-            <p class="text-zinc-500 mb-10 leading-relaxed font-medium">Analyze a suspect file against the baseline.
-                Identify byte-level mutations and bit-rot.</p>
+            <p class="text-slate-400 mb-10 leading-relaxed font-medium opacity-70">Analyze a suspect file against the
+                baseline. Identify byte-level mutations and bit-rot.</p>
 
             <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data" class="space-y-6">
                 {% csrf_token %}
-                <div class="relative">
-                    <input type="file" name="file" required class="block w-full text-sm text-zinc-400
+                <div class="relative group/input">
+                    <input type="file" name="file" required class="block w-full text-sm text-slate-400
                         file:mr-6 file:py-4 file:px-8
-                        file:rounded-xl file:border-0
+                        file:rounded-2xl file:border-0
                         file:text-xs file:font-black file:uppercase file:tracking-widest
                         file:bg-white/5 file:text-white
                         file:border file:border-white/10
                         hover:file:bg-white/10 cursor-pointer
-                        focus:outline-none bg-white/[0.02] rounded-xl border border-white/5
+                        focus:outline-none bg-white/[0.02] rounded-2xl border border-white/5
                     " />
                 </div>
                 <button type="submit"
-                    class="w-full py-5 px-8 bg-white text-black rounded-xl font-black text-xs uppercase tracking-[0.2em] hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-2xl shadow-white/5">
+                    class="w-full py-5 px-8 bg-gradient-to-r from-success to-emerald-600 text-white rounded-2xl shadow-2xl shadow-success/20 font-black text-xs uppercase tracking-[0.2em] hover:brightness-110 transition-all active:scale-[0.98]">
                     Initiate Forensic Scan
                 </button>
             </form>
@@ -96,22 +109,22 @@
     <div
         class="mt-32 max-w-3xl mx-auto glass rounded-[3rem] p-12 shadow-2xl flex flex-col items-center text-center animate-in zoom-in duration-700">
         <div
-            class="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-8 mx-auto">
-            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="w-20 h-20 rounded-full bg-success/10 border border-success/20 flex items-center justify-center mb-8 mx-auto">
+            <svg class="h-10 w-10 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
         <h3 class="text-4xl font-black text-white mb-4 tracking-tight">Profile Secured</h3>
-        <p class="text-zinc-500 mb-10 text-lg font-medium">
+        <p class="text-slate-400 mb-10 text-lg font-medium opacity-80">
             The profile for <span
                 class="text-white font-black px-2 py-1 bg-white/5 rounded-lg border border-white/10">{{         profile.file_name }}</span> has been successfully indexed.
         </p>
 
-        <div class="w-full bg-black rounded-2xl p-6 border border-white/5 shadow-inner">
-            <span class="text-[10px] uppercase tracking-[0.3em] text-zinc-600 font-black block mb-4">SHA-256 Master
+        <div class="w-full bg-black/50 rounded-2xl p-6 border border-white/5 shadow-inner group">
+            <span class="text-[10px] uppercase tracking-[0.3em] text-slate-600 font-black block mb-4">SHA-256 Master
                 Fingerprint</span>
             <code
-                class="font-mono text-xs text-white break-all select-all block leading-relaxed">{{ profile.full_hash }}</code>
+                class="font-mono text-xs text-success break-all select-all block leading-relaxed group-hover:text-white transition-colors">{{ profile.full_hash }}</code>
         </div>
     </div>
     {% endif %}
