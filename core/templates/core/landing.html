@@ -1,133 +1,214 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-7xl mx-auto px-8 py-32 relative">
+<div class="max-w-7xl mx-auto px-6 py-24">
 
     <!-- Hero Section -->
-    <div class="text-center mb-48 animate-reveal">
-        <h1 class="text-7xl md:text-[11rem] font-black tracking-tighter text-white mb-12 leading-[0.75] text-glow">
-            Trust Only <br class="hidden md:block" />
-            What You <br class="hidden md:block" />
-            Can <span class="text-secondary opacity-30">Verify.</span>
+    <div class="text-center mb-32 relative">
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 blur-[120px] rounded-full -z-10">
+        </div>
+
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/10 mb-12 reveal"
+            style="animation-delay: 0.1s;">
+            <span class="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Protocol v4.0.2</span>
+            <div class="w-1 h-1 rounded-full bg-white/20"></div>
+            <span class="text-[9px] font-black tracking-[0.4em] text-secondary uppercase">Quantum-Safe</span>
+        </div>
+
+        <h1 class="text-6xl md:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.85] reveal"
+            style="animation-delay: 0.2s;">
+            DECODE THE <br />
+            <span class="text-gradient">UNSEEN.</span>
         </h1>
-        <p class="text-xl md:text-2xl text-secondary max-w-3xl mx-auto leading-relaxed font-medium mt-16 opacity-70">
-            Secure, privacy-preserving file forensics. Detect tampering with cryptographic precision using 4KB granular
-            analysis and Shannon entropy profiling.
+
+        <p class="text-lg md:text-xl text-secondary max-w-2xl mx-auto leading-relaxed font-medium mb-16 reveal opacity-80"
+            style="animation-delay: 0.3s;">
+            Advanced cryptographic forensics for the modern infrastructure.
+            Detect byte-level anomalies with sub-atomic precision.
         </p>
 
-        <div class="mt-24 flex justify-center">
-            <div class="w-px h-32 bg-gradient-to-b from-white/30 via-violet-500/20 to-transparent"></div>
+        <div class="flex flex-wrap justify-center gap-6 reveal" style="animation-delay: 0.4s;">
+            <div class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+                <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">Entropy Analysis</span>
+            </div>
+            <div class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+                <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">SHA-256 Granular</span>
+            </div>
+            <div class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+                <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">Heuristic Threat
+                    Intel</span>
+            </div>
         </div>
     </div>
 
-    <!-- Actions Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+    <!-- Main Actions -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-48">
 
-        <!-- Register Card -->
-        <div class="premium-card rounded-[3rem] p-16 animate-reveal" style="animation-delay: 0.1s;">
+        <!-- Register -->
+        <div class="glass-card rounded-[2.5rem] p-12 relative overflow-hidden group reveal"
+            style="animation-delay: 0.5s;">
             <div
-                class="w-16 h-16 bg-white text-black flex items-center justify-center rounded-2xl mb-12 shadow-[0_0_40px_rgba(255,255,255,0.15)] relative overflow-hidden group">
-                <div
-                    class="absolute inset-0 bg-gradient-to-br from-violet-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-                <svg class="w-8 h-8 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+                class="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-3xl rounded-full -mr-32 -mt-32 transition-all duration-700 group-hover:bg-accent/10">
             </div>
 
-            <h2 class="text-4xl font-bold text-white mb-6 tracking-tight">Register Baseline</h2>
-            <p class="text-secondary mb-12 text-lg leading-relaxed font-medium">Establish a cryptographic "Golden
-                Record". We index the digital DNA, never the file itself.</p>
+            <div class="flex items-start justify-between mb-12">
+                <div
+                    class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-white/10 group-hover:scale-110 transition-transform duration-500">
+                    <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40">Module
+                    01</span>
+            </div>
 
-            <form action="{% url 'register' %}" method="post" enctype="multipart/form-data" class="space-y-8">
+            <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Baseline Registry</h2>
+            <p class="text-secondary mb-10 text-base leading-relaxed font-medium opacity-60">
+                Establish a cryptographic immutable record of your file's structural integrity.
+            </p>
+
+            <form action="{% url 'register' %}" method="post" enctype="multipart/form-data"
+                class="space-y-6 relative z-10">
                 {% csrf_token %}
-                <div class="group relative">
-                    <input type="file" name="file" required class="block w-full text-sm text-secondary
-                        file:mr-8 file:py-4 file:px-10
+                <div class="relative group/input">
+                    <input type="file" name="file" required class="block w-full text-xs text-secondary
+                        file:mr-6 file:py-3 file:px-8
                         file:rounded-xl file:border-0
-                        file:text-xs file:font-bold file:uppercase file:tracking-widest
+                        file:text-[10px] file:font-black file:uppercase file:tracking-widest
                         file:bg-white file:text-black
                         hover:file:bg-zinc-200 file:transition-all
                         focus:outline-none bg-white/[0.02] rounded-2xl border border-white/5 p-3
-                        group-hover:border-violet-500/30 transition-all duration-500
+                        group-hover/input:border-white/20 transition-all duration-500
                     " />
                 </div>
                 <button type="submit"
-                    class="w-full py-6 px-10 bg-white text-black rounded-2xl font-bold text-sm uppercase tracking-[0.3em] hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-2xl relative overflow-hidden group/btn">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-r from-violet-500/10 to-blue-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-700">
-                    </div>
-                    <span class="relative z-10">Generate Forensic Profile</span>
+                    class="btn-premium w-full py-5 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-zinc-200 active:scale-[0.98] shadow-2xl">
+                    Generate Forensic DNA
                 </button>
             </form>
         </div>
 
-        <!-- Verify Card -->
-        <div class="premium-card rounded-[3rem] p-16 animate-reveal" style="animation-delay: 0.2s;">
+        <!-- Verify -->
+        <div class="glass-card rounded-[2.5rem] p-12 relative overflow-hidden group reveal"
+            style="animation-delay: 0.6s;">
             <div
-                class="w-16 h-16 bg-white/5 text-white flex items-center justify-center rounded-2xl mb-12 border border-white/10 shadow-[0_0_40px_rgba(255,255,255,0.05)] relative overflow-hidden group">
-                <div
-                    class="absolute inset-0 bg-gradient-to-br from-rose-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                </div>
-                <svg class="w-8 h-8 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
-                    </path>
-                </svg>
+                class="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 blur-3xl rounded-full -mr-32 -mt-32 transition-all duration-700 group-hover:bg-rose-500/10">
             </div>
 
-            <h2 class="text-4xl font-bold text-white mb-6 tracking-tight">Verify Integrity</h2>
-            <p class="text-secondary mb-12 text-lg leading-relaxed font-medium">Analyze a suspect file against the
-                baseline. Identify byte-level mutations and bit-rot.</p>
+            <div class="flex items-start justify-between mb-12">
+                <div
+                    class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <span class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40">Module
+                    02</span>
+            </div>
 
-            <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data" class="space-y-8">
+            <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Integrity Audit</h2>
+            <p class="text-secondary mb-10 text-base leading-relaxed font-medium opacity-60">
+                Compare a suspect sample against the registry to detect unauthorized mutations.
+            </p>
+
+            <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data"
+                class="space-y-6 relative z-10">
                 {% csrf_token %}
-                <div class="group relative">
-                    <input type="file" name="file" required class="block w-full text-sm text-secondary
-                        file:mr-8 file:py-4 file:px-10
+                <div class="relative group/input">
+                    <input type="file" name="file" required class="block w-full text-xs text-secondary
+                        file:mr-6 file:py-3 file:px-8
                         file:rounded-xl file:border-0
-                        file:text-xs file:font-bold file:uppercase file:tracking-widest
+                        file:text-[10px] file:font-black file:uppercase file:tracking-widest
                         file:bg-white file:text-black
                         hover:file:bg-zinc-200 file:transition-all
                         focus:outline-none bg-white/[0.02] rounded-2xl border border-white/5 p-3
-                        group-hover:border-rose-500/30 transition-all duration-500
+                        group-hover/input:border-white/20 transition-all duration-500
                     " />
                 </div>
                 <button type="submit"
-                    class="w-full py-6 px-10 bg-white text-black rounded-2xl font-bold text-sm uppercase tracking-[0.3em] hover:bg-zinc-200 transition-all active:scale-[0.98] shadow-2xl relative overflow-hidden group/btn">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-r from-rose-500/10 to-violet-500/10 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-700">
-                    </div>
-                    <span class="relative z-10">Initiate Forensic Scan</span>
+                    class="btn-premium w-full py-5 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-zinc-200 active:scale-[0.98] shadow-2xl">
+                    Initiate Forensic Scan
                 </button>
             </form>
         </div>
+    </div>
 
+    <!-- Features Section (Rich Content) -->
+    <div class="mb-48">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl md:text-6xl font-black text-white tracking-tighter mb-6">ENGINEERED FOR <br /><span
+                    class="text-gradient">PRECISION.</span></h2>
+            <p class="text-secondary max-w-xl mx-auto font-medium opacity-60">Our multi-layered analysis engine provides
+                unprecedented visibility into file integrity.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div
+                class="glass-card p-10 rounded-[2rem] border border-white/5 hover:border-accent/20 transition-all duration-500">
+                <div
+                    class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-8 border border-accent/20">
+                    <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-black text-white mb-4 tracking-tight">4KB Granularity</h3>
+                <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">We don't just check the file;
+                    we dissect it into 4KB blocks for surgical precision in detecting bit-rot and tampering.</p>
+            </div>
+
+            <div
+                class="glass-card p-10 rounded-[2rem] border border-white/5 hover:border-violet-500/20 transition-all duration-500">
+                <div
+                    class="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center mb-8 border border-violet-500/20">
+                    <svg class="w-6 h-6 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-black text-white mb-4 tracking-tight">Shannon Entropy</h3>
+                <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">Advanced entropy profiling
+                    detects hidden encryption or compressed payloads, common signatures of ransomware.</p>
+            </div>
+
+            <div
+                class="glass-card p-10 rounded-[2rem] border border-white/5 hover:border-rose-500/20 transition-all duration-500">
+                <div
+                    class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center mb-8 border border-rose-500/20">
+                    <svg class="w-6 h-6 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="text-xl font-black text-white mb-4 tracking-tight">Heuristic Decision</h3>
+                <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">Our proprietary decision matrix
+                    classifies anomalies into Bit-Rot, Trojan Injection, or Ransomware with high confidence.</p>
+            </div>
+        </div>
     </div>
 
     <!-- Success Feedback -->
     {% if action == 'registered' and success %}
-    <div class="mt-48 max-w-3xl mx-auto premium-card rounded-[3.5rem] p-20 text-center animate-reveal">
+    <div class="max-w-3xl mx-auto glass-card rounded-[3rem] p-16 text-center reveal">
         <div
-            class="w-24 h-24 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-12 mx-auto shadow-[0_0_50px_rgba(16,185,129,0.15)]">
-            <svg class="h-12 w-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="w-20 h-20 rounded-full bg-success/10 border border-success/20 flex items-center justify-center mb-10 mx-auto">
+            <svg class="h-10 w-10 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
-        <h3 class="text-5xl font-bold text-white mb-6 tracking-tight">Profile Secured</h3>
-        <p class="text-secondary mb-16 text-xl font-medium">
-            The profile for <span class="text-white font-bold">{{ profile.file_name }}</span> has been successfully
-            indexed.
+        <h3 class="text-4xl font-black text-white mb-4 tracking-tight">DNA Indexed</h3>
+        <p class="text-secondary mb-12 text-lg font-medium opacity-60">
+            Cryptographic baseline for <span class="text-white font-bold">{{ profile.file_name }}</span> is now active.
         </p>
 
-        <div class="bg-white/[0.02] rounded-[2rem] p-10 border border-white/10 shadow-inner relative overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent"></div>
-            <span
-                class="text-[10px] uppercase tracking-[0.5em] text-secondary font-bold block mb-6 relative z-10">Master
+        <div class="bg-black/50 rounded-2xl p-8 border border-white/5 relative overflow-hidden group/code">
+            <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
+            <span class="text-[9px] uppercase tracking-[0.5em] text-secondary font-black block mb-4 opacity-40">Master
                 Fingerprint</span>
             <code
-                class="font-mono text-sm text-white break-all select-all block leading-relaxed relative z-10">{{ profile.full_hash }}</code>
+                class="font-mono text-xs text-white break-all select-all block leading-relaxed tracking-widest">{{ profile.full_hash }}</code>
         </div>
     </div>
     {% endif %}
