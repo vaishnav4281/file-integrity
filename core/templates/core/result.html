@@ -16,61 +16,86 @@
                     </svg>
                     Back to Dashboard
                 </a>
-                <h1 class="text-4xl font-bold text-primary tracking-tight">
-                    Forensic Report: <span class="font-light text-secondary">{{ file_name }}</span>
-                </h1>
-                <div class="flex items-center mt-3 text-sm text-slate-400 font-mono">
-                    <span class="mr-4">ID: {{ result.header_analysis.stored|slice:":8" }}...</span>
-                    <span>{% now "F j, Y, g:i A" %}</span>
+                <div class="flex items-center gap-3 mb-2">
+                    <span
+                        class="px-2 py-1 bg-slate-900 text-white text-[10px] font-bold tracking-widest uppercase rounded">Forensic
+                        Report</span>
+                    <span class="text-slate-300">/</span>
+                    <span class="text-sm font-mono text-slate-400">ID: {{ result.header_analysis.stored|slice:":12"
+                        }}</span>
                 </div>
+                <h1 class="text-4xl font-extrabold text-primary tracking-tight">
+                    {{ file_name }}
+                </h1>
+                <p class="text-slate-400 mt-2 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Generated on {% now "F j, Y, g:i A" %}
+                </p>
             </div>
 
-            <div class="flex items-center">
+            <div class="flex items-center gap-3">
+                <button onclick="window.print()"
+                    class="flex items-center space-x-2 px-4 py-2 bg-white border border-border text-primary rounded-xl hover:bg-slate-50 transition-all shadow-sm font-semibold text-sm">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z">
+                        </path>
+                    </svg>
+                    <span>Print</span>
+                </button>
                 <button onclick="downloadPDF()"
-                    class="flex items-center space-x-2 px-6 py-3 bg-primary text-white rounded-xl hover:bg-slate-800 transition-all shadow-soft hover:shadow-lg font-semibold text-sm">
+                    class="flex items-center space-x-2 px-6 py-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all shadow-soft hover:shadow-lg font-semibold text-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                         </path>
                     </svg>
-                    <span>Export PDF Report</span>
+                    <span>Export PDF</span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Integrity Status Card -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-12">
 
         <!-- Status Indicator -->
-        <div
-            class="lg:col-span-2 bg-surface rounded-2xl p-8 border border-border shadow-card flex items-center justify-between">
-            <div class="flex items-center">
+        <div class="lg:col-span-3 bg-surface rounded-2xl p-8 border border-border shadow-card relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-slate-50 rounded-full -mr-32 -mt-32 opacity-50"></div>
+
+            <div class="relative flex flex-col md:flex-row items-center gap-8">
                 <div
-                    class="h-24 w-24 rounded-full flex items-center justify-center mr-8 shadow-sm border-4 
+                    class="h-32 w-32 rounded-3xl flex items-center justify-center shrink-0 shadow-inner border-2 
                     {% if result.result_type == 'NO_CHANGE' %}bg-green-50 border-green-100 text-green-600{% elif result.result_type == 'PARTIAL_MODIFICATION' %}bg-yellow-50 border-yellow-100 text-yellow-600{% else %}bg-red-50 border-red-100 text-red-600{% endif %}">
                     {% if result.result_type == 'NO_CHANGE' %}
-                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     {% elif result.result_type == 'PARTIAL_MODIFICATION' %}
-                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
                         </path>
                     </svg>
                     {% else %}
-                    <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-14 w-14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     {% endif %}
                 </div>
-                <div>
-                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">Analysis
-                        Result</span>
-                    <h2 class="text-3xl font-bold text-primary mb-2">
+
+                <div class="flex-1 text-center md:text-left">
+                    <div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+                        <span
+                            class="w-2 h-2 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-green-500{% elif result.result_type == 'PARTIAL_MODIFICATION' %}bg-yellow-500{% else %}bg-red-500{% endif %} animate-pulse"></span>
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Analysis Verdict</span>
+                    </div>
+                    <h2 class="text-4xl font-black text-primary mb-3">
                         {% if result.result_type == 'NO_CHANGE' %}
                         Integrity Verified
                         {% elif result.result_type == 'PARTIAL_MODIFICATION' %}
@@ -79,570 +104,661 @@
                         Critical Mismatch
                         {% endif %}
                     </h2>
-                    <p class="text-secondary max-w-md">
+                    <p class="text-secondary text-lg leading-relaxed max-w-2xl">
                         {% if result.result_type == 'NO_CHANGE' %}
-                        The uploaded file is a bit-perfect match for the registered cryptographic profile.
+                        The uploaded file is a bit-perfect match for the registered cryptographic profile. No
+                        unauthorized changes were detected.
                         {% elif result.result_type == 'PARTIAL_MODIFICATION' %}
-                        Alterations detected in specific 4KB blocks. The majority of the file structure remains intact.
+                        Alterations detected in specific 4KB blocks. The majority of the file structure remains intact,
+                        but specific segments have been modified.
                         {% else %}
-                        The file is fundamentally different from the original record.
+                        The file is fundamentally different from the original record. This suggests a complete
+                        replacement or severe corruption.
                         {% endif %}
                     </p>
                 </div>
             </div>
-
-            <div class="hidden md:block pl-12 border-l border-border">
-                <div
-                    class="text-6xl font-bold tracking-tighter {% if result.confidence_score == 100 %}text-success{% elif result.confidence_score > 50 %}text-warning{% else %}text-danger{% endif %} animate-pulse-once">
-                    {{ result.confidence_score }}%
-                </div>
-                <div class="text-sm font-semibold text-slate-400 mt-2">CONFIDENCE</div>
-            </div>
         </div>
 
-        <!-- Meta Stats -->
-        <div class="bg-surface rounded-2xl p-8 border border-border shadow-card flex flex-col justify-center gap-6">
-            <div>
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">File Size</span>
-                <div class="flex items-baseline">
-                    <span class="text-xl font-mono font-medium text-primary">{{ profile.file_size }}</span>
-                    <span class="ml-1 text-sm text-secondary">bytes</span>
-                    {% if result.size_diff != 0 %}
-                    <span
-                        class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold {% if result.size_diff > 0 %}bg-red-50 text-red-600{% else %}bg-orange-50 text-orange-600{% endif %}">
-                        {% if result.size_diff > 0 %}+{% endif %}{{ result.size_diff }} B
-                    </span>
-                    {% endif %}
-                </div>
-            </div>
-            <div>
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">Analysis
-                    Resolution</span>
-                <div class="flex items-baseline">
-                    <span class="text-xl font-mono font-medium text-primary">4KB</span>
-                    <span class="ml-1 text-sm text-secondary">blocks</span>
-                </div>
-            </div>
-            <div>
-                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 block">Magic Header</span>
-                <div class="flex items-center flex-wrap gap-2">
-                    <span
-                        class="inline-block font-mono text-sm font-semibold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 tracking-wide break-all">
-                        {{ result.header_analysis.uploaded|slice:":8" }}..
-                    </span>
-                    <span
-                        class="text-[10px] font-bold text-slate-400 uppercase tracking-wider border border-slate-100 px-1.5 py-0.5 rounded">HEX</span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Forensic Overview Dashboard -->
-    <div class="bg-surface rounded-2xl border border-border shadow-card mb-8 overflow-hidden">
-        <div class="p-6 border-b border-border bg-gradient-to-r from-slate-50 to-white">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h3 class="text-xl font-bold text-primary tracking-tight flex items-center gap-2">
-                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                        Forensic Overview
-                    </h3>
-                    <p class="text-sm text-secondary">Block-level integrity mapping and analysis</p>
-                </div>
-                <div class="flex flex-wrap gap-3">
-                    <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
-                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Integrity</div>
-                        <div
-                            class="text-lg font-mono font-bold {% if result.confidence_score >= 80 %}text-green-600{% elif result.confidence_score >= 50 %}text-yellow-600{% else %}text-red-600{% endif %}">
-                            {{ result.confidence_score }}%</div>
-                    </div>
-                    <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
-                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Anomalies</div>
-                        <div class="text-lg font-mono font-bold text-red-600">{{ result.mismatch_count }}</div>
-                    </div>
-                    <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
-                        <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Blocks</div>
-                        <div class="text-lg font-mono font-bold text-primary">{{ result.heatmap_data|length }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-6">
-            <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
-                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Forensic Block Map</h4>
-                <div class="flex flex-wrap gap-3 text-[10px] font-bold">
-                    <div
-                        class="flex items-center gap-1.5 px-2 py-1 bg-green-50 text-green-700 rounded-md border border-green-100">
-                        <span class="w-2 h-2 bg-green-500 rounded-full"></span> Verified
-                    </div>
-                    <div
-                        class="flex items-center gap-1.5 px-2 py-1 bg-yellow-50 text-yellow-700 rounded-md border border-yellow-100">
-                        <span class="w-2 h-2 bg-yellow-400 rounded-full"></span> Modified
-                    </div>
-                    <div
-                        class="flex items-center gap-1.5 px-2 py-1 bg-red-50 text-red-700 rounded-md border border-red-100">
-                        <span class="w-2 h-2 bg-red-500 rounded-full"></span> Critical
-                    </div>
-                    <div
-                        class="flex items-center gap-1.5 px-2 py-1 bg-purple-50 text-purple-700 rounded-md border border-purple-100">
-                        <span class="w-2 h-2 bg-purple-500 rounded-full"></span> Appended
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-10 sm:grid-cols-15 md:grid-cols-20 lg:grid-cols-30 xl:grid-cols-40 gap-1.5">
-                {% for block in result.heatmap_data %}
-                <div class="aspect-square {{ block.color }} rounded-sm cursor-help transition-all hover:scale-125 hover:ring-2 hover:ring-slate-900 hover:z-10"
-                    title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
-                {% endfor %}
-            </div>
-
+        <!-- Confidence Score -->
+        <div
+            class="bg-slate-900 rounded-2xl p-8 border border-slate-800 shadow-card flex flex-col items-center justify-center text-center">
+            <div class="text-xs font-bold text-slate-500 uppercase tracking-[0.2em] mb-4">Confidence Score</div>
             <div
-                class="mt-6 pt-4 border-t border-border flex justify-between items-center text-[10px] text-secondary font-mono">
-                <span>SCAN_RANGE: 0x0000 - {{ result.heatmap_data|length|add:"-1" }}</span>
-                <span>BLOCK_SIZE: 4096 BYTES</span>
+                class="text-7xl font-black tracking-tighter {% if result.confidence_score >= 80 %}text-green-400{% elif result.confidence_score >= 50 %}text-yellow-400{% else %}text-red-400{% endif %}">
+                {{ result.confidence_score }}<span class="text-3xl font-light opacity-50">%</span>
+            </div>
+            <div class="mt-4 w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                <div class="h-full {% if result.confidence_score >= 80 %}bg-green-400{% elif result.confidence_score >= 50 %}bg-yellow-400{% else %}bg-red-400{% endif %}"
+                    style="--width: {{ result.confidence_score }}%; width: var(--width);"></div>
+            </div>
+            <p class="text-[10px] text-slate-500 mt-4 font-mono uppercase">Cryptographic Certainty</p>
+        </div>
+    </div>
+
+    <!-- Forensic Summary Section -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <div class="bg-white p-6 rounded-2xl border border-border shadow-sm flex flex-col gap-4">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">File Size</span>
+            <div class="flex items-baseline">
+                <span class="text-2xl font-mono font-bold text-primary">{{ profile.file_size }}</span>
+                <span class="ml-1 text-xs text-secondary">bytes</span>
+                {% if result.size_diff != 0 %}
+                <span
+                    class="ml-2 px-2 py-0.5 rounded-full text-[10px] font-bold {% if result.size_diff > 0 %}bg-red-50 text-red-600{% else %}bg-orange-50 text-orange-600{% endif %}">
+                    {% if result.size_diff > 0 %}+{% endif %}{{ result.size_diff }} B
+                </span>
+                {% endif %}
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-border shadow-sm flex flex-col gap-4">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Analysis Resolution</span>
+            <div class="flex items-baseline">
+                <span class="text-2xl font-mono font-bold text-primary">4KB</span>
+                <span class="ml-1 text-xs text-secondary">blocks</span>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-border shadow-sm flex flex-col gap-4">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Magic Header</span>
+            <div class="flex items-center gap-2">
+                <span
+                    class="font-mono text-sm font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded border border-slate-200">{{
+                    result.header_analysis.uploaded|slice:":8" }}..</span>
+                <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">HEX</span>
+            </div>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-border shadow-sm flex flex-col gap-4">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Scan Coverage</span>
+            <div class="flex items-baseline">
+                <span class="text-2xl font-mono font-bold text-primary">100</span>
+                <span class="ml-1 text-xs text-secondary">%</span>
             </div>
         </div>
     </div>
 
-    <!-- Detailed Anomaly Report -->
-    <div class="bg-surface rounded-2xl border border-border shadow-card mb-12 overflow-hidden">
-        <div class="p-6 border-b border-border flex justify-between items-center bg-slate-50/50">
-            <div>
-                <h3 class="text-lg font-bold text-primary tracking-tight">Detailed Anomaly Report</h3>
-                <p class="text-sm text-secondary mt-1">Comprehensive forensic log of all detected discrepancies</p>
+</div>
+
+<!-- Forensic Overview Dashboard -->
+<div class="bg-surface rounded-2xl border border-border shadow-card mb-8 overflow-hidden">
+    <div class="p-6 border-b border-border bg-gradient-to-r from-slate-50 to-white">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                    <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center border border-red-100">
+                        <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-primary tracking-tight">Forensic Intelligence Dashboard
+                        </h3>
+                        <p class="text-sm text-secondary">Block-level heuristic analysis and threat mapping</p>
+                    </div>
+                </div>
             </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full lg:w-auto">
+                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Integrity</div>
+                    <div
+                        class="text-lg font-mono font-bold {% if result.confidence_score >= 80 %}text-green-600{% elif result.confidence_score >= 50 %}text-yellow-600{% else %}text-red-600{% endif %}">
+                        {{ result.confidence_score }}%</div>
+                </div>
+                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Anomalies</div>
+                    <div class="text-lg font-mono font-bold text-red-600">{{ result.mismatch_count }}</div>
+                </div>
+                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Threats</div>
+                    <div class="text-lg font-mono font-bold text-orange-600">{% if result.mismatch_count > 0 %}Active{%
+                        else %}None{% endif %}</div>
+                </div>
+                <div class="px-4 py-2 bg-white border border-border rounded-xl shadow-sm">
+                    <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Scan Status</div>
+                    <div class="text-lg font-mono font-bold text-green-600">Complete</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-6">
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
+            <!-- Heatmap Section -->
+            <div class="xl:col-span-3">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Forensic Block Map</h4>
+                    <div class="flex items-center gap-2 text-[10px] font-mono text-secondary">
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span> Verified
+                        <span class="w-2 h-2 bg-yellow-400 rounded-full ml-2"></span> Modified
+                        <span class="w-2 h-2 bg-red-500 rounded-full ml-2"></span> Critical
+                        <span class="w-2 h-2 bg-purple-500 rounded-full ml-2"></span> Appended
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-10 sm:grid-cols-15 md:grid-cols-20 lg:grid-cols-30 xl:grid-cols-40 gap-1">
+                    {% for block in result.heatmap_data %}
+                    <div class="aspect-square {{ block.color }} rounded-[2px] cursor-help transition-all hover:scale-150 hover:ring-2 hover:ring-slate-900 hover:z-10 hover:shadow-lg"
+                        title="{{ block.tooltip_title }}: {{ block.tooltip_body }}"></div>
+                    {% endfor %}
+                </div>
+
+                <div
+                    class="mt-6 pt-4 border-t border-border flex justify-between items-center text-[10px] text-secondary font-mono">
+                    <span>SCAN_RANGE: 0x0000 - {{ result.heatmap_data|length|add:"-1" }}</span>
+                    <span>BLOCK_SIZE: 4096 BYTES</span>
+                </div>
+            </div>
+
+            <!-- Threat Summary Section -->
+            <div class="xl:col-span-1 bg-slate-50/50 rounded-xl border border-border p-5">
+                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Threat Distribution</h4>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-medium text-primary">Critical Threats</span>
+                        <span
+                            class="px-2 py-0.5 bg-red-100 text-red-700 text-[10px] font-bold rounded-full border border-red-200">
+                            {{ result.mismatch_count }}
+                        </span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-1.5">
+                        <div class="bg-red-500 h-1.5 rounded-full"
+                            style="--width: {% if result.mismatch_count > 0 %}100%{% else %}0%{% endif %}; width: var(--width);">
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-border mt-4">
+                        <div class="flex items-start gap-3">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0 border border-blue-100">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-[11px] font-bold text-primary">Heuristic Verdict</p>
+                                <p class="text-[10px] text-secondary mt-0.5">
+                                    {% if result.mismatch_count > 0 %}
+                                    Multiple anomalies detected. Structural integrity compromised.
+                                    {% else %}
+                                    File structure appears clean. No malicious patterns identified.
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detailed Anomaly Report -->
+<div class="bg-surface rounded-2xl border border-border shadow-card mb-12 overflow-hidden">
+    <div class="p-6 border-b border-border flex justify-between items-center bg-slate-50/50">
+        <div>
+            <h3 class="text-lg font-bold text-primary tracking-tight">Detailed Anomaly Report</h3>
+            <p class="text-sm text-secondary mt-1">Comprehensive forensic log of all detected discrepancies</p>
+        </div>
+        <span class="px-3 py-1 bg-white border border-border text-secondary text-xs font-bold rounded-full shadow-sm">
+            {{ result.mismatch_count }} Events Detected
+        </span>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-border">
+            <thead class="bg-slate-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Block</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Byte Range</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Entropy Δ</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Threat Analysis</th>
+                    <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                        Fingerprint (Stored/Uploaded)</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-border">
+                {% if result.detailed_mismatches %}
+                {% for item in result.detailed_mismatches %}
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2 py-1 bg-slate-900 text-white font-mono text-[10px] font-bold rounded">#{{
+                            item.chunk_index }}</span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-secondary">{{ item.byte_range }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span
+                            class="text-xs font-mono font-bold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">{{
+                            item.change_summary }}</span>
+                    </td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-col gap-1">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider 
+                                        {% if item.severity == 'critical' %}bg-red-100 text-red-700 border border-red-200
+                                        {% elif item.severity == 'high' %}bg-orange-100 text-orange-700 border border-orange-200
+                                        {% elif item.severity == 'medium' %}bg-yellow-100 text-yellow-700 border border-yellow-200
+                                        {% else %}bg-blue-100 text-blue-700 border border-blue-200{% endif %}">
+                                    {{ item.anomaly_type }}
+                                </span>
+                            </div>
+                            <p class="text-[11px] text-secondary leading-tight max-w-xs">{{ item.threat_description }}
+                            </p>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex flex-col gap-1">
+                            <span
+                                class="text-[9px] font-mono text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-100 w-fit">S:
+                                {{ item.stored_hash|slice:":12" }}...</span>
+                            <span
+                                class="text-[9px] font-mono text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 w-fit">U:
+                                {{ item.uploaded_hash|slice:":12" }}...</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="5" class="px-6 py-12 text-center">
+                        <p class="text-sm text-secondary italic">No anomalies detected in this file.</p>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+    {% if result.mismatch_count > 50 %}
+    <div class="p-4 bg-slate-50 text-center border-t border-border">
+        <p class="text-[10px] text-slate-400 font-medium italic">Showing top 50 anomalies. See full report for
+            complete details.</p>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Deep Forensic Analysis Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+
+    <!-- Structure Graph -->
+    <div class="bg-surface p-6 rounded-2xl border border-border shadow-card">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-primary tracking-tight">Temporal Entropy Mapping</h3>
+            <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-500 rounded">Visualization</span>
+        </div>
+        <div class="relative h-56 w-full">
+            <canvas id="entropyChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Magic Byte Inspector -->
+    <div class="bg-surface p-6 rounded-2xl border border-border shadow-card">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold text-primary tracking-tight">Magic Byte Verification</h3>
             <span
-                class="px-3 py-1 bg-white border border-border text-secondary text-xs font-bold rounded-full shadow-sm">
-                {{ result.mismatch_count }} Events Detected
+                class="text-xs font-semibold px-2 py-1 rounded {% if 'MISMATCH' in result.header_analysis.status %}bg-red-50 text-red-600{% else %}bg-green-50 text-green-600{% endif %}">
+                {{ result.header_analysis.status }}
             </span>
         </div>
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-border">
-                <thead class="bg-slate-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Block</th>
-                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Byte Range</th>
-                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Entropy Change</th>
-                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Classification</th>
-                        <th class="px-6 py-3 text-left text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                            Fingerprint (Stored/Uploaded)</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-border">
-                    {% if result.detailed_mismatches %}
-                    {% for item in result.detailed_mismatches %}
-                    <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 py-1 bg-slate-900 text-white font-mono text-[10px] font-bold rounded">#{{                 item.chunk_index }}</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-xs font-mono text-secondary">{{ item.byte_range }}
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="text-xs font-mono font-bold {% if item.entropy_delta > 0 %}text-red-600{% elif item.entropy_delta < 0 %}text-blue-600{% else %}text-slate-500{% endif %}">{{                 item.change_summary }}</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span
-                                class="text-xs font-bold {% if 'Critical' in item.anomaly_type %}text-red-600{% elif 'Appended' in item.anomaly_type %}text-purple-600{% else %}text-yellow-600{% endif %}">{{                 item.anomaly_type }}</span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex flex-col gap-1">
-                                <span
-                                    class="text-[9px] font-mono text-green-600 bg-green-50 px-1.5 py-0.5 rounded border border-green-100 w-fit">S: {{ item.stored_hash|slice:":12" }}...</span>
-                                <span
-                                    class="text-[9px] font-mono text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 w-fit">U: {{ item.uploaded_hash|slice:":12" }}...</span>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    {% else %}
-                    <tr>
-                        <td colspan="5" class="px-6 py-12 text-center">
-                            <p class="text-sm text-secondary italic">No anomalies detected in this file.</p>
-                        </td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </div>
-        {% if result.mismatch_count > 50 %}
-        <div class="p-4 bg-slate-50 text-center border-t border-border">
-            <p class="text-[10px] text-slate-400 font-medium italic">Showing top 50 anomalies. See full report for
-                complete details.</p>
-        </div>
-        {% endif %}
-    </div>
 
-    <!-- Deep Forensic Analysis Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-
-        <!-- Structure Graph -->
-        <div class="bg-surface p-6 rounded-2xl border border-border shadow-card">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-primary tracking-tight">Temporal Entropy Mapping</h3>
-                <span class="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-500 rounded">Visualization</span>
-            </div>
-            <div class="relative h-56 w-full">
-                <canvas id="entropyChart"></canvas>
-            </div>
-        </div>
-
-        <!-- Magic Byte Inspector -->
-        <div class="bg-surface p-6 rounded-2xl border border-border shadow-card">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-primary tracking-tight">Magic Byte Verification</h3>
-                <span
-                    class="text-xs font-semibold px-2 py-1 rounded
-                    {% if 'MISMATCH' in result.header_analysis.status %}bg-red-50 text-red-600{% else %}bg-green-50 text-green-600{% endif %}">
-                    {{ result.header_analysis.status }}
-                </span>
-            </div>
-
-            <div class="space-y-6">
-                <div>
-                    <span class="text-xs text-secondary font-semibold uppercase tracking-wide block mb-2">Original
-                        Profile (Stored)</span>
-                    <div
-                        class="bg-subtle p-4 rounded-xl border border-border font-mono text-sm text-secondary overflow-hidden break-all">
-                        {{ result.header_analysis.stored }}
-                    </div>
+        <div class="space-y-4">
+            <div class="bg-slate-900 rounded-xl p-4 overflow-hidden shadow-inner">
+                <div class="flex items-center gap-3 mb-3 pb-2 border-b border-slate-800">
+                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Stored Baseline
+                        (Hex)</span>
                 </div>
-                <div class="flex justify-center">
-                    <svg class="h-5 w-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="font-mono text-[11px] text-slate-300 break-all leading-relaxed opacity-80">
+                    {{ result.header_analysis.stored }}
+                </div>
+            </div>
+
+            <div class="flex justify-center -my-2 relative z-10">
+                <div
+                    class="w-8 h-8 rounded-full bg-white border border-border shadow-sm flex items-center justify-center">
+                    <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
                     </svg>
                 </div>
-                <div>
-                    <span class="text-xs text-secondary font-semibold uppercase tracking-wide block mb-2">Current File
-                        (Uploaded)</span>
-                    <div class="bg-subtle p-4 rounded-xl border border-border font-mono text-sm text-primary overflow-hidden break-all
-                         {% if 'MISMATCH' in result.header_analysis.status %}border-red-200 bg-red-50{% endif %}">
-                        {{ result.header_analysis.uploaded }}
+            </div>
+
+            <div
+                class="bg-slate-900 rounded-xl p-4 overflow-hidden shadow-inner border-l-4 {% if 'MISMATCH' in result.header_analysis.status %}border-red-500{% else %}border-green-500{% endif %}">
+                <div class="flex items-center gap-3 mb-3 pb-2 border-b border-slate-800">
+                    <div
+                        class="w-2 h-2 {% if 'MISMATCH' in result.header_analysis.status %}bg-red-500 animate-pulse{% else %}bg-green-500{% endif %} rounded-full">
                     </div>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Uploaded Sample
+                        (Hex)</span>
+                </div>
+                <div
+                    class="font-mono text-[11px] {% if 'MISMATCH' in result.header_analysis.status %}text-red-400{% else %}text-green-400{% endif %} break-all leading-relaxed">
+                    {{ result.header_analysis.uploaded }}
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-    <!-- Chart.js Integration -->
-    {{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
-    {{ result.full_entropy_profile.uploaded|json_script:"uploaded-entropy-data" }}
-    {{ result.detailed_mismatches|json_script:"mismatch-data" }}
-    {{ result.heatmap_data|json_script:"heatmap-data" }}
+<!-- Chart.js Integration -->
+{{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
+{{ result.full_entropy_profile.uploaded|json_script:"uploaded-entropy-data" }}
+{{ result.detailed_mismatches|json_script:"mismatch-data" }}
+{{ result.heatmap_data|json_script:"heatmap-data" }}
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const ctx = document.getElementById('entropyChart').getContext('2d');
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('entropyChart').getContext('2d');
 
-            // robust data loading
-            const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
-            const uploadedEntropy = JSON.parse(document.getElementById('uploaded-entropy-data').textContent);
-            const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
+        // robust data loading
+        const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
+        const uploadedEntropy = JSON.parse(document.getElementById('uploaded-entropy-data').textContent);
+        const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
 
-            // Calculate Conflict Zone
-            const conflictZoneData = labels.map((_, i) => {
-                const s = storedEntropy[i] || 0;
-                const u = uploadedEntropy[i] || 0;
-                // Threshold: Deviation > 15% (1.2 entropy units)
-                if (Math.abs(s - u) > 1.2) {
-                    return u; // Fill to this point
-                }
-                return s; // No fill (on top of stored)
-            });
-
-            // Light theme chart config
-            Chart.defaults.color = '#64748b'; // Slate 500
-            Chart.defaults.borderColor = '#e2e8f0'; // Slate 200
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: 'Original Profile (Shadow Baseline)',
-                            data: storedEntropy,
-                            borderColor: '#10b981', // Emerald 500
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            borderDash: [5, 5], // Dashed Line
-                            tension: 0.2,
-                            pointRadius: 0,
-                            pointHoverRadius: 4,
-                            order: 2
-                        },
-                        {
-                            label: 'Current File (Uploaded)',
-                            data: uploadedEntropy,
-                            borderColor: '#3b82f6', // Blue 500
-                            backgroundColor: 'transparent',
-                            borderWidth: 2,
-                            tension: 0.2,
-                            pointRadius: 0,
-                            pointHoverRadius: 4,
-                            order: 1
-                        },
-                        {
-                            label: 'Forensic Conflict Zone',
-                            data: conflictZoneData,
-                            borderColor: 'transparent',
-                            backgroundColor: 'rgba(239, 68, 68, 0.3)', // Red with opacity
-                            fill: 0, // Fill to Dataset 0 (Stored)
-                            pointRadius: 0,
-                            borderWidth: 0,
-                            order: 3
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                            align: 'end',
-                            labels: {
-                                boxWidth: 12, usePointStyle: true, pointStyle: 'rectRounded', font: {
-                                    family: 'Plus Jakarta Sans',
-                                    size: 11
-                                }
-                            }
-                        },
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false,
-                            backgroundColor: '#1e293b',
-                            titleColor: '#fff',
-                            bodyColor: '#e2e8f0',
-                            borderColor: '#334155',
-                            borderWidth: 0,
-                            padding: 12,
-                            cornerRadius: 8,
-                            filter: function (tooltipItem) {
-                                return tooltipItem.datasetIndex !== 2; // Hide Conflict Zone from tooltip
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 8.0,
-                            title: { display: true, text: 'Entropy (Bits)', font: { size: 10, weight: 600 } },
-                            grid: { borderDash: [2, 2] }
-                        },
-                        x: {
-                            display: false
-                        }
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
-                    }
-                }
-            });
+        // Calculate Conflict Zone
+        const conflictZoneData = labels.map((_, i) => {
+            const s = storedEntropy[i] || 0;
+            const u = uploadedEntropy[i] || 0;
+            // Threshold: Deviation > 15% (1.2 entropy units)
+            if (Math.abs(s - u) > 1.2) {
+                return u; // Fill to this point
+            }
+            return s; // No fill (on top of stored)
         });
 
-        window.downloadPDF = function () {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const margin = 14;
-            let yPos = 20;
+        // Light theme chart config
+        Chart.defaults.color = '#64748b'; // Slate 500
+        Chart.defaults.borderColor = '#e2e8f0'; // Slate 200
 
-            // Helper for page breaks
-            function checkPageBreak(heightNeeded) {
-                if (yPos + heightNeeded > pageHeight - margin) {
-                    doc.addPage();
-                    yPos = 20; // Reset to top margin
-                    return true;
-                }
-                return false;
-            }
-
-            // --- Header ---
-            doc.setFillColor(15, 23, 42); // Slate 900
-            doc.rect(0, 0, pageWidth, 40, 'F');
-
-            doc.setTextColor(255, 255, 255);
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(18);
-            doc.text("Forensic Integrity Audit", margin, 20);
-
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(148, 163, 184); // Slate 400
-            doc.text("Generated by IntegrityChecker", margin, 26);
-
-            doc.text(new Date().toLocaleString(), pageWidth - margin, 20, { align: 'right' });
-
-            yPos = 55;
-
-            // --- File Metadata & Verdict (Side by Side) ---
-            doc.setTextColor(15, 23, 42);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.text("Target File Profile", margin, yPos);
-
-            yPos += 8;
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(71, 85, 105);
-
-            doc.text(`Filename: {{ file_name }}`, margin, yPos);
-            doc.text(`Size: {{ profile.file_size }} bytes`, margin, yPos + 6);
-            doc.text(`ID: {{ result.header_analysis.stored | slice:":16" }}...`, margin, yPos + 12);
-
-            // Verdict Box (Right side)
-            const boxX = pageWidth - margin - 80;
-            doc.setFillColor(241, 245, 249); // Slate 100
-            doc.setDrawColor(226, 232, 240);
-            doc.roundedRect(boxX, 50, 80, 25, 3, 3, 'FD');
-
-            doc.setFontSize(9);
-            doc.setTextColor(100);
-            doc.text("Integrity Verdict", boxX + 5, 58);
-
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            const resultType = "{{ result.result_type }}";
-            if (resultType === 'NO_CHANGE') doc.setTextColor(22, 163, 74); // Green
-            else if (resultType === 'PARTIAL_MODIFICATION') doc.setTextColor(234, 179, 8); // Yellow
-            else doc.setTextColor(220, 38, 38); // Red
-
-            doc.text(resultType.replace(/_/g, ' '), boxX + 5, 66);
-
-            doc.setFontSize(9);
-            doc.setTextColor(71, 85, 105);
-            doc.text("Confidence: {{ result.confidence_score }}%", boxX + 5, 72);
-
-            yPos += 30;
-
-            // --- Entropy Chart ---
-            checkPageBreak(80);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(15, 23, 42);
-            doc.text("Temporal Entropy Map", margin, yPos);
-            yPos += 6;
-
-            const canvas = document.getElementById('entropyChart');
-            if (canvas) {
-                try {
-                    const imgData = canvas.toDataURL("image/png");
-                    // Maintain aspect ratio, fit width
-                    const imgWidth = pageWidth - (margin * 2);
-                    const imgHeight = 60;
-                    doc.addImage(imgData, 'PNG', margin, yPos, imgWidth, imgHeight);
-                    yPos += imgHeight + 10;
-                } catch (e) {
-                    console.error("Chart capture failed", e);
-                }
-            }
-
-            // --- Heatmap ---
-            checkPageBreak(60);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.setTextColor(15, 23, 42);
-            doc.text("Forensic Block Map", margin, yPos);
-            yPos += 8;
-
-            const heatmapData = JSON.parse(document.getElementById('heatmap-data').textContent);
-            const boxSize = 3;
-            const gap = 0.5;
-            const blocksPerRow = 50; // Adjust based on page width
-
-            let x = margin;
-            let startY = yPos;
-
-            // Limit to first 400
-            heatmapData.slice(0, 400).forEach((block, i) => {
-                if (i % blocksPerRow === 0 && i !== 0) {
-                    x = margin;
-                    startY += (boxSize + gap);
-                }
-
-                let rgb = [156, 163, 175]; // Default Gray
-                if (block.color.includes('green')) rgb = [34, 197, 94];
-                else if (block.color.includes('yellow')) rgb = [250, 204, 21];
-                else if (block.color.includes('red-600')) rgb = [220, 38, 38];
-                else if (block.color.includes('red')) rgb = [239, 68, 68];
-                else if (block.color.includes('purple')) rgb = [168, 85, 247];
-
-                doc.setFillColor(...rgb);
-                doc.rect(x, startY, boxSize, boxSize, 'F');
-                x += (boxSize + gap);
-            });
-
-            yPos = startY + 15;
-
-            // --- Magic Bytes ---
-            checkPageBreak(40);
-            doc.setFontSize(12);
-            doc.setTextColor(15, 23, 42);
-            doc.setFont("helvetica", "bold");
-            doc.text("Magic Byte Analysis", margin, yPos);
-            yPos += 6;
-
-            doc.setFontSize(9);
-            doc.setFont("courier", "normal");
-            doc.setFillColor(248, 250, 252);
-            doc.rect(margin, yPos, pageWidth - (margin * 2), 16, 'F');
-
-            doc.setTextColor(71, 85, 105);
-            doc.text("Stored: {{ result.header_analysis.stored }}", margin + 2, yPos + 5);
-            doc.text("Uploaded: {{ result.header_analysis.uploaded }}", margin + 2, yPos + 11);
-
-            yPos += 25;
-
-            // --- Detailed Table ---
-            const mismatches = JSON.parse(document.getElementById('mismatch-data').textContent);
-
-            if (mismatches.length > 0) {
-                checkPageBreak(30);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(12);
-                doc.setTextColor(15, 23, 42);
-                doc.text("Detailed Anomaly Report", margin, yPos);
-
-                doc.autoTable({
-                    startY: yPos + 5,
-                    head: [['Block', 'Byte Range', 'Change', 'Classification']],
-                    body: mismatches.map(m => [
-                        `${m.chunk_index}`,
-                        m.byte_range,
-                        m.change_summary,
-                        m.anomaly_type
-                    ]),
-                    theme: 'grid',
-                    headStyles: { fillColor: [15, 23, 42], textColor: 255 },
-                    styles: { fontSize: 8, cellPadding: 3 },
-                    margin: { left: margin, right: margin },
-                    didDrawPage: function (data) {
-                        // Resets yPos for next content if table spans multiple pages
-                        yPos = data.cursor.y;
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Original Profile (Shadow Baseline)',
+                        data: storedEntropy,
+                        borderColor: '#10b981', // Emerald 500
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [5, 5], // Dashed Line
+                        tension: 0.2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        order: 2
+                    },
+                    {
+                        label: 'Current File (Uploaded)',
+                        data: uploadedEntropy,
+                        borderColor: '#3b82f6', // Blue 500
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        tension: 0.2,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        order: 1
+                    },
+                    {
+                        label: 'Forensic Conflict Zone',
+                        data: conflictZoneData,
+                        borderColor: 'transparent',
+                        backgroundColor: 'rgba(239, 68, 68, 0.3)', // Red with opacity
+                        fill: 0, // Fill to Dataset 0 (Stored)
+                        pointRadius: 0,
+                        borderWidth: 0,
+                        order: 3
                     }
-                });
-            } else {
-                doc.setFont("helvetica", "italic");
-                doc.setTextColor(100);
-                doc.text("No anomalies detected. The file signature matches the record.", margin, yPos);
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            boxWidth: 12, usePointStyle: true, pointStyle: 'rectRounded', font: {
+                                family: 'Plus Jakarta Sans',
+                                size: 11
+                            }
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: '#1e293b',
+                        titleColor: '#fff',
+                        bodyColor: '#e2e8f0',
+                        borderColor: '#334155',
+                        borderWidth: 0,
+                        padding: 12,
+                        cornerRadius: 8,
+                        filter: function (tooltipItem) {
+                            return tooltipItem.datasetIndex !== 2; // Hide Conflict Zone from tooltip
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 8.0,
+                        title: { display: true, text: 'Entropy (Bits)', font: { size: 10, weight: 600 } },
+                        grid: { borderDash: [2, 2] }
+                    },
+                    x: {
+                        display: false
+                    }
+                },
+                interaction: {
+                    mode: 'nearest',
+                    axis: 'x',
+                    intersect: false
+                }
+            }
+        });
+    });
+
+    window.downloadPDF = function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const margin = 14;
+        let yPos = 20;
+
+        // Helper for page breaks
+        function checkPageBreak(heightNeeded) {
+            if (yPos + heightNeeded > pageHeight - margin) {
+                doc.addPage();
+                yPos = 20; // Reset to top margin
+                return true;
+            }
+            return false;
+        }
+
+        // --- Header ---
+        doc.setFillColor(15, 23, 42); // Slate 900
+        doc.rect(0, 0, pageWidth, 40, 'F');
+
+        doc.setTextColor(255, 255, 255);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Forensic Integrity Audit", margin, 20);
+
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(148, 163, 184); // Slate 400
+        doc.text("Generated by IntegrityChecker", margin, 26);
+
+        doc.text(new Date().toLocaleString(), pageWidth - margin, 20, { align: 'right' });
+
+        yPos = 55;
+
+        // --- File Metadata & Verdict (Side by Side) ---
+        doc.setTextColor(15, 23, 42);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.text("Target File Profile", margin, yPos);
+
+        yPos += 8;
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.setTextColor(71, 85, 105);
+
+        doc.text(`Filename: {{ file_name }}`, margin, yPos);
+        doc.text(`Size: {{ profile.file_size }} bytes`, margin, yPos + 6);
+        doc.text(`ID: {{ result.header_analysis.stored | slice:":16" }}...`, margin, yPos + 12);
+
+        // Verdict Box (Right side)
+        const boxX = pageWidth - margin - 80;
+        doc.setFillColor(241, 245, 249); // Slate 100
+        doc.setDrawColor(226, 232, 240);
+        doc.roundedRect(boxX, 50, 80, 25, 3, 3, 'FD');
+
+        doc.setFontSize(9);
+        doc.setTextColor(100);
+        doc.text("Integrity Verdict", boxX + 5, 58);
+
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        const resultType = "{{ result.result_type }}";
+        if (resultType === 'NO_CHANGE') doc.setTextColor(22, 163, 74); // Green
+        else if (resultType === 'PARTIAL_MODIFICATION') doc.setTextColor(234, 179, 8); // Yellow
+        else doc.setTextColor(220, 38, 38); // Red
+
+        doc.text(resultType.replace(/_/g, ' '), boxX + 5, 66);
+
+        doc.setFontSize(9);
+        doc.setTextColor(71, 85, 105);
+        doc.text("Confidence: {{ result.confidence_score }}%", boxX + 5, 72);
+
+        yPos += 30;
+
+        // --- Entropy Chart ---
+        checkPageBreak(80);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(15, 23, 42);
+        doc.text("Temporal Entropy Map", margin, yPos);
+        yPos += 6;
+
+        const canvas = document.getElementById('entropyChart');
+        if (canvas) {
+            try {
+                const imgData = canvas.toDataURL("image/png");
+                // Maintain aspect ratio, fit width
+                const imgWidth = pageWidth - (margin * 2);
+                const imgHeight = 60;
+                doc.addImage(imgData, 'PNG', margin, yPos, imgWidth, imgHeight);
+                yPos += imgHeight + 10;
+            } catch (e) {
+                console.error("Chart capture failed", e);
+            }
+        }
+
+        // --- Heatmap ---
+        checkPageBreak(60);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(15, 23, 42);
+        doc.text("Forensic Block Map", margin, yPos);
+        yPos += 8;
+
+        const heatmapData = JSON.parse(document.getElementById('heatmap-data').textContent);
+        const boxSize = 3;
+        const gap = 0.5;
+        const blocksPerRow = 50; // Adjust based on page width
+
+        let x = margin;
+        let startY = yPos;
+
+        // Limit to first 400
+        heatmapData.slice(0, 400).forEach((block, i) => {
+            if (i % blocksPerRow === 0 && i !== 0) {
+                x = margin;
+                startY += (boxSize + gap);
             }
 
-            doc.save("Forensic_Report_{{ file_name }}.pdf");
+            let rgb = [156, 163, 175]; // Default Gray
+            if (block.color.includes('green')) rgb = [34, 197, 94];
+            else if (block.color.includes('yellow')) rgb = [250, 204, 21];
+            else if (block.color.includes('red-600')) rgb = [220, 38, 38];
+            else if (block.color.includes('red')) rgb = [239, 68, 68];
+            else if (block.color.includes('purple')) rgb = [168, 85, 247];
+
+            doc.setFillColor(...rgb);
+            doc.rect(x, startY, boxSize, boxSize, 'F');
+            x += (boxSize + gap);
+        });
+
+        yPos = startY + 15;
+
+        // --- Magic Bytes ---
+        checkPageBreak(40);
+        doc.setFontSize(12);
+        doc.setTextColor(15, 23, 42);
+        doc.setFont("helvetica", "bold");
+        doc.text("Magic Byte Analysis", margin, yPos);
+        yPos += 6;
+
+        doc.setFontSize(9);
+        doc.setFont("courier", "normal");
+        doc.setFillColor(248, 250, 252);
+        doc.rect(margin, yPos, pageWidth - (margin * 2), 16, 'F');
+
+        doc.setTextColor(71, 85, 105);
+        doc.text("Stored: {{ result.header_analysis.stored }}", margin + 2, yPos + 5);
+        doc.text("Uploaded: {{ result.header_analysis.uploaded }}", margin + 2, yPos + 11);
+
+        yPos += 25;
+
+        // --- Detailed Table ---
+        const mismatches = JSON.parse(document.getElementById('mismatch-data').textContent);
+
+        if (mismatches.length > 0) {
+            checkPageBreak(30);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(12);
+            doc.setTextColor(15, 23, 42);
+            doc.text("Detailed Anomaly Report", margin, yPos);
+
+            doc.autoTable({
+                startY: yPos + 5,
+                head: [['Block', 'Byte Range', 'Change', 'Classification']],
+                body: mismatches.map(m => [
+                    `${m.chunk_index}`,
+                    m.byte_range,
+                    m.change_summary,
+                    m.anomaly_type
+                ]),
+                theme: 'grid',
+                headStyles: { fillColor: [15, 23, 42], textColor: 255 },
+                styles: { fontSize: 8, cellPadding: 3 },
+                margin: { left: margin, right: margin },
+                didDrawPage: function (data) {
+                    // Resets yPos for next content if table spans multiple pages
+                    yPos = data.cursor.y;
+                }
+            });
+        } else {
+            doc.setFont("helvetica", "italic");
+            doc.setTextColor(100);
+            doc.text("No anomalies detected. The file signature matches the record.", margin, yPos);
         }
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    {% endblock %}<- Fixed fingerprint display in anomaly report test -->
+
+        doc.save("Forensic_Report_{{ file_name }}.pdf");
+    }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+{% endblock %}<- Fixed fingerprint display in anomaly report test -->
