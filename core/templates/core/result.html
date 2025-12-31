@@ -17,7 +17,7 @@
                 </div>
             </div>
             <h1
-                class="text-6xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-pastel-blue dark:to-pastel-purple tracking-tighter leading-none">
+                class="text-6xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-700 via-violet-600 to-rose-600 dark:from-white dark:via-purple-200 dark:to-blue-200 tracking-tighter leading-none">
                 {{ file_name }}
             </h1>
             <div class="flex items-center gap-6">
@@ -134,8 +134,9 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Total
                             Blocks</p>
-                        <p class="text-4xl font-black text-indigo-700 dark:text-cyan-400 font-mono">{{
-                            result.total_chunks }}</p>
+                        <p class="text-4xl font-black text-indigo-700 dark:text-cyan-400 font-mono">
+                            {{ result.total_chunks }}
+                        </p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
@@ -192,7 +193,8 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="space-y-3">
-                        <p class="text-[9px] font-black text-secondary uppercase tracking-widest opacity-40">Stored
+                        <p class="text-[9px] font-black text-slate-600 dark:text-secondary uppercase tracking-widest">
+                            Stored
                             Baseline</p>
                         <div
                             class="bg-black/50 p-4 rounded-xl border border-white/5 font-mono text-xs text-secondary break-all tracking-widest">
@@ -200,7 +202,8 @@
                         </div>
                     </div>
                     <div class="space-y-3">
-                        <p class="text-[9px] font-black text-secondary uppercase tracking-widest opacity-40">Current
+                        <p class="text-[9px] font-black text-slate-600 dark:text-secondary uppercase tracking-widest">
+                            Current
                             Sample</p>
                         <div
                             class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-rose-500/30 text-rose-700 dark:text-rose-400{% else %}border-emerald-500/30 text-emerald-700 dark:text-emerald-400{% endif %} font-mono text-xs break-all tracking-widest">
@@ -325,8 +328,9 @@
                                 <div
                                     class="w-1.5 h-10 rounded-full {% if item.status == 'MATCH' %}bg-success{% elif item.status == 'MISMATCH' %}bg-rose{% else %}bg-violet{% endif %} opacity-40 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <span class="font-mono text-lg font-black text-violet-700 dark:text-fuchsia-400">#{{
-                                    item.chunk_index }}</span>
+                                <span class="font-mono text-lg font-black text-violet-700 dark:text-fuchsia-400">
+                                    #{{ item.chunk_index }}
+                                </span>
                             </div>
                         </td>
 
