@@ -16,7 +16,7 @@
                         dark: '#000000',
                         surface: '#09090b',
                         border: 'rgba(255, 255, 255, 0.08)',
-                        secondary: '#a1a1aa',
+                        secondary: 'var(--color-secondary)',
                         accent: '#3b82f6',
                         success: '#10b981',
                         warning: '#f59e0b',
@@ -66,6 +66,13 @@
     <style>
         :root {
             --glow-color: rgba(59, 130, 246, 0.5);
+            --color-secondary: #64748b;
+            /* slate-500 */
+        }
+
+        .dark {
+            --color-secondary: #a1a1aa;
+            /* zinc-400 */
         }
 
         body {
@@ -78,17 +85,24 @@
 
         /* Light Mode Glass */
         .glass-card {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(40px);
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow:
+                0 4px 6px -1px rgba(0, 0, 0, 0.02),
+                0 2px 4px -1px rgba(0, 0, 0, 0.02),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5);
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .glass-card:hover {
-            border-color: rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(165, 216, 255, 0.5);
+            /* pastel-blue */
             transform: translateY(-5px);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+            box-shadow:
+                0 20px 40px -10px rgba(165, 216, 255, 0.2),
+                0 10px 20px -5px rgba(165, 216, 255, 0.1);
         }
 
         /* Dark Mode Glass */
@@ -219,7 +233,7 @@
 </head>
 
 <body
-    class="min-h-screen flex flex-col selection:bg-pastel-blue selection:text-slate-900 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-black dark:to-zinc-950 text-slate-800 dark:text-white transition-colors duration-300">
+    class="min-h-screen flex flex-col selection:bg-pastel-blue selection:text-slate-900 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-black dark:to-zinc-950 text-slate-800 dark:text-white transition-colors duration-300">
     <div class="bg-mesh"></div>
     <div class="grid-overlay"></div>
     <div class="noise"></div>
