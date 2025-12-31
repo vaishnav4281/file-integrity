@@ -4,73 +4,83 @@
 <div class="max-w-7xl mx-auto px-6 py-24">
 
     <!-- Hero Section -->
-    <div class="text-center mb-32 relative">
+    <div class="text-center mb-40 relative">
+        <!-- Decorative Glows -->
         <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-accent/10 via-violet-500/10 to-rose-500/10 blur-[120px] rounded-full -z-10 animate-pulse-slow">
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-gradient-to-tr from-blue-500/10 via-violet-500/10 to-rose-500/10 blur-[150px] rounded-full -z-10 animate-pulse-slow">
         </div>
 
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900/5 dark:bg-white/5 rounded-full border border-slate-900/10 dark:border-white/10 mb-12 reveal"
+        <div class="inline-flex items-center gap-3 px-5 py-2 bg-white/50 dark:bg-white/5 rounded-full border border-slate-200 dark:border-white/10 mb-12 reveal shadow-sm backdrop-blur-xl"
             style="animation-delay: 0.1s;">
-            <span class="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Protocol v4.0.2</span>
-            <div class="w-1 h-1 rounded-full bg-slate-900/20 dark:bg-white/20"></div>
-            <span class="text-[9px] font-black tracking-[0.4em] text-secondary uppercase">Quantum-Safe</span>
+            <div class="flex items-center gap-2">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span class="text-[10px] font-black tracking-[0.3em] text-slate-900 dark:text-white uppercase">Network
+                    Active</span>
+            </div>
+            <div class="w-px h-3 bg-slate-200 dark:bg-white/10"></div>
+            <span class="text-[10px] font-black tracking-[0.3em] text-secondary uppercase">Protocol v4.0.2</span>
         </div>
 
-        <h1 class="text-6xl md:text-9xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[0.85] reveal"
+        <h1 class="text-7xl md:text-[10rem] font-black tracking-tighter text-slate-900 dark:text-white mb-10 leading-[0.8] reveal"
             style="animation-delay: 0.2s;">
-            DECODE THE <br />
+            SECURE THE <br />
             <span
-                class="bg-clip-text text-transparent bg-gradient-to-r from-accent via-violet-500 to-rose-500 animate-gradient-x">UNSEEN.</span>
+                class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-violet-600 to-rose-600 dark:from-white dark:via-purple-200 dark:to-blue-200 animate-gradient-x">INTEGRITY.</span>
         </h1>
 
-        <p class="text-lg md:text-xl text-secondary max-w-2xl mx-auto leading-relaxed font-medium mb-16 reveal opacity-80"
+        <p class="text-xl md:text-2xl text-secondary max-w-3xl mx-auto leading-relaxed font-medium mb-20 reveal opacity-70"
             style="animation-delay: 0.3s;">
             Advanced cryptographic forensics for the modern infrastructure.
             Detect byte-level anomalies with sub-atomic precision.
         </p>
 
-        <div class="flex flex-wrap justify-center gap-6 reveal" style="animation-delay: 0.4s;">
+        <div class="flex flex-wrap justify-center gap-4 reveal" style="animation-delay: 0.4s;">
             <div
-                class="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-accent/30 hover:bg-accent/5 transition-colors duration-300 shadow-sm dark:shadow-none">
-                <span
-                    class="text-[10px] font-bold tracking-widest text-secondary uppercase group-hover:text-accent">Entropy
-                    Analysis</span>
+                class="px-6 py-3 bg-slate-900/5 dark:bg-white/5 rounded-2xl border border-slate-900/10 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-secondary">
+                Shannon Entropy
             </div>
             <div
-                class="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-violet-500/30 hover:bg-violet-500/5 transition-colors duration-300 shadow-sm dark:shadow-none">
-                <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">SHA-256 Granular</span>
+                class="px-6 py-3 bg-slate-900/5 dark:bg-white/5 rounded-2xl border border-slate-900/10 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-secondary">
+                SHA-256 Granular
             </div>
             <div
-                class="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-300 shadow-sm dark:shadow-none">
-                <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">Heuristic Threat
-                    Intel</span>
+                class="px-6 py-3 bg-slate-900/5 dark:bg-white/5 rounded-2xl border border-slate-900/10 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.2em] text-secondary">
+                Heuristic Engine
             </div>
         </div>
     </div>
 
     <!-- Main Actions -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto mb-32">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto mb-40">
 
         <!-- Register -->
-        <div class="glass-card rounded-[2.5rem] p-12 relative overflow-hidden group reveal"
+        <div class="glass-card rounded-[3rem] p-12 relative overflow-hidden group reveal"
             style="animation-delay: 0.5s;">
             <div
-                class="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-3xl rounded-full -mr-32 -mt-32 transition-all duration-700 group-hover:bg-accent/10">
+                class="absolute top-0 right-0 w-80 h-80 bg-blue-500/5 blur-[100px] rounded-full -mr-40 -mt-40 transition-all duration-700 group-hover:bg-blue-500/10">
             </div>
 
-            <div class="flex items-start justify-between mb-12">
+            <div class="flex items-start justify-between mb-16">
                 <div
-                    class="w-14 h-14 bg-gradient-to-br from-white to-slate-100 dark:from-white dark:to-zinc-200 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.1)] dark:shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500 border border-slate-200 dark:border-white/20">
-                    <svg class="w-7 h-7 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-16 h-16 bg-white dark:bg-white/10 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 border border-slate-200 dark:border-white/20">
+                    <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                 </div>
-                <span class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40">Module
-                    01</span>
+                <div class="text-right">
+                    <span
+                        class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40 block mb-1">Module</span>
+                    <span class="text-lg font-black text-slate-900 dark:text-white">01</span>
+                </div>
             </div>
 
             <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Baseline Registry</h2>
-            <p class="text-secondary mb-10 text-base leading-relaxed font-medium opacity-60">
+            <p class="text-secondary mb-12 text-base leading-relaxed font-medium opacity-60">
                 Establish a cryptographic immutable record of your file's structural integrity.
             </p>
 
@@ -79,44 +89,47 @@
                 {% csrf_token %}
                 <div class="relative group/input">
                     <input type="file" name="file" required class="block w-full text-xs text-secondary
-                        file:mr-6 file:py-3 file:px-8
-                        file:rounded-xl file:border-0
+                        file:mr-6 file:py-4 file:px-10
+                        file:rounded-2xl file:border-0
                         file:text-[10px] file:font-black file:uppercase file:tracking-widest
                         file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
-                        hover:file:bg-slate-800 dark:hover:file:bg-zinc-200 file:transition-all
-                        focus:outline-none bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-3
-                        group-hover/input:border-slate-300 dark:group-hover/input:border-white/20 transition-all duration-500
+                        hover:file:scale-105 file:transition-all
+                        focus:outline-none bg-slate-100 dark:bg-white/[0.03] rounded-[2rem] border border-slate-200 dark:border-white/5 p-4
+                        group-hover/input:border-blue-500/30 transition-all duration-500
                     " />
                 </div>
                 <button type="submit"
-                    class="btn-premium w-full py-5 bg-slate-900 text-white dark:bg-white dark:text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-slate-800 dark:hover:bg-zinc-200 active:scale-[0.98] shadow-xl">
+                    class="btn-premium w-full py-6 bg-slate-900 text-white dark:bg-white dark:text-black rounded-[2rem] font-black text-[11px] uppercase tracking-[0.4em] hover:shadow-2xl hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-300">
                     Generate Forensic DNA
                 </button>
             </form>
         </div>
 
         <!-- Verify -->
-        <div class="glass-card rounded-[2.5rem] p-12 relative overflow-hidden group reveal"
+        <div class="glass-card rounded-[3rem] p-12 relative overflow-hidden group reveal"
             style="animation-delay: 0.6s;">
             <div
-                class="absolute top-0 right-0 w-64 h-64 bg-rose-500/5 blur-3xl rounded-full -mr-32 -mt-32 transition-all duration-700 group-hover:bg-rose-500/10">
+                class="absolute top-0 right-0 w-80 h-80 bg-rose-500/5 blur-[100px] rounded-full -mr-40 -mt-40 transition-all duration-700 group-hover:bg-rose-500/10">
             </div>
 
-            <div class="flex items-start justify-between mb-12">
+            <div class="flex items-start justify-between mb-16">
                 <div
-                    class="w-14 h-14 bg-slate-900/5 dark:bg-white/5 border border-slate-900/10 dark:border-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 group-hover:border-rose-500/50 group-hover:bg-rose-500/10">
-                    <svg class="w-7 h-7 text-slate-900 dark:text-white group-hover:text-rose-500 transition-colors"
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-16 h-16 bg-white dark:bg-white/10 rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500 border border-slate-200 dark:border-white/20">
+                    <svg class="w-8 h-8 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                 </div>
-                <span class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40">Module
-                    02</span>
+                <div class="text-right">
+                    <span
+                        class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40 block mb-1">Module</span>
+                    <span class="text-lg font-black text-slate-900 dark:text-white">02</span>
+                </div>
             </div>
 
             <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Integrity Audit</h2>
-            <p class="text-secondary mb-10 text-base leading-relaxed font-medium opacity-60">
+            <p class="text-secondary mb-12 text-base leading-relaxed font-medium opacity-60">
                 Compare a suspect sample against the registry to detect unauthorized mutations.
             </p>
 
@@ -125,60 +138,78 @@
                 {% csrf_token %}
                 <div class="relative group/input">
                     <input type="file" name="file" required class="block w-full text-xs text-secondary
-                        file:mr-6 file:py-3 file:px-8
-                        file:rounded-xl file:border-0
+                        file:mr-6 file:py-4 file:px-10
+                        file:rounded-2xl file:border-0
                         file:text-[10px] file:font-black file:uppercase file:tracking-widest
                         file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
-                        hover:file:bg-slate-800 dark:hover:file:bg-zinc-200 file:transition-all
-                        focus:outline-none bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-3
-                        group-hover/input:border-slate-300 dark:group-hover/input:border-white/20 transition-all duration-500
+                        hover:file:scale-105 file:transition-all
+                        focus:outline-none bg-slate-100 dark:bg-white/[0.03] rounded-[2rem] border border-slate-200 dark:border-white/5 p-4
+                        group-hover/input:border-rose-500/30 transition-all duration-500
                     " />
                 </div>
                 <button type="submit"
-                    class="btn-premium w-full py-5 bg-slate-900 text-white dark:bg-white dark:text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-slate-800 dark:hover:bg-zinc-200 active:scale-[0.98] shadow-xl">
+                    class="btn-premium w-full py-6 bg-slate-900 text-white dark:bg-white dark:text-black rounded-[2rem] font-black text-[11px] uppercase tracking-[0.4em] hover:shadow-2xl hover:shadow-rose-500/20 active:scale-[0.98] transition-all duration-300">
                     Initiate Forensic Scan
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- How it Works Section -->
-    <div class="mb-32 reveal" style="animation-delay: 0.7s;">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Forensic Methodology</h2>
-            <p class="text-secondary max-w-xl mx-auto font-medium opacity-60">Our multi-layered analysis engine provides
-                unprecedented visibility into file integrity.</p>
+    <!-- Methodology Section -->
+    <div class="mb-40 reveal" style="animation-delay: 0.7s;">
+        <div class="text-center mb-24">
+            <div class="text-[10px] font-black tracking-[0.5em] text-accent uppercase mb-4">Core Technology</div>
+            <h2 class="text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">Forensic Methodology</h2>
+            <p class="text-secondary max-w-2xl mx-auto text-lg font-medium opacity-60">Our multi-layered analysis engine
+                provides
+                unprecedented visibility into file integrity through advanced cryptographic heuristics.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="glass-card p-10 rounded-[2rem] border border-slate-200 dark:border-white/5">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div
+                class="glass-card p-12 rounded-[3rem] border border-slate-200 dark:border-white/5 group hover:bg-blue-500/[0.02]">
                 <div
-                    class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-8 border border-accent/20">
-                    <span class="text-accent font-black text-xl">01</span>
+                    class="w-14 h-14 bg-blue-500/10 rounded-2xl flex items-center justify-center mb-10 border border-blue-500/20 group-hover:scale-110 transition-transform duration-500">
+                    <svg class="w-7 h-7 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                    </svg>
                 </div>
-                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Granular Hashing</h3>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Granular Hashing</h3>
                 <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">We dissect files into 4KB
                     blocks, generating unique SHA-256 fingerprints for each segment to detect even single-bit mutations.
                 </p>
             </div>
 
-            <div class="glass-card p-10 rounded-[2rem] border border-slate-200 dark:border-white/5">
+            <div
+                class="glass-card p-12 rounded-[3rem] border border-slate-200 dark:border-white/5 group hover:bg-violet-500/[0.02]">
                 <div
-                    class="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center mb-8 border border-violet-500/20">
-                    <span class="text-violet-500 font-black text-xl">02</span>
+                    class="w-14 h-14 bg-violet-500/10 rounded-2xl flex items-center justify-center mb-10 border border-violet-500/20 group-hover:scale-110 transition-transform duration-500">
+                    <svg class="w-7 h-7 text-violet-600 dark:text-violet-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
                 </div>
-                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Entropy Profiling</h3>
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Entropy Profiling
+                </h3>
                 <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">By measuring Shannon Entropy
                     across blocks, we identify hidden encryption, compressed payloads, and anomalous data distributions.
                 </p>
             </div>
 
-            <div class="glass-card p-10 rounded-[2rem] border border-slate-200 dark:border-white/5">
+            <div
+                class="glass-card p-12 rounded-[3rem] border border-slate-200 dark:border-white/5 group hover:bg-rose-500/[0.02]">
                 <div
-                    class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center mb-8 border border-rose-500/20">
-                    <span class="text-rose-500 font-black text-xl">03</span>
+                    class="w-14 h-14 bg-rose-500/10 rounded-2xl flex items-center justify-center mb-10 border border-rose-500/20 group-hover:scale-110 transition-transform duration-500">
+                    <svg class="w-7 h-7 text-rose-600 dark:text-rose-400" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
                 </div>
-                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Heuristic Analysis
+                <h3 class="text-2xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Heuristic Analysis
                 </h3>
                 <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">Our decision matrix classifies
                     anomalies into Bit-Rot, Trojan Injections, or Ransomware based on structural and statistical
@@ -187,30 +218,28 @@
         </div>
     </div>
 
-
-
     <!-- Success Feedback -->
     {% if action == 'registered' and success %}
-    <div class="max-w-3xl mx-auto glass-card rounded-[3rem] p-16 text-center reveal">
+    <div class="max-w-4xl mx-auto glass-card rounded-[4rem] p-20 text-center reveal shadow-2xl">
         <div
-            class="w-20 h-20 rounded-full bg-success/10 border border-success/20 flex items-center justify-center mb-10 mx-auto">
-            <svg class="h-10 w-10 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="w-24 h-24 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-12 mx-auto animate-bounce">
+            <svg class="h-12 w-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
-        <h3 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">DNA Indexed</h3>
-        <p class="text-secondary mb-12 text-lg font-medium opacity-60">
+        <h3 class="text-5xl font-black text-slate-900 dark:text-white mb-6 tracking-tight">DNA Indexed</h3>
+        <p class="text-secondary mb-16 text-xl font-medium opacity-60">
             Cryptographic baseline for <span class="text-slate-900 dark:text-white font-bold">{{ profile.file_name
                 }}</span> is now active.
         </p>
 
         <div
-            class="bg-slate-100 dark:bg-black/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 relative overflow-hidden group/code">
-            <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
-            <span class="text-[9px] uppercase tracking-[0.5em] text-secondary font-black block mb-4 opacity-40">Master
+            class="bg-slate-900 dark:bg-black/50 rounded-[2rem] p-10 border border-slate-800 dark:border-white/5 relative overflow-hidden group/code">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent"></div>
+            <span class="text-[10px] uppercase tracking-[0.5em] text-secondary font-black block mb-6 opacity-40">Master
                 Fingerprint</span>
             <code
-                class="font-mono text-xs text-slate-900 dark:text-white break-all select-all block leading-relaxed tracking-widest">{{ profile.full_hash }}</code>
+                class="font-mono text-sm text-blue-400 dark:text-blue-300 break-all select-all block leading-relaxed tracking-widest">{{ profile.full_hash }}</code>
         </div>
     </div>
     {% endif %}
