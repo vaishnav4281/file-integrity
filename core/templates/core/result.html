@@ -594,7 +594,36 @@
         });
 
         function handlePrint() {
-            const element = document.querySelector('.max-w-\\[1400px\\]');
+            const originalElement = document.querySelector('.max-w-\\[1400px\\]');
+
+            // Clone the element to avoid messing with the live UI
+            const element = originalElement.cloneNode(true);
+
+            // Create a hidden container for the clone
+            const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            container.style.width = '1400px'; // Force a fixed width for the PDF
+            document.body.appendChild(container);
+            container.appendChild(element);
+
+            // Apply PDF specific styles to the clone
+            element.classList.add('pdf-mode');
+
+            // Handle canvas elements (they don't clone their content automatically)
+            const originalCanvases = originalElement.querySelectorAll('canvas');
+            const clonedCanvases = element.querySelectorAll('canvas');
+
+            originalCanvases.forEach((canvas, index) => {
+                const dataURL = canvas.toDataURL();
+                const img = document.createElement('img');
+                img.src = dataURL;
+                img.style.width = '100%';
+                img.style.maxHeight = '400px';
+                clonedCanvases[index].parentNode.replaceChild(img, clonedCanvases[index]);
+            });
+
             const opt = {
                 margin: [10, 10, 10, 10],
                 filename: 'Forensic_Report_{{ file_name }}.pdf',
@@ -603,11 +632,11 @@
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            // Temporarily adjust styles for PDF generation
-            element.classList.add('pdf-mode');
-
             html2pdf().set(opt).from(element).save().then(() => {
-                element.classList.remove('pdf-mode');
+                document.body.removeChild(container);
+            }).catch(err => {
+                console.error('PDF Generation Error:', err);
+                document.body.removeChild(container);
             });
         }
     </script>
