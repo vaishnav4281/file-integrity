@@ -134,14 +134,14 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Total
                             Blocks</p>
-                        <p class="text-4xl font-black text-indigo-600 dark:text-pastel-blue font-mono">{{
+                        <p class="text-4xl font-black text-indigo-700 dark:text-cyan-400 font-mono">{{
                             result.total_chunks }}</p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
                             Mismatches</p>
                         <p
-                            class="text-4xl font-black {% if result.mismatch_count > 0 %}text-rose-500 dark:text-pastel-pink{% else %}text-emerald-500 dark:text-pastel-green{% endif %} font-mono">
+                            class="text-4xl font-black {% if result.mismatch_count > 0 %}text-rose-600 dark:text-rose-400{% else %}text-emerald-600 dark:text-emerald-400{% endif %} font-mono">
                             {{ result.mismatch_count }}</p>
                     </div>
                 </div>
@@ -164,10 +164,10 @@
                     <div>
                         <p class="text-[11px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Size
                             Delta</p>
-                        <p class="text-4xl font-black text-blue-600 dark:text-pastel-blue font-mono tracking-tighter">
+                        <p class="text-4xl font-black text-blue-700 dark:text-sky-400 font-mono tracking-tighter">
                             {% if result.size_diff > 0 %}
-                            <span class="text-purple-500 dark:text-pastel-purple">+</span>
-                            {% elif result.size_diff < 0 %} <span class="text-rose-500 dark:text-pastel-pink">-</span>
+                            <span class="text-purple-600 dark:text-fuchsia-400">+</span>
+                            {% elif result.size_diff < 0 %} <span class="text-rose-600 dark:text-rose-400">-</span>
                                 {% endif %}
                                 {{ result.size_diff_abs|filesizeformat }}
                         </p>
@@ -175,7 +175,7 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
                             Algorithm</p>
-                        <p class="text-4xl font-black text-purple-600 dark:text-pastel-purple font-mono">SHA256</p>
+                        <p class="text-4xl font-black text-purple-700 dark:text-fuchsia-400 font-mono">SHA256</p>
                     </div>
                 </div>
             </div>
@@ -203,7 +203,7 @@
                         <p class="text-[9px] font-black text-secondary uppercase tracking-widest opacity-40">Current
                             Sample</p>
                         <div
-                            class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-rose-500/30 text-rose-600 dark:text-pastel-pink{% else %}border-emerald-500/30 text-emerald-600 dark:text-pastel-green{% endif %} font-mono text-xs break-all tracking-widest">
+                            class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-rose-500/30 text-rose-700 dark:text-rose-400{% else %}border-emerald-500/30 text-emerald-700 dark:text-emerald-400{% endif %} font-mono text-xs break-all tracking-widest">
                             {{ result.header_analysis.uploaded }}
                         </div>
                     </div>
@@ -325,7 +325,7 @@
                                 <div
                                     class="w-1.5 h-10 rounded-full {% if item.status == 'MATCH' %}bg-success{% elif item.status == 'MISMATCH' %}bg-rose{% else %}bg-violet{% endif %} opacity-40 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <span class="font-mono text-lg font-black text-violet-600 dark:text-pastel-purple">#{{
+                                <span class="font-mono text-lg font-black text-violet-700 dark:text-fuchsia-400">#{{
                                     item.chunk_index }}</span>
                             </div>
                         </td>

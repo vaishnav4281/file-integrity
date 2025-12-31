@@ -1,4 +1,4 @@
-# 🛡️ Sentinel: Autonomous File Integrity & Forensic Auditor
+# 🛡️ Block-Level File Integrity Verification for Secure and Private Systems
 
 **Sentinel** is a next-generation file integrity verification system designed for privacy, precision, and forensic depth. Unlike traditional checksum tools that only say "Match" or "Mismatch," Sentinel analyzes the *structure* of the change to determine if it was caused by **Bit-Rot**, **Cyberattacks (Ransomware/Trojans)**, or **Benign Modifications**.
 
