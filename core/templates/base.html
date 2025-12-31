@@ -62,32 +62,49 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000;
-            color: #ffffff;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             letter-spacing: -0.01em;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .glass {
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
+        /* Light Mode Glass */
         .glass-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(40px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
         .glass-card:hover {
+            border-color: rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark Mode Glass */
+        .dark .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark .glass-card:hover {
             border-color: rgba(255, 255, 255, 0.15);
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            transform: translateY(-5px);
             box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .dark .glass {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .text-gradient {
@@ -193,7 +210,8 @@
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col selection:bg-accent selection:text-white">
+<body
+    class="min-h-screen flex flex-col selection:bg-accent selection:text-white bg-zinc-50 dark:bg-black text-slate-900 dark:text-white transition-colors duration-300">
     <div class="bg-mesh"></div>
     <div class="grid-overlay"></div>
     <div class="noise"></div>
@@ -204,22 +222,75 @@
             <a href="/" class="flex items-center gap-4 group cursor-pointer">
                 <div
                     class="w-10 h-10 bg-white rounded-lg flex items-center justify-center transition-transform duration-500 group-hover:rotate-12">
-                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 text-slate-900 dark:text-black" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                 </div>
                 <div>
-                    <span class="text-xl font-black tracking-tighter text-white">FORΞNSIC</span>
+                    <span class="text-xl font-black tracking-tighter text-slate-900 dark:text-white">FORΞNSIC</span>
                     <span class="text-xs font-bold tracking-[0.3em] text-accent block -mt-1">INTELLIGENCE</span>
                 </div>
             </a>
 
             <div class="flex items-center gap-8">
-
+                <button id="theme-toggle"
+                    class="p-2 rounded-full bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-white hover:bg-slate-300 dark:hover:bg-white/20 transition-all duration-300 focus:outline-none">
+                    <!-- Sun Icon -->
+                    <svg id="theme-toggle-light-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    <!-- Moon Icon -->
+                    <svg id="theme-toggle-dark-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </nav>
+
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // Check local storage or system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', function () {
+            // Toggle icons
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // If is set in local storage
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
 
     <!-- Main Content -->
     <main class="flex-grow relative z-10">

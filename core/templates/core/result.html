@@ -25,7 +25,8 @@
                     <span
                         class="w-2.5 h-2.5 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-success shadow-[0_0_20px_rgba(16,185,129,0.5)]{% else %}bg-danger shadow-[0_0_20px_rgba(239,68,68,0.5)]{% endif %}"></span>
                     <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{% endif %}
+                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{%
+                        endif %}
                     </span>
                 </div>
                 <div class="text-[10px] font-bold tracking-widest text-secondary uppercase opacity-50">
@@ -91,10 +92,10 @@
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span
-                            class="text-8xl font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">{{
+                            class="text-8xl font-black text-slate-900 dark:text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">{{
                             result.confidence_score|default:"0" }}%</span>
                         <span
-                            class="text-[11px] font-black text-secondary uppercase tracking-[0.5em] opacity-50 mt-2">Confidence
+                            class="text-[11px] font-black text-slate-500 dark:text-secondary uppercase tracking-[0.5em] opacity-50 mt-2">Confidence
                             Score</span>
                     </div>
                 </div>
