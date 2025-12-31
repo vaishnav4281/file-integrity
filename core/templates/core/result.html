@@ -29,8 +29,7 @@
                 <span
                     class="w-2 h-2 rounded-full animate-pulse {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]{% else %}bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.6)]{% endif %}"></span>
                 <span class="text-xs font-bold tracking-wide text-slate-900 dark:text-white">
-                    {% if result.result_type == "NO_CHANGE" %}✓ Integrity Verified{% else %}⚠ Security Breach Detected{%
-                    endif %}
+                    {% if result.result_type == "NO_CHANGE" %} Integrity Verified{% else %} Security Breach Detected{% endif %}
                 </span>
             </div>
         </div>
@@ -657,7 +656,7 @@
                             <p class="text-[9px] font-bold text-gray-500 uppercase tracking-wider mb-1">Status</p>
                             <p
                                 class="font-black text-sm {% if result.result_type == 'NO_CHANGE' %}text-emerald-600{% else %}text-rose-600{% endif %} uppercase">
-                                {% if result.result_type == "NO_CHANGE" %}✓ Verified{% else %}⚠ Breach{% endif %}
+                                {% if result.result_type == "NO_CHANGE" %} Verified{% else %} Breach{% endif %}
                             </p>
                         </div>
                         <div class="bg-white p-3 rounded-lg border border-gray-200">
@@ -688,8 +687,7 @@
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <p class="text-[9px] font-bold text-gray-500 uppercase tracking-wider mb-2">Size Delta</p>
                     <p class="font-mono font-bold text-purple-600">
-                        {% if result.size_diff > 0 %}+{% elif result.size_diff < 0 %}-{% endif %}{{
-                            result.size_diff_abs|filesizeformat }} </p>
+                        {% if result.size_diff > 0 %}+{% elif result.size_diff < 0 %}-{% endif %}{{ result.size_diff_abs|filesizeformat }} </p>
                 </div>
             </div>
         </div>
