@@ -6,7 +6,7 @@
     <!-- Hero Section -->
     <div class="text-center mb-32 relative">
         <div
-            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 blur-[120px] rounded-full -z-10">
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-accent/10 via-violet-500/10 to-rose-500/10 blur-[120px] rounded-full -z-10 animate-pulse-slow">
         </div>
 
         <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/10 mb-12 reveal"
@@ -19,7 +19,8 @@
         <h1 class="text-6xl md:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.85] reveal"
             style="animation-delay: 0.2s;">
             DECODE THE <br />
-            <span class="text-gradient">UNSEEN.</span>
+            <span
+                class="bg-clip-text text-transparent bg-gradient-to-r from-accent via-violet-500 to-rose-500 animate-gradient-x">UNSEEN.</span>
         </h1>
 
         <p class="text-lg md:text-xl text-secondary max-w-2xl mx-auto leading-relaxed font-medium mb-16 reveal opacity-80"
@@ -29,13 +30,18 @@
         </p>
 
         <div class="flex flex-wrap justify-center gap-6 reveal" style="animation-delay: 0.4s;">
-            <div class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
-                <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">Entropy Analysis</span>
+            <div
+                class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-accent/5 transition-colors duration-300">
+                <span
+                    class="text-[10px] font-bold tracking-widest text-secondary uppercase group-hover:text-accent">Entropy
+                    Analysis</span>
             </div>
-            <div class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+            <div
+                class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 hover:border-violet-500/30 hover:bg-violet-500/5 transition-colors duration-300">
                 <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">SHA-256 Granular</span>
             </div>
-            <div class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+            <div
+                class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-300">
                 <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">Heuristic Threat
                     Intel</span>
             </div>
@@ -54,7 +60,7 @@
 
             <div class="flex items-start justify-between mb-12">
                 <div
-                    class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-white/10 group-hover:scale-110 transition-transform duration-500">
+                    class="w-14 h-14 bg-gradient-to-br from-white to-zinc-200 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500 border border-white/20">
                     <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
@@ -98,8 +104,9 @@
 
             <div class="flex items-start justify-between mb-12">
                 <div
-                    class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
-                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 group-hover:border-rose-500/50 group-hover:bg-rose-500/10">
+                    <svg class="w-7 h-7 text-white group-hover:text-rose-500 transition-colors" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>

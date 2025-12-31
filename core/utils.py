@@ -218,11 +218,11 @@ def compare_hashes(stored_profile, uploaded_file_data):
             
             entropy_change = round(uploaded_e - stored_e, 4)
             if entropy_change > 0:
-                change_summary = f"+{abs(entropy_change):.2f} (Higher)"
+                change_summary = f"+{abs(entropy_change):.2f} bits (Higher)"
             elif entropy_change < 0:
-                change_summary = f"-{abs(entropy_change):.2f} (Lower)"
+                change_summary = f"-{abs(entropy_change):.2f} bits (Lower)"
             else:
-                change_summary = "0.00 (Stable)"
+                change_summary = "0.00 bits (Stable)"
 
             start_byte = i * CHUNK_SIZE
             end_byte = start_byte + CHUNK_SIZE
