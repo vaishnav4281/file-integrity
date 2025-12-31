@@ -16,7 +16,8 @@
                     ID: {{ profile.id|default:"AUTOGEN" }}
                 </div>
             </div>
-            <h1 class="text-6xl md:text-8xl font-black text-slate-900 dark:text-white tracking-tighter leading-none">
+            <h1
+                class="text-6xl md:text-8xl font-black bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-white dark:via-pastel-blue dark:to-pastel-purple tracking-tighter leading-none">
                 {{ file_name }}
             </h1>
             <div class="flex items-center gap-6">
@@ -133,8 +134,8 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Total
                             Blocks</p>
-                        <p class="text-4xl font-black text-slate-900 dark:text-white font-mono">{{ result.total_chunks
-                            }}</p>
+                        <p class="text-4xl font-black text-indigo-600 dark:text-pastel-blue font-mono">{{
+                            result.total_chunks }}</p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
@@ -163,10 +164,10 @@
                     <div>
                         <p class="text-[11px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Size
                             Delta</p>
-                        <p class="text-4xl font-black text-slate-900 dark:text-white font-mono tracking-tighter">
+                        <p class="text-4xl font-black text-blue-600 dark:text-pastel-blue font-mono tracking-tighter">
                             {% if result.size_diff > 0 %}
-                            <span class="text-pastel-purple">+</span>
-                            {% elif result.size_diff < 0 %} <span class="text-pastel-pink">-</span>
+                            <span class="text-purple-500 dark:text-pastel-purple">+</span>
+                            {% elif result.size_diff < 0 %} <span class="text-rose-500 dark:text-pastel-pink">-</span>
                                 {% endif %}
                                 {{ result.size_diff_abs|filesizeformat }}
                         </p>
@@ -174,7 +175,7 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
                             Algorithm</p>
-                        <p class="text-4xl font-black text-slate-900 dark:text-white font-mono">SHA256</p>
+                        <p class="text-4xl font-black text-purple-600 dark:text-pastel-purple font-mono">SHA256</p>
                     </div>
                 </div>
             </div>
@@ -324,7 +325,7 @@
                                 <div
                                     class="w-1.5 h-10 rounded-full {% if item.status == 'MATCH' %}bg-success{% elif item.status == 'MISMATCH' %}bg-rose{% else %}bg-violet{% endif %} opacity-40 group-hover:opacity-100 transition-opacity">
                                 </div>
-                                <span class="font-mono text-lg font-black text-slate-900 dark:text-white">#{{
+                                <span class="font-mono text-lg font-black text-violet-600 dark:text-pastel-purple">#{{
                                     item.chunk_index }}</span>
                             </div>
                         </td>
