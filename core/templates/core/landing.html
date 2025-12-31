@@ -9,14 +9,14 @@
             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-accent/10 via-violet-500/10 to-rose-500/10 blur-[120px] rounded-full -z-10 animate-pulse-slow">
         </div>
 
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-white/5 rounded-full border border-white/10 mb-12 reveal"
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-900/5 dark:bg-white/5 rounded-full border border-slate-900/10 dark:border-white/10 mb-12 reveal"
             style="animation-delay: 0.1s;">
             <span class="text-[9px] font-black tracking-[0.4em] text-accent uppercase">Protocol v4.0.2</span>
-            <div class="w-1 h-1 rounded-full bg-white/20"></div>
+            <div class="w-1 h-1 rounded-full bg-slate-900/20 dark:bg-white/20"></div>
             <span class="text-[9px] font-black tracking-[0.4em] text-secondary uppercase">Quantum-Safe</span>
         </div>
 
-        <h1 class="text-6xl md:text-9xl font-black tracking-tighter text-white mb-8 leading-[0.85] reveal"
+        <h1 class="text-6xl md:text-9xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[0.85] reveal"
             style="animation-delay: 0.2s;">
             DECODE THE <br />
             <span
@@ -31,17 +31,17 @@
 
         <div class="flex flex-wrap justify-center gap-6 reveal" style="animation-delay: 0.4s;">
             <div
-                class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 hover:border-accent/30 hover:bg-accent/5 transition-colors duration-300">
+                class="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-accent/30 hover:bg-accent/5 transition-colors duration-300 shadow-sm dark:shadow-none">
                 <span
                     class="text-[10px] font-bold tracking-widest text-secondary uppercase group-hover:text-accent">Entropy
                     Analysis</span>
             </div>
             <div
-                class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 hover:border-violet-500/30 hover:bg-violet-500/5 transition-colors duration-300">
+                class="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-violet-500/30 hover:bg-violet-500/5 transition-colors duration-300 shadow-sm dark:shadow-none">
                 <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">SHA-256 Granular</span>
             </div>
             <div
-                class="flex items-center gap-3 px-6 py-3 bg-white/5 rounded-2xl border border-white/5 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-300">
+                class="flex items-center gap-3 px-6 py-3 bg-white/50 dark:bg-white/5 rounded-2xl border border-slate-200 dark:border-white/5 hover:border-rose-500/30 hover:bg-rose-500/5 transition-colors duration-300 shadow-sm dark:shadow-none">
                 <span class="text-[10px] font-bold tracking-widest text-secondary uppercase">Heuristic Threat
                     Intel</span>
             </div>
@@ -60,8 +60,8 @@
 
             <div class="flex items-start justify-between mb-12">
                 <div
-                    class="w-14 h-14 bg-gradient-to-br from-white to-zinc-200 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500 border border-white/20">
-                    <svg class="w-7 h-7 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-14 h-14 bg-gradient-to-br from-white to-slate-100 dark:from-white dark:to-zinc-200 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(0,0,0,0.1)] dark:shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500 border border-slate-200 dark:border-white/20">
+                    <svg class="w-7 h-7 text-slate-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
                 </div>
@@ -69,7 +69,7 @@
                     01</span>
             </div>
 
-            <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Baseline Registry</h2>
+            <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Baseline Registry</h2>
             <p class="text-secondary mb-10 text-base leading-relaxed font-medium opacity-60">
                 Establish a cryptographic immutable record of your file's structural integrity.
             </p>
@@ -82,14 +82,14 @@
                         file:mr-6 file:py-3 file:px-8
                         file:rounded-xl file:border-0
                         file:text-[10px] file:font-black file:uppercase file:tracking-widest
-                        file:bg-white file:text-black
-                        hover:file:bg-zinc-200 file:transition-all
-                        focus:outline-none bg-white/[0.02] rounded-2xl border border-white/5 p-3
-                        group-hover/input:border-white/20 transition-all duration-500
+                        file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
+                        hover:file:bg-slate-800 dark:hover:file:bg-zinc-200 file:transition-all
+                        focus:outline-none bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-3
+                        group-hover/input:border-slate-300 dark:group-hover/input:border-white/20 transition-all duration-500
                     " />
                 </div>
                 <button type="submit"
-                    class="btn-premium w-full py-5 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-zinc-200 active:scale-[0.98] shadow-2xl">
+                    class="btn-premium w-full py-5 bg-slate-900 text-white dark:bg-white dark:text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-slate-800 dark:hover:bg-zinc-200 active:scale-[0.98] shadow-xl">
                     Generate Forensic DNA
                 </button>
             </form>
@@ -104,9 +104,9 @@
 
             <div class="flex items-start justify-between mb-12">
                 <div
-                    class="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 group-hover:border-rose-500/50 group-hover:bg-rose-500/10">
-                    <svg class="w-7 h-7 text-white group-hover:text-rose-500 transition-colors" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
+                    class="w-14 h-14 bg-slate-900/5 dark:bg-white/5 border border-slate-900/10 dark:border-white/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500 group-hover:border-rose-500/50 group-hover:bg-rose-500/10">
+                    <svg class="w-7 h-7 text-slate-900 dark:text-white group-hover:text-rose-500 transition-colors"
+                        fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -115,7 +115,7 @@
                     02</span>
             </div>
 
-            <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Integrity Audit</h2>
+            <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Integrity Audit</h2>
             <p class="text-secondary mb-10 text-base leading-relaxed font-medium opacity-60">
                 Compare a suspect sample against the registry to detect unauthorized mutations.
             </p>
@@ -128,14 +128,14 @@
                         file:mr-6 file:py-3 file:px-8
                         file:rounded-xl file:border-0
                         file:text-[10px] file:font-black file:uppercase file:tracking-widest
-                        file:bg-white file:text-black
-                        hover:file:bg-zinc-200 file:transition-all
-                        focus:outline-none bg-white/[0.02] rounded-2xl border border-white/5 p-3
-                        group-hover/input:border-white/20 transition-all duration-500
+                        file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
+                        hover:file:bg-slate-800 dark:hover:file:bg-zinc-200 file:transition-all
+                        focus:outline-none bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-3
+                        group-hover/input:border-slate-300 dark:group-hover/input:border-white/20 transition-all duration-500
                     " />
                 </div>
                 <button type="submit"
-                    class="btn-premium w-full py-5 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-zinc-200 active:scale-[0.98] shadow-2xl">
+                    class="btn-premium w-full py-5 bg-slate-900 text-white dark:bg-white dark:text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] hover:bg-slate-800 dark:hover:bg-zinc-200 active:scale-[0.98] shadow-xl">
                     Initiate Forensic Scan
                 </button>
             </form>
@@ -145,40 +145,41 @@
     <!-- How it Works Section -->
     <div class="mb-32 reveal" style="animation-delay: 0.7s;">
         <div class="text-center mb-16">
-            <h2 class="text-4xl font-black text-white mb-4 tracking-tight">Forensic Methodology</h2>
+            <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Forensic Methodology</h2>
             <p class="text-secondary max-w-xl mx-auto font-medium opacity-60">Our multi-layered analysis engine provides
                 unprecedented visibility into file integrity.</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="glass-card p-10 rounded-[2rem] border border-white/5">
+            <div class="glass-card p-10 rounded-[2rem] border border-slate-200 dark:border-white/5">
                 <div
                     class="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center mb-8 border border-accent/20">
                     <span class="text-accent font-black text-xl">01</span>
                 </div>
-                <h3 class="text-xl font-black text-white mb-4 tracking-tight">Granular Hashing</h3>
+                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Granular Hashing</h3>
                 <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">We dissect files into 4KB
                     blocks, generating unique SHA-256 fingerprints for each segment to detect even single-bit mutations.
                 </p>
             </div>
 
-            <div class="glass-card p-10 rounded-[2rem] border border-white/5">
+            <div class="glass-card p-10 rounded-[2rem] border border-slate-200 dark:border-white/5">
                 <div
                     class="w-12 h-12 bg-violet-500/10 rounded-xl flex items-center justify-center mb-8 border border-violet-500/20">
                     <span class="text-violet-500 font-black text-xl">02</span>
                 </div>
-                <h3 class="text-xl font-black text-white mb-4 tracking-tight">Entropy Profiling</h3>
+                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Entropy Profiling</h3>
                 <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">By measuring Shannon Entropy
                     across blocks, we identify hidden encryption, compressed payloads, and anomalous data distributions.
                 </p>
             </div>
 
-            <div class="glass-card p-10 rounded-[2rem] border border-white/5">
+            <div class="glass-card p-10 rounded-[2rem] border border-slate-200 dark:border-white/5">
                 <div
                     class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center mb-8 border border-rose-500/20">
                     <span class="text-rose-500 font-black text-xl">03</span>
                 </div>
-                <h3 class="text-xl font-black text-white mb-4 tracking-tight">Heuristic Analysis</h3>
+                <h3 class="text-xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Heuristic Analysis
+                </h3>
                 <p class="text-sm text-secondary leading-relaxed font-medium opacity-60">Our decision matrix classifies
                     anomalies into Bit-Rot, Trojan Injections, or Ransomware based on structural and statistical
                     signatures.</p>
@@ -197,17 +198,19 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
             </svg>
         </div>
-        <h3 class="text-4xl font-black text-white mb-4 tracking-tight">DNA Indexed</h3>
+        <h3 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">DNA Indexed</h3>
         <p class="text-secondary mb-12 text-lg font-medium opacity-60">
-            Cryptographic baseline for <span class="text-white font-bold">{{ profile.file_name }}</span> is now active.
+            Cryptographic baseline for <span class="text-slate-900 dark:text-white font-bold">{{ profile.file_name
+                }}</span> is now active.
         </p>
 
-        <div class="bg-black/50 rounded-2xl p-8 border border-white/5 relative overflow-hidden group/code">
+        <div
+            class="bg-slate-100 dark:bg-black/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 relative overflow-hidden group/code">
             <div class="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent"></div>
             <span class="text-[9px] uppercase tracking-[0.5em] text-secondary font-black block mb-4 opacity-40">Master
                 Fingerprint</span>
             <code
-                class="font-mono text-xs text-white break-all select-all block leading-relaxed tracking-widest">{{ profile.full_hash }}</code>
+                class="font-mono text-xs text-slate-900 dark:text-white break-all select-all block leading-relaxed tracking-widest">{{ profile.full_hash }}</code>
         </div>
     </div>
     {% endif %}
