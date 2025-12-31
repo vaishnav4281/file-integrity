@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="max-w-[1400px] mx-auto px-6 py-16 reveal">
+<div class="max-w-[1400px] mx-auto px-6 py-16">
 
     <!-- 1. Report Header -->
     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 mb-20 no-print">
@@ -593,37 +593,237 @@
             });
         });
 
+    <!-- Hidden PDF Report Template -->
+    <div id="pdf-report-template" class="hidden">
+        <div class="p-10 bg-white text-black font-sans max-w-[800px] mx-auto">
+            <!-- Header -->
+            <div class="flex justify-between items-end border-b-2 border-black pb-6 mb-8">
+                <div>
+                    <h1 class="text-3xl font-black uppercase tracking-tighter mb-1">Forensic Intelligence</h1>
+                    <p class="text-xs font-bold text-gray-600 uppercase tracking-[0.3em]">File Integrity Verification Report</p>
+                </div>
+                <div class="text-right text-[10px] font-mono text-gray-500">
+                    <p class="mb-1">Generated: {% now "Y-m-d H:i:s" %} UTC</p>
+                    <p>Ref ID: {{ profile.id|default:"AUTOGEN" }}</p>
+                </div>
+            </div>
+
+            <!-- Executive Summary -->
+            <div class="mb-10">
+                <h2 class="text-sm font-black uppercase border-b border-gray-200 pb-2 mb-6 tracking-widest">Executive Summary</h2>
+                <div class="grid grid-cols-2 gap-y-6 gap-x-8 text-sm">
+                    <div>
+                        <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-1">File Name</p>
+                        <p class="font-bold break-all">{{ file_name }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-1">Integrity Status</p>
+                        <p class="font-black {% if result.result_type == 'NO_CHANGE' %}text-emerald-600{% else %}text-rose-600{% endif %} uppercase tracking-wide">
+                            {% if result.result_type == "NO_CHANGE" %}VERIFIED (Match){% else %}SECURITY BREACH (Mismatch){% endif %}
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-1">Confidence Score</p>
+                        <p class="font-black text-xl">{{ result.confidence_score|default:0 }}%</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-500 text-[10px] uppercase tracking-wider mb-1">Algorithm</p>
+                        <p class="font-mono font-bold">SHA-256</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Analysis -->
+            <div class="mb-10">
+                <h2 class="text-sm font-black uppercase border-b border-gray-200 pb-2 mb-6 tracking-widest">Header Analysis</h2>
+                <div class="bg-gray-50 p-6 rounded-lg border border-gray-200 text-xs font-mono">
+                    <div class="mb-4">
+                        <span class="block font-bold text-gray-500 mb-1 uppercase text-[10px]">Stored Baseline</span>
+                        <span class="break-all block bg-white p-2 border border-gray-200 rounded">{{ result.header_analysis.stored }}</span>
+                    </div>
+                    <div>
+                        <span class="block font-bold text-gray-500 mb-1 uppercase text-[10px]">Current Sample</span>
+                        <span class="break-all block bg-white p-2 border border-gray-200 rounded">{{ result.header_analysis.uploaded }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Analysis -->
+            <div class="mb-10 break-inside-avoid">
+                <h2 class="text-sm font-black uppercase border-b border-gray-200 pb-2 mb-6 tracking-widest">Entropy Analysis</h2>
+                <div id="pdf-chart-container" class="w-full border border-gray-100 flex items-center justify-center bg-gray-50 rounded-lg p-4">
+                    <!-- Chart Image will be injected here -->
+                </div>
+            </div>
+
+            <!-- Detailed Trace -->
+            <div class="mb-10">
+                <h2 class="text-sm font-black uppercase border-b border-gray-200 pb-2 mb-6 tracking-widest">Forensic Trace Log</h2>
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-gray-100 border-b border-gray-300">
+                            <th class="p-3 font-bold uppercase text-[10px] tracking-wider">Block</th>
+                            <th class="p-3 font-bold uppercase text-[10px] tracking-wider">Byte Range</th>
+                            <th class="p-3 font-bold uppercase text-[10px] tracking-wider">Entropy Δ</th>
+                            <th class="p-3 font-bold uppercase text-[10px] tracking-wider">Analysis</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in result.full_analysis|slice:":50" %}
+                        <tr class="border-b border-gray-100 hover:bg-gray-50">
+                            <td class="p-3 font-mono font-bold text-gray-700">#{{ item.chunk_index }}</td>
+                            <td class="p-3 font-mono text-gray-500">{{ item.byte_range }}</td>
+                            <td class="p-3 font-mono font-bold {{ item.entropy_delta|yesno:'text-rose-600,text-gray-600' }}">
+                                {{ item.change_summary }}
+                            </td>
+                            <td class="p-3">
+                                <span class="font-bold block mb-1">{{ item.anomaly_type }}</span>
+                                <span class="text-gray-500 text-[10px] leading-tight block">{{ item.threat_description }}</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% if result.total_chunks > 50 %}
+                <div class="p-4 bg-gray-50 text-center border-t border-gray-200 mt-4 rounded-lg">
+                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">
+                        Report truncated. {{ result.total_chunks|add:"-50" }} additional blocks analyzed.
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center text-[10px] text-gray-400 mt-12 pt-6 border-t border-gray-100 uppercase tracking-widest">
+                Generated by Forensic Intelligence Suite • Confidential Document
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chartInstance = null;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('entropyChart').getContext('2d');
+            const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
+            const uploadedEntropy = JSON.parse(document.getElementById('uploaded-entropy-data').textContent);
+            const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(165, 216, 255, 0.4)'); // pastel-blue
+            gradient.addColorStop(1, 'rgba(165, 216, 255, 0)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Baseline',
+                            data: storedEntropy,
+                            borderColor: '#f97316', // Orange-500
+                            backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            pointRadius: 0,
+                            tension: 0.4,
+                            order: 2
+                        },
+                        {
+                            label: 'Current',
+                            data: uploadedEntropy,
+                            borderColor: '#2563eb', // Blue-600
+                            backgroundColor: gradient,
+                            fill: true,
+                            borderWidth: 3,
+                            pointRadius: 0,
+                            tension: 0.4,
+                            order: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { mode: 'index', intersect: false },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                            backdropFilter: 'blur(20px)',
+                            titleColor: '#ffffff',
+                            bodyColor: '#71717a',
+                            titleFont: { family: 'Inter', size: 12, weight: '900' },
+                            bodyFont: { family: 'JetBrains Mono', size: 10 },
+                            padding: 16,
+                            cornerRadius: 12,
+                            borderColor: 'rgba(255, 255, 255, 0.1)',
+                            borderWidth: 1,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: 'JetBrains Mono', size: 8 },
+                                color: 'rgba(255, 255, 255, 0.2)',
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: 20
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            max: 8,
+                            grid: { color: 'rgba(255, 255, 255, 0.03)', drawBorder: false },
+                            ticks: {
+                                font: { family: 'JetBrains Mono', size: 9 },
+                                color: 'rgba(255, 255, 255, 0.3)',
+                                padding: 20,
+                                stepSize: 2
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
         function handlePrint() {
-            const originalElement = document.querySelector('.max-w-\\[1400px\\]');
-
-            // Clone the element to avoid messing with the live UI
-            const element = originalElement.cloneNode(true);
-
-            // Create a hidden container for the clone
+            // 1. Get the hidden PDF template
+            const template = document.getElementById('pdf-report-template');
+            
+            // 2. Clone it to avoid modifying the DOM source
+            const element = template.cloneNode(true);
+            element.classList.remove('hidden'); // Make the clone visible
+            
+            // 3. Create a hidden container for the clone
             const container = document.createElement('div');
             container.style.position = 'absolute';
             container.style.left = '-9999px';
             container.style.top = '0';
-            container.style.width = '1400px'; // Force a fixed width for the PDF
+            container.style.width = '800px'; // Fixed A4 width
             document.body.appendChild(container);
             container.appendChild(element);
 
-            // Apply PDF specific styles to the clone
-            element.classList.add('pdf-mode');
-
-            // Handle canvas elements (they don't clone their content automatically)
-            const originalCanvases = originalElement.querySelectorAll('canvas');
-            const clonedCanvases = element.querySelectorAll('canvas');
-
-            originalCanvases.forEach((canvas, index) => {
-                const dataURL = canvas.toDataURL();
+            // 4. Capture Chart Image and Inject
+            const originalCanvas = document.getElementById('entropyChart');
+            if (originalCanvas) {
+                const dataURL = originalCanvas.toDataURL('image/png', 1.0);
                 const img = document.createElement('img');
                 img.src = dataURL;
                 img.style.width = '100%';
-                img.style.maxHeight = '400px';
-                clonedCanvases[index].parentNode.replaceChild(img, clonedCanvases[index]);
-            });
+                img.style.borderRadius = '8px';
+                
+                const chartContainer = element.querySelector('#pdf-chart-container');
+                if (chartContainer) {
+                    chartContainer.innerHTML = ''; // Clear placeholder
+                    chartContainer.appendChild(img);
+                }
+            }
 
+            // 5. Generate PDF
             const opt = {
                 margin: [10, 10, 10, 10],
                 filename: 'Forensic_Report_{{ file_name }}.pdf',
