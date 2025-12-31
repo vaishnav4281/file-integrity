@@ -32,6 +32,7 @@
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
                         'float': 'float 6s ease-in-out infinite',
                         'reveal': 'reveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards',
+                        'shimmer': 'shimmer 2s infinite',
                     },
                     keyframes: {
                         float: {
@@ -41,6 +42,10 @@
                         reveal: {
                             '0%': { opacity: '0', transform: 'translateY(10px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        shimmer: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '100%': { transform: 'translateX(100%)' }
                         }
                     }
                 }
