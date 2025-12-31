@@ -29,7 +29,8 @@
                 <span
                     class="w-2 h-2 rounded-full animate-pulse {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]{% else %}bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.6)]{% endif %}"></span>
                 <span class="text-xs font-bold tracking-wide text-slate-900 dark:text-white">
-                    {% if result.result_type == "NO_CHANGE" %}✓ Integrity Verified{% else %}⚠ Security Breach Detected{% endif %}
+                    {% if result.result_type == "NO_CHANGE" %}✓ Integrity Verified{% else %}⚠ Security Breach Detected{%
+                    endif %}
                 </span>
             </div>
         </div>
@@ -426,7 +427,12 @@
         {% endif %}
     </div>
 
-    <!-- 5. Technical Deep Dive -->
+    <!-- 5. Technical Insights -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Technical Insights</h2>
+        <p class="text-sm text-secondary font-medium opacity-60">Deep dive into forensic analysis heuristics and
+            security implications.</p>
+    </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
         <div class="glass-card rounded-2xl p-8 h-full flex flex-col">
             <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4 tracking-tight">Understanding Entropy
@@ -685,7 +691,7 @@
                 <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
                     <p class="text-[9px] font-bold text-gray-500 uppercase tracking-wider mb-2">Size Delta</p>
                     <p class="font-mono font-bold text-purple-600">
-                        {% if result.size_diff > 0 %}+{% elif result.size_diff < 0 %}-{% endif %} {{
+                        {% if result.size_diff > 0 %}+{% elif result.size_diff < 0 %}-{% endif %}{{
                             result.size_diff_abs|filesizeformat }} </p>
                 </div>
             </div>
@@ -938,16 +944,18 @@
                     cell.style.borderRadius = '2px';
 
                     // Copy the color classes
-                    if (block.classList.contains('bg-pastel-green')) {
-                        cell.style.backgroundColor = '#B2F2BB';
-                    } else if (block.classList.contains('bg-pastel-pink')) {
-                        cell.style.backgroundColor = '#FFC9DE';
-                    } else if (block.classList.contains('bg-pastel-purple')) {
-                        cell.style.backgroundColor = '#D0BFFF';
-                    } else if (block.classList.contains('bg-amber-500')) {
+                    if (block.classList.contains('bg-success')) {
+                        cell.style.backgroundColor = '#10b981';
+                    } else if (block.classList.contains('bg-rose')) {
+                        cell.style.backgroundColor = '#f43f5e';
+                    } else if (block.classList.contains('bg-violet')) {
+                        cell.style.backgroundColor = '#8b5cf6';
+                    } else if (block.classList.contains('bg-warning')) {
                         cell.style.backgroundColor = '#f59e0b';
+                    } else if (block.classList.contains('bg-danger')) {
+                        cell.style.backgroundColor = '#ef4444';
                     } else {
-                        cell.style.backgroundColor = '#d1d5db';
+                        cell.style.backgroundColor = '#e2e8f0'; // slate-200
                     }
 
                     heatmapGrid.appendChild(cell);
