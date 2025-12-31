@@ -23,8 +23,8 @@
                 <div
                     class="flex items-center gap-3 px-5 py-2.5 bg-white/5 rounded-full border border-white/10 backdrop-blur-3xl">
                     <span
-                        class="w-2.5 h-2.5 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-success shadow-[0_0_20px_rgba(16,185,129,0.5)]{% else %}bg-danger shadow-[0_0_20px_rgba(239,68,68,0.5)]{% endif %}"></span>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">
+                        class="w-2.5 h-2.5 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-pastel-green shadow-[0_0_20px_rgba(178,242,187,0.5)]{% else %}bg-pastel-pink shadow-[0_0_20px_rgba(255,201,222,0.5)]{% endif %}"></span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 dark:text-white">
                         {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{%
                         endif %}
                     </span>
@@ -37,7 +37,7 @@
 
         <div class="flex items-center gap-4">
             <a href="{% url 'index' %}"
-                class="px-8 py-4 rounded-2xl border border-white/10 text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-white/5 transition-all duration-300">
+                class="px-8 py-4 rounded-2xl border border-slate-200 dark:border-white/10 text-slate-900 dark:text-white font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-slate-100 dark:hover:bg-white/5 transition-all duration-300">
                 New Scan
             </a>
             <button onclick="handlePrint()"
@@ -86,9 +86,9 @@
                             stroke-width="12" />
                         <circle cx="128" cy="128" r="110" fill="none" stroke="currentColor" stroke-width="12"
                             stroke-linecap="round"
-                            class="{% if result.confidence_score >= 80 %}text-success{% elif result.confidence_score >= 50 %}text-warning{% else %}text-danger{% endif %}"
+                            class="{% if result.confidence_score >= 80 %}text-pastel-green{% elif result.confidence_score >= 50 %}text-pastel-yellow{% else %}text-pastel-pink{% endif %}"
                             stroke-dasharray="691"
-                            style="--offset: calc(691 - (691 * {{ result.confidence_score|default:0 }}) / 100); stroke-dashoffset: var(--offset); transition: stroke-dashoffset 2s cubic-bezier(0.23, 1, 0.32, 1);" />
+                            style="--offset: calc(691 - (691 * {{ result.confidence_score|default:0 }}) / 100); stroke-dashoffset: var(--offset); transition: stroke-dashoffset 2s cubic-bezier(0.23, 1, 0.32, 1); filter: drop-shadow(0 0 10px currentColor);" />
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span
@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="space-y-2">
-                    <h3 class="text-2xl font-black text-white tracking-tight">
+                    <h3 class="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
                         {% if result.result_type == 'NO_CHANGE' %}Perfect Match{% else %}Anomalous Structure{% endif %}
                     </h3>
                     <p class="text-sm text-secondary font-medium opacity-60">
@@ -135,7 +135,7 @@
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
                             Mismatches</p>
                         <p
-                            class="text-4xl font-black {% if result.mismatch_count > 0 %}text-danger{% else %}text-success{% endif %} font-mono">
+                            class="text-4xl font-black {% if result.mismatch_count > 0 %}text-pastel-pink{% else %}text-pastel-green{% endif %} font-mono">
                             {{ result.mismatch_count }}</p>
                     </div>
                 </div>
@@ -157,10 +157,10 @@
                     <div>
                         <p class="text-[11px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Size
                             Delta</p>
-                        <p class="text-4xl font-black text-white font-mono tracking-tighter">
+                        <p class="text-4xl font-black text-slate-900 dark:text-white font-mono tracking-tighter">
                             {% if result.size_diff > 0 %}
-                            <span class="text-violet">+</span>
-                            {% elif result.size_diff < 0 %} <span class="text-rose">-</span>
+                            <span class="text-pastel-purple">+</span>
+                            {% elif result.size_diff < 0 %} <span class="text-pastel-pink">-</span>
                                 {% endif %}
                                 {{ result.size_diff_abs|filesizeformat }}
                         </p>
@@ -195,7 +195,7 @@
                         <p class="text-[9px] font-black text-secondary uppercase tracking-widest opacity-40">Current
                             Sample</p>
                         <div
-                            class="bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-danger/30 text-danger{% else %}border-success/30 text-success{% endif %} font-mono text-xs break-all tracking-widest">
+                            class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-pastel-pink/30 text-pastel-pink{% else %}border-pastel-green/30 text-pastel-green{% endif %} font-mono text-xs break-all tracking-widest">
                             {{ result.header_analysis.uploaded }}
                         </div>
                     </div>
@@ -222,8 +222,9 @@
                             <span class="text-secondary">Baseline</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <span class="w-3 h-3 rounded-full bg-accent shadow-[0_0_15px_rgba(59,130,246,0.5)]"></span>
-                            <span class="text-white">Current</span>
+                            <span
+                                class="w-3 h-3 rounded-full bg-pastel-blue shadow-[0_0_15px_rgba(165,216,255,0.5)]"></span>
+                            <span class="text-slate-900 dark:text-white">Current</span>
                         </div>
                     </div>
                 </div>
@@ -252,19 +253,22 @@
                 </div>
                 <div class="mt-8 pt-8 border-t border-white/5 grid grid-cols-2 gap-4">
                     <div class="flex items-center gap-3">
-                        <span class="w-3 h-3 bg-success rounded-full shadow-[0_0_10px_rgba(16,185,129,0.4)]"></span>
+                        <span
+                            class="w-3 h-3 bg-pastel-green rounded-full shadow-[0_0_10px_rgba(178,242,187,0.4)]"></span>
                         <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Verified</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="w-3 h-3 bg-rose rounded-full shadow-[0_0_10px_rgba(244,63,94,0.4)]"></span>
+                        <span
+                            class="w-3 h-3 bg-pastel-pink rounded-full shadow-[0_0_10px_rgba(255,201,222,0.4)]"></span>
                         <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Tampered</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="w-3 h-3 bg-violet rounded-full shadow-[0_0_10px_rgba(139,92,246,0.4)]"></span>
+                        <span
+                            class="w-3 h-3 bg-pastel-purple rounded-full shadow-[0_0_10px_rgba(208,191,255,0.4)]"></span>
                         <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Appended</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <span class="w-3 h-3 bg-white/20 rounded-full"></span>
+                        <span class="w-3 h-3 bg-slate-200 dark:bg-white/20 rounded-full"></span>
                         <span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Missing</span>
                     </div>
                 </div>
@@ -476,8 +480,8 @@
         const labels = Array.from({ length: Math.max(storedEntropy.length, uploadedEntropy.length) }, (_, i) => i + 1);
 
         const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+        gradient.addColorStop(0, 'rgba(165, 216, 255, 0.4)'); // pastel-blue
+        gradient.addColorStop(1, 'rgba(165, 216, 255, 0)');
 
         chartInstance = new Chart(ctx, {
             type: 'line',
@@ -497,7 +501,7 @@
                     {
                         label: 'Current',
                         data: uploadedEntropy,
-                        borderColor: '#3b82f6',
+                        borderColor: '#A5D8FF', // pastel-blue
                         backgroundColor: gradient,
                         fill: true,
                         borderWidth: 3,
@@ -584,11 +588,11 @@
 
             // 3. Revert to Dark Mode
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+            gradient.addColorStop(0, 'rgba(165, 216, 255, 0.4)');
+            gradient.addColorStop(1, 'rgba(165, 216, 255, 0)');
 
-            chartInstance.data.datasets[0].borderColor = 'rgba(255, 255, 255, 0.5)';
-            chartInstance.data.datasets[1].borderColor = '#3b82f6';
+            chartInstance.data.datasets[0].borderColor = 'rgba(148, 163, 184, 0.5)'; // slate-400
+            chartInstance.data.datasets[1].borderColor = '#A5D8FF';
             chartInstance.data.datasets[1].backgroundColor = gradient;
 
             chartInstance.options.scales.x.ticks.color = 'rgba(255, 255, 255, 0.2)';
