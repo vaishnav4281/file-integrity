@@ -29,7 +29,8 @@
                 <span
                     class="w-2 h-2 rounded-full animate-pulse {% if result.result_type == 'NO_CHANGE' %}bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.6)]{% else %}bg-rose-500 shadow-[0_0_10px_rgba(244,63,94,0.6)]{% endif %}"></span>
                 <span class="text-xs font-bold tracking-wide text-slate-900 dark:text-white">
-                    {% if result.result_type == "NO_CHANGE" %}✓ Integrity Verified{% else %}⚠ Security Breach Detected{% endif %}
+                    {% if result.result_type == "NO_CHANGE" %}✓ Integrity Verified{% else %}⚠ Security Breach Detected{%
+                    endif %}
                 </span>
             </div>
         </div>
@@ -40,10 +41,7 @@
                 ← New Scan
             </a>
             <button onclick="handlePrint()"
-                class="group relative px-6 py-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl font-semibold text-sm shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-[1.02] transition-all duration-200 flex items-center gap-2 overflow-hidden">
-                <div
-                    class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer">
-                </div>
+                class="group relative px-6 py-3 bg-gradient-to-r from-blue-600 to-violet-600 text-white rounded-xl font-semibold text-sm hover:scale-[1.02] transition-all duration-200 flex items-center gap-2 overflow-hidden">
                 <svg class="w-4 h-4 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -930,16 +928,19 @@
         const heatmapContainer = element.querySelector('#pdf-heatmap-container');
         if (heatmapContainer) {
             // Get heatmap blocks from the DOM
-            const heatmapBlocks = document.querySelectorAll('.glass-card .grid .aspect-square');
+            const heatmapBlocks = document.querySelectorAll('.aspect-square[title]');
 
             if (heatmapBlocks.length > 0) {
                 const heatmapGrid = document.createElement('div');
-                heatmapGrid.className = 'grid gap-2';
-                heatmapGrid.style.gridTemplateColumns = 'repeat(20, 1fr)'; // 20 columns for PDF
+                heatmapGrid.style.display = 'flex';
+                heatmapGrid.style.flexWrap = 'wrap';
+                heatmapGrid.style.gap = '2px';
+                heatmapGrid.style.width = '100%';
 
                 heatmapBlocks.forEach((block, index) => {
                     const cell = document.createElement('div');
-                    cell.style.aspectRatio = '1';
+                    cell.style.width = '12px';
+                    cell.style.height = '12px';
                     cell.style.borderRadius = '2px';
 
                     // Copy the color classes
