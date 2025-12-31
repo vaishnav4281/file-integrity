@@ -197,7 +197,7 @@
                             Stored
                             Baseline</p>
                         <div
-                            class="bg-black/50 p-4 rounded-xl border border-white/5 font-mono text-xs text-secondary break-all tracking-widest">
+                            class="bg-slate-900 text-white p-4 rounded-xl border border-slate-800 font-mono text-xs break-all tracking-widest shadow-inner">
                             {{ result.header_analysis.stored }}
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                             Current
                             Sample</p>
                         <div
-                            class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-rose-500/30 text-rose-700 dark:text-rose-400{% else %}border-emerald-500/30 text-emerald-700 dark:text-emerald-400{% endif %} font-mono text-xs break-all tracking-widest">
+                            class="bg-slate-900 text-white p-4 rounded-xl border border-slate-800 font-mono text-xs break-all tracking-widest shadow-inner">
                             {{ result.header_analysis.uploaded }}
                         </div>
                     </div>
@@ -231,13 +231,13 @@
                     </div>
                     <div class="flex items-center gap-8 text-[9px] font-black uppercase tracking-[0.2em]">
                         <div class="flex items-center gap-3">
-                            <span class="w-3 h-3 rounded-full border border-white/20 border-dashed"></span>
-                            <span class="text-secondary">Baseline</span>
+                            <span
+                                class="w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]"></span>
+                            <span class="text-slate-900 dark:text-white font-bold">Baseline</span>
                         </div>
                         <div class="flex items-center gap-3">
-                            <span
-                                class="w-3 h-3 rounded-full bg-pastel-blue shadow-[0_0_15px_rgba(165,216,255,0.5)]"></span>
-                            <span class="text-slate-900 dark:text-white">Current</span>
+                            <span class="w-3 h-3 rounded-full bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]"></span>
+                            <span class="text-slate-900 dark:text-white font-bold">Current</span>
                         </div>
                     </div>
                 </div>
@@ -490,6 +490,7 @@
 {{ result.full_entropy_profile.stored|json_script:"stored-entropy-data" }}
 {{ result.full_entropy_profile.uploaded|json_script:"uploaded-entropy-data" }}
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     let chartInstance = null;
@@ -512,7 +513,8 @@
                     {
                         label: 'Baseline',
                         data: storedEntropy,
-                        borderColor: 'rgba(255, 255, 255, 0.5)',
+                        borderColor: '#f97316', // Orange-500
+                        backgroundColor: 'rgba(249, 115, 22, 0.1)',
                         borderWidth: 2,
                         borderDash: [5, 5],
                         pointRadius: 0,
@@ -522,7 +524,7 @@
                     {
                         label: 'Current',
                         data: uploadedEntropy,
-                        borderColor: '#A5D8FF', // pastel-blue
+                        borderColor: '#2563eb', // Blue-600
                         backgroundColor: gradient,
                         fill: true,
                         borderWidth: 3,
@@ -581,176 +583,58 @@
     });
 
     function handlePrint() {
-        if (!chartInstance) {
-            window.print();
-            return;
-        }
+        const element = document.querySelector('.max-w-\\[1400px\\]');
+        const opt = {
+            margin: [10, 10, 10, 10],
+            filename: 'Forensic_Report_{{ file_name }}.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
 
-        // 1. Switch to Print Mode (High Contrast)
-        const ctx = document.getElementById('entropyChart').getContext('2d');
+        // Temporarily adjust styles for PDF generation
+        element.classList.add('pdf-mode');
 
-        // Baseline: Black dashed
-        chartInstance.data.datasets[0].borderColor = '#000000';
-
-        // Current: Blue solid (no gradient fill for cleaner print, or light gray fill)
-        chartInstance.data.datasets[1].borderColor = '#2563eb'; // Darker blue
-        chartInstance.data.datasets[1].backgroundColor = 'rgba(37, 99, 235, 0.05)';
-
-        // Scales: Black
-        chartInstance.options.scales.x.ticks.color = '#000000';
-        chartInstance.options.scales.y.ticks.color = '#000000';
-        chartInstance.options.scales.y.grid.color = 'rgba(0, 0, 0, 0.1)';
-
-        chartInstance.update();
-
-        // 2. Print
-        setTimeout(() => {
-            window.print();
-
-            // 3. Revert to Dark Mode
-            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(165, 216, 255, 0.4)');
-            gradient.addColorStop(1, 'rgba(165, 216, 255, 0)');
-
-            chartInstance.data.datasets[0].borderColor = 'rgba(148, 163, 184, 0.5)'; // slate-400
-            chartInstance.data.datasets[1].borderColor = '#A5D8FF';
-            chartInstance.data.datasets[1].backgroundColor = gradient;
-
-            chartInstance.options.scales.x.ticks.color = 'rgba(255, 255, 255, 0.2)';
-            chartInstance.options.scales.y.ticks.color = 'rgba(255, 255, 255, 0.3)';
-            chartInstance.options.scales.y.grid.color = 'rgba(255, 255, 255, 0.03)';
-
-            chartInstance.update();
-        }, 500);
+        html2pdf().set(opt).from(element).save().then(() => {
+            element.classList.remove('pdf-mode');
+        });
     }
 </script>
 
 <style>
-    @media print {
-        @page {
-            margin: 20mm;
-            size: A4;
-        }
-
-        body {
-            background: white !important;
-            color: black !important;
-            font-size: 12px;
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-
-        /* Hide UI elements */
-        nav,
-        footer,
-        .bg-mesh,
-        .grid-overlay,
-        .noise,
-        .no-print,
-        .btn-premium {
-            display: none !important;
-        }
-
-        /* Show Print Elements */
-        .print-only {
-            display: block !important;
-        }
-
-        /* Reset Layout for Print */
-        .max-w-\[1400px\] {
-            max-width: none !important;
-            padding: 0 !important;
-            margin: 0 !important;
-        }
-
-        .grid {
-            display: block !important;
-        }
-
-        .lg\:col-span-4,
-        .lg\:col-span-8,
-        .md\:col-span-2 {
-            width: 100% !important;
-            margin-bottom: 20px !important;
-        }
-
-        /* Card Styling for Print */
-        .glass-card {
-            border: 1px solid #e2e8f0 !important;
-            background: #f8fafc !important;
-            border-radius: 12px !important;
-            box-shadow: none !important;
-            padding: 24px !important;
-            margin-bottom: 24px !important;
-            break-inside: avoid;
-        }
-
-        /* Text Colors */
-        .text-white {
-            color: black !important;
-        }
-
-        .text-secondary {
-            color: #555 !important;
-        }
-
-        /* Chart Visibility */
-        canvas {
-            max-height: 300px !important;
-        }
-
-        /* Table Styling */
-        table {
-            width: 100% !important;
-            border: 1px solid #eee;
-        }
-
-        th {
-            background: #f1f5f9 !important;
-            color: #0f172a !important;
-            border-bottom: 2px solid #cbd5e1 !important;
-            font-weight: 800 !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.1em !important;
-        }
-
-        td {
-            border-bottom: 1px solid #e2e8f0 !important;
-            color: #334155 !important;
-        }
-
-        /* Specific Overrides */
-        .bg-black\/50,
-        .bg-slate-100 {
-            background: #f8fafc !important;
-            border: 1px solid #e2e8f0 !important;
-            color: #0f172a !important;
-        }
-
-        /* Ensure graphs and text are sharp */
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
-
-        .opacity-60,
-        .opacity-50,
-        .opacity-40 {
-            opacity: 1 !important;
-        }
+    /* PDF Generation Styles */
+    .pdf-mode {
+        background: white !important;
+        color: black !important;
+        padding: 20px !important;
     }
 
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 4px;
+    .pdf-mode .glass-card {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        border-radius: 12px !important;
+        margin-bottom: 20px !important;
     }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.02);
+    .pdf-mode .text-white {
+        color: black !important;
     }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
+    .pdf-mode .text-slate-900 {
+        color: black !important;
+    }
+
+    .pdf-mode .text-secondary {
+        color: #555 !important;
+    }
+
+    .pdf-mode .no-print {
+        display: none !important;
+    }
+
+    .pdf-mode canvas {
+        max-height: 400px !important;
     }
 </style>
 {% endblock %}
