@@ -59,141 +59,135 @@
 
         <!-- Register -->
         <div class="relative group reveal" style="animation-delay: 0.5s;">
-            <!-- Multi-gradient background glow -->
+            <!-- Premium Card Container -->
             <div
-                class="absolute -inset-2 bg-gradient-to-r from-pastel-blue via-pastel-purple to-pastel-green rounded-[4rem] blur-2xl opacity-10 group-hover:opacity-30 transition duration-1000 group-hover:duration-200">
-            </div>
-
-            <div
-                class="relative glass-card rounded-[3.5rem] p-12 overflow-hidden h-full flex flex-col border-white/40 dark:border-white/10 shadow-2xl shadow-blue-500/5">
-                <!-- Inner decorative gradients -->
+                class="relative h-full bg-white dark:bg-zinc-900/50 rounded-[2.5rem] p-1 border border-slate-200 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:border-blue-500/30 group-hover:shadow-blue-500/10 overflow-hidden">
+                <!-- Spotlight Effect -->
                 <div
-                    class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-pastel-blue/20 to-pastel-purple/20 blur-[100px] rounded-full -mr-48 -mt-48 transition-all duration-700 group-hover:scale-110">
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-pastel-green/10 to-transparent blur-[80px] rounded-full -ml-32 -mb-32">
+                    class="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 </div>
 
-                <div class="flex items-start justify-between mb-16 relative z-10">
-                    <div class="flex flex-col gap-4">
-                        <div
-                            class="w-16 h-16 bg-gradient-to-br from-white to-slate-50 dark:from-white/10 dark:to-white/5 rounded-2xl flex items-center justify-center shadow-lg border border-white/50 dark:border-white/10 group-hover:scale-110 transition-transform duration-500">
-                            <svg class="w-8 h-8 text-blue-500 dark:text-blue-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v16m8-8H4" />
-                            </svg>
+                <div class="relative h-full p-10 flex flex-col">
+                    <div class="flex items-start justify-between mb-12">
+                        <div class="flex flex-col gap-4">
+                            <div
+                                class="w-14 h-14 bg-slate-900 dark:bg-white rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                                <svg class="w-7 h-7 text-white dark:text-black" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4v16m8-8H4" />
+                                </svg>
+                            </div>
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20">
+                                <div class="w-1 h-1 rounded-full bg-blue-500 animate-pulse"></div>
+                                <span
+                                    class="text-[9px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase">Registry
+                                    Engine</span>
+                            </div>
                         </div>
-                        <div class="px-3 py-1 bg-blue-500/10 rounded-full border border-blue-500/20 w-fit">
+                        <div class="text-right">
                             <span
-                                class="text-[9px] font-black tracking-widest text-blue-600 dark:text-blue-400 uppercase">Registry
-                                Engine</span>
+                                class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40 block mb-1">Module</span>
+                            <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">01</span>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <span
-                            class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40 block mb-1">Module</span>
-                        <span class="text-2xl font-black text-slate-900 dark:text-white">01</span>
-                    </div>
-                </div>
 
-                <div class="relative z-10">
-                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Baseline Registry
-                    </h2>
-                    <p class="text-secondary mb-12 text-base leading-relaxed font-medium opacity-70 max-w-sm">
-                        Establish a cryptographic immutable record of your file's structural integrity.
-                    </p>
-                </div>
-
-                <form action="{% url 'register' %}" method="post" enctype="multipart/form-data"
-                    class="space-y-6 relative z-10 mt-auto">
-                    {% csrf_token %}
-                    <div class="relative group/input">
-                        <input type="file" name="file" required class="block w-full text-xs text-secondary
-                            file:mr-6 file:py-4 file:px-10
-                            file:rounded-2xl file:border-0
-                            file:text-[10px] file:font-black file:uppercase file:tracking-widest
-                            file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
-                            hover:file:scale-105 file:transition-all
-                            focus:outline-none bg-white/50 dark:bg-white/[0.03] rounded-[2rem] border border-slate-200 dark:border-white/5 p-4
-                            group-hover/input:border-pastel-blue/50 transition-all duration-500 backdrop-blur-sm
-                        " />
+                    <div class="mb-12">
+                        <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Baseline
+                            Registry</h2>
+                        <p class="text-secondary text-base leading-relaxed font-medium opacity-60 max-w-sm">
+                            Establish a cryptographic immutable record of your file's structural integrity.
+                        </p>
                     </div>
-                    <button type="submit"
-                        class="btn-premium w-full py-6 bg-gradient-to-r from-blue-500 via-blue-400 to-pastel-purple text-white rounded-[2rem] font-black text-[11px] uppercase tracking-[0.4em] hover:shadow-2xl hover:shadow-blue-500/30 active:scale-[0.98] transition-all duration-300 border border-white/20">
-                        Generate Forensic DNA
-                    </button>
-                </form>
+
+                    <form action="{% url 'register' %}" method="post" enctype="multipart/form-data"
+                        class="space-y-6 mt-auto">
+                        {% csrf_token %}
+                        <div class="relative group/input">
+                            <input type="file" name="file" required class="block w-full text-xs text-secondary
+                                file:mr-6 file:py-4 file:px-10
+                                file:rounded-xl file:border-0
+                                file:text-[10px] file:font-black file:uppercase file:tracking-widest
+                                file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
+                                hover:file:scale-105 file:transition-all
+                                focus:outline-none bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-3
+                                group-hover/input:border-blue-500/30 transition-all duration-500
+                            " />
+                        </div>
+                        <button type="submit"
+                            class="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-black rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] hover:shadow-2xl hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-300">
+                            Generate Forensic DNA
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Verify -->
         <div class="relative group reveal" style="animation-delay: 0.6s;">
-            <!-- Multi-gradient background glow -->
+            <!-- Premium Card Container -->
             <div
-                class="absolute -inset-2 bg-gradient-to-r from-pastel-pink via-pastel-purple to-pastel-orange rounded-[4rem] blur-2xl opacity-10 group-hover:opacity-30 transition duration-1000 group-hover:duration-200">
-            </div>
-
-            <div
-                class="relative glass-card rounded-[3.5rem] p-12 overflow-hidden h-full flex flex-col border-white/40 dark:border-white/10 shadow-2xl shadow-rose-500/5">
-                <!-- Inner decorative gradients -->
+                class="relative h-full bg-white dark:bg-zinc-900/50 rounded-[2.5rem] p-1 border border-slate-200 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:border-rose-500/30 group-hover:shadow-rose-500/10 overflow-hidden">
+                <!-- Spotlight Effect -->
                 <div
-                    class="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-pastel-pink/20 to-pastel-purple/20 blur-[100px] rounded-full -mr-48 -mt-48 transition-all duration-700 group-hover:scale-110">
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-pastel-orange/10 to-transparent blur-[80px] rounded-full -ml-32 -mb-32">
+                    class="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 </div>
 
-                <div class="flex items-start justify-between mb-16 relative z-10">
-                    <div class="flex flex-col gap-4">
-                        <div
-                            class="w-16 h-16 bg-gradient-to-br from-white to-slate-50 dark:from-white/10 dark:to-white/5 rounded-2xl flex items-center justify-center shadow-lg border border-white/50 dark:border-white/10 group-hover:scale-110 transition-transform duration-500">
-                            <svg class="w-8 h-8 text-rose-500 dark:text-rose-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                <div class="relative h-full p-10 flex flex-col">
+                    <div class="flex items-start justify-between mb-12">
+                        <div class="flex flex-col gap-4">
+                            <div
+                                class="w-14 h-14 bg-slate-900 dark:bg-white rounded-2xl flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                                <svg class="w-7 h-7 text-white dark:text-black" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <div
+                                class="inline-flex items-center gap-2 px-3 py-1 bg-rose-500/10 rounded-full border border-rose-500/20">
+                                <div class="w-1 h-1 rounded-full bg-rose-500 animate-pulse"></div>
+                                <span
+                                    class="text-[9px] font-black tracking-widest text-rose-600 dark:text-rose-400 uppercase">Audit
+                                    Engine</span>
+                            </div>
                         </div>
-                        <div class="px-3 py-1 bg-rose-500/10 rounded-full border border-rose-500/20 w-fit">
+                        <div class="text-right">
                             <span
-                                class="text-[9px] font-black tracking-widest text-rose-600 dark:text-rose-400 uppercase">Audit
-                                Engine</span>
+                                class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40 block mb-1">Module</span>
+                            <span class="text-3xl font-black text-slate-900 dark:text-white tracking-tighter">02</span>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <span
-                            class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase opacity-40 block mb-1">Module</span>
-                        <span class="text-2xl font-black text-slate-900 dark:text-white">02</span>
-                    </div>
-                </div>
 
-                <div class="relative z-10">
-                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Integrity Audit
-                    </h2>
-                    <p class="text-secondary mb-12 text-base leading-relaxed font-medium opacity-70 max-w-sm">
-                        Compare a suspect sample against the registry to detect unauthorized mutations.
-                    </p>
-                </div>
-
-                <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data"
-                    class="space-y-6 relative z-10 mt-auto">
-                    {% csrf_token %}
-                    <div class="relative group/input">
-                        <input type="file" name="file" required class="block w-full text-xs text-secondary
-                            file:mr-6 file:py-4 file:px-10
-                            file:rounded-2xl file:border-0
-                            file:text-[10px] file:font-black file:uppercase file:tracking-widest
-                            file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
-                            hover:file:scale-105 file:transition-all
-                            focus:outline-none bg-white/50 dark:bg-white/[0.03] rounded-[2rem] border border-slate-200 dark:border-white/5 p-4
-                            group-hover/input:border-pastel-pink/50 transition-all duration-500 backdrop-blur-sm
-                        " />
+                    <div class="mb-12">
+                        <h2 class="text-4xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">Integrity
+                            Audit</h2>
+                        <p class="text-secondary text-base leading-relaxed font-medium opacity-60 max-w-sm">
+                            Compare a suspect sample against the registry to detect unauthorized mutations.
+                        </p>
                     </div>
-                    <button type="submit"
-                        class="btn-premium w-full py-6 bg-gradient-to-r from-rose-500 via-rose-400 to-pastel-purple text-white rounded-[2rem] font-black text-[11px] uppercase tracking-[0.4em] hover:shadow-2xl hover:shadow-rose-500/30 active:scale-[0.98] transition-all duration-300 border border-white/20">
-                        Initiate Forensic Scan
-                    </button>
-                </form>
+
+                    <form action="{% url 'verify' %}" method="post" enctype="multipart/form-data"
+                        class="space-y-6 mt-auto">
+                        {% csrf_token %}
+                        <div class="relative group/input">
+                            <input type="file" name="file" required class="block w-full text-xs text-secondary
+                                file:mr-6 file:py-4 file:px-10
+                                file:rounded-xl file:border-0
+                                file:text-[10px] file:font-black file:uppercase file:tracking-widest
+                                file:bg-slate-900 file:text-white dark:file:bg-white dark:file:text-black
+                                hover:file:scale-105 file:transition-all
+                                focus:outline-none bg-slate-50 dark:bg-white/[0.02] rounded-2xl border border-slate-200 dark:border-white/5 p-3
+                                group-hover/input:border-rose-500/30 transition-all duration-500
+                            " />
+                        </div>
+                        <button type="submit"
+                            class="w-full py-6 bg-slate-900 dark:bg-white text-white dark:text-black rounded-2xl font-black text-[11px] uppercase tracking-[0.4em] hover:shadow-2xl hover:shadow-rose-500/20 active:scale-[0.98] transition-all duration-300">
+                            Initiate Forensic Scan
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
