@@ -25,7 +25,8 @@
                     <span
                         class="w-2.5 h-2.5 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-success shadow-[0_0_20px_rgba(16,185,129,0.5)]{% else %}bg-danger shadow-[0_0_20px_rgba(239,68,68,0.5)]{% endif %}"></span>
                     <span class="text-[10px] font-black uppercase tracking-[0.2em] text-white">
-                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{%             endif %}
+                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{%
+                        endif %}
                     </span>
                 </div>
                 <div class="text-[10px] font-bold tracking-widest text-secondary uppercase opacity-50">
@@ -34,14 +35,28 @@
             </div>
         </div>
 
-        <button onclick="window.print()"
+        <button onclick="handlePrint()"
             class="btn-premium px-10 py-5 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] shadow-2xl flex items-center gap-4">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
                     d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
             </svg>
-            Export Intelligence
+            Export Report
         </button>
+    </div>
+
+    <!-- Print Header -->
+    <div class="print-only hidden mb-10 border-b-2 border-black pb-6">
+        <div class="flex justify-between items-end">
+            <div>
+                <h1 class="text-4xl font-black text-black tracking-tighter mb-2">FORΞNSIC.AI</h1>
+                <p class="text-xs font-bold text-gray-600 uppercase tracking-[0.3em]">Official Forensic Report</p>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] font-mono text-gray-500">Generated: {% now "Y-m-d H:i:s" %} UTC</p>
+                <p class="text-[10px] font-mono text-gray-500">Ref: {{ profile.id|default:"AUTOGEN" }}</p>
+            </div>
+        </div>
     </div>
 
     <!-- 2. Executive Dashboard -->
@@ -68,7 +83,7 @@
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span
                             class="text-8xl font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">{{
-                            result.confidence_score }}%</span>
+                            result.confidence_score|default:"0" }}%</span>
                         <span
                             class="text-[11px] font-black text-secondary uppercase tracking-[0.5em] opacity-50 mt-2">Confidence
                             Score</span>
@@ -134,11 +149,10 @@
                             Delta</p>
                         <p class="text-4xl font-black text-white font-mono tracking-tighter">
                             {% if result.size_diff > 0 %}
-                                <span class="text-violet">+</span>
-                            {% elif result.size_diff < 0 %}
-                                <span class="text-rose">-</span>
-                            {% endif %}
-                            {{ result.size_diff_abs|filesizeformat }}
+                            <span class="text-violet">+</span>
+                            {% elif result.size_diff < 0 %} <span class="text-rose">-</span>
+                                {% endif %}
+                                {{ result.size_diff_abs|filesizeformat }}
                         </p>
                     </div>
                     <div>
@@ -443,6 +457,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    let chartInstance = null;
+
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('entropyChart').getContext('2d');
         const storedEntropy = JSON.parse(document.getElementById('stored-entropy-data').textContent);
@@ -453,7 +469,7 @@
         gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
         gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
 
-        new Chart(ctx, {
+        chartInstance = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
@@ -461,7 +477,7 @@
                     {
                         label: 'Baseline',
                         data: storedEntropy,
-                        borderColor: 'rgba(255, 255, 255, 0.1)',
+                        borderColor: 'rgba(255, 255, 255, 0.5)',
                         borderWidth: 2,
                         borderDash: [5, 5],
                         pointRadius: 0,
@@ -528,39 +544,157 @@
             }
         });
     });
+
+    function handlePrint() {
+        if (!chartInstance) {
+            window.print();
+            return;
+        }
+
+        // 1. Switch to Print Mode (High Contrast)
+        const ctx = document.getElementById('entropyChart').getContext('2d');
+
+        // Baseline: Black dashed
+        chartInstance.data.datasets[0].borderColor = '#000000';
+
+        // Current: Blue solid (no gradient fill for cleaner print, or light gray fill)
+        chartInstance.data.datasets[1].borderColor = '#2563eb'; // Darker blue
+        chartInstance.data.datasets[1].backgroundColor = 'rgba(37, 99, 235, 0.05)';
+
+        // Scales: Black
+        chartInstance.options.scales.x.ticks.color = '#000000';
+        chartInstance.options.scales.y.ticks.color = '#000000';
+        chartInstance.options.scales.y.grid.color = 'rgba(0, 0, 0, 0.1)';
+
+        chartInstance.update();
+
+        // 2. Print
+        setTimeout(() => {
+            window.print();
+
+            // 3. Revert to Dark Mode
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+            gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+            chartInstance.data.datasets[0].borderColor = 'rgba(255, 255, 255, 0.5)';
+            chartInstance.data.datasets[1].borderColor = '#3b82f6';
+            chartInstance.data.datasets[1].backgroundColor = gradient;
+
+            chartInstance.options.scales.x.ticks.color = 'rgba(255, 255, 255, 0.2)';
+            chartInstance.options.scales.y.ticks.color = 'rgba(255, 255, 255, 0.3)';
+            chartInstance.options.scales.y.grid.color = 'rgba(255, 255, 255, 0.03)';
+
+            chartInstance.update();
+        }, 500);
+    }
 </script>
 
 <style>
     @media print {
-        .no-print {
-            display: none !important;
+        @page {
+            margin: 20mm;
+            size: A4;
         }
 
         body {
             background: white !important;
             color: black !important;
+            font-size: 12px;
         }
 
+        /* Hide UI elements */
+        nav,
+        footer,
+        .bg-mesh,
+        .grid-overlay,
+        .noise,
+        .no-print,
+        .btn-premium {
+            display: none !important;
+        }
+
+        /* Show Print Elements */
+        .print-only {
+            display: block !important;
+        }
+
+        /* Reset Layout for Print */
+        .max-w-\[1400px\] {
+            max-width: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .grid {
+            display: block !important;
+        }
+
+        .lg\:col-span-4,
+        .lg\:col-span-8,
+        .md\:col-span-2 {
+            width: 100% !important;
+            margin-bottom: 20px !important;
+        }
+
+        /* Card Styling for Print */
         .glass-card {
-            border: 1px solid #eee !important;
+            border: 1px solid #ddd !important;
             background: white !important;
-            border-radius: 2rem !important;
+            border-radius: 8px !important;
             box-shadow: none !important;
+            padding: 20px !important;
+            margin-bottom: 20px !important;
+            break-inside: avoid;
         }
 
-        .text-white,
-        .text-secondary {
+        /* Text Colors */
+        .text-white {
             color: black !important;
         }
 
-        .bg-black {
-            background: white !important;
-            border: 1px solid #eee !important;
+        .text-secondary {
+            color: #555 !important;
+        }
+
+        /* Chart Visibility */
+        canvas {
+            max-height: 300px !important;
+        }
+
+        /* Table Styling */
+        table {
+            width: 100% !important;
+            border: 1px solid #eee;
         }
 
         th {
-            background: #fafafa !important;
+            background: #f5f5f5 !important;
             color: black !important;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Specific Overrides */
+        .bg-black\/50 {
+            background: transparent !important;
+            border: 1px solid #ddd !important;
+            color: black !important;
+        }
+
+        /* Ensure graphs and text are sharp */
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .opacity-60,
+        .opacity-50,
+        .opacity-40 {
+            opacity: 1 !important;
         }
     }
 
