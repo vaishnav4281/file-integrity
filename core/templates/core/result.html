@@ -25,7 +25,8 @@
                     <span
                         class="w-2.5 h-2.5 rounded-full {% if result.result_type == 'NO_CHANGE' %}bg-pastel-green shadow-[0_0_20px_rgba(178,242,187,0.5)]{% else %}bg-pastel-pink shadow-[0_0_20px_rgba(255,201,222,0.5)]{% endif %}"></span>
                     <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 dark:text-white">
-                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{% endif %}
+                        {% if result.result_type == "NO_CHANGE" %}Integrity Verified{% else %}Security Breach Detected{%
+                        endif %}
                     </span>
                 </div>
                 <div class="text-[10px] font-bold tracking-widest text-secondary uppercase opacity-50">
@@ -91,8 +92,9 @@
                     </svg>
                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                         <span
-                            class="text-8xl font-black text-slate-900 dark:text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">{{
-                            result.confidence_score|default:"0" }}%</span>
+                            class="text-8xl font-black text-slate-900 dark:text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                            {{ result.confidence_score|default:0 }}%
+                        </span>
                         <span
                             class="text-[11px] font-black text-slate-500 dark:text-secondary uppercase tracking-[0.5em] opacity-50 mt-2">Confidence
                             Score</span>
@@ -129,13 +131,14 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">Total
                             Blocks</p>
-                        <p class="text-4xl font-black text-white font-mono">{{ result.total_chunks }}</p>
+                        <p class="text-4xl font-black text-slate-900 dark:text-white font-mono">{{ result.total_chunks
+                            }}</p>
                     </div>
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
                             Mismatches</p>
                         <p
-                            class="text-4xl font-black {% if result.mismatch_count > 0 %}text-pastel-pink{% else %}text-pastel-green{% endif %} font-mono">
+                            class="text-4xl font-black {% if result.mismatch_count > 0 %}text-rose-500 dark:text-pastel-pink{% else %}text-emerald-500 dark:text-pastel-green{% endif %} font-mono">
                             {{ result.mismatch_count }}</p>
                     </div>
                 </div>
@@ -169,7 +172,7 @@
                     <div>
                         <p class="text-[10px] font-black text-secondary uppercase tracking-widest mb-2 opacity-50">
                             Algorithm</p>
-                        <p class="text-4xl font-black text-white font-mono">SHA256</p>
+                        <p class="text-4xl font-black text-slate-900 dark:text-white font-mono">SHA256</p>
                     </div>
                 </div>
             </div>
@@ -197,7 +200,7 @@
                         <p class="text-[9px] font-black text-secondary uppercase tracking-widest opacity-40">Current
                             Sample</p>
                         <div
-                            class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-pastel-pink/30 text-pastel-pink{% else %}border-pastel-green/30 text-pastel-green{% endif %} font-mono text-xs break-all tracking-widest">
+                            class="bg-slate-100 dark:bg-black/50 p-4 rounded-xl border {% if 'MISMATCH' in result.header_analysis.status %}border-rose-500/30 text-rose-600 dark:text-pastel-pink{% else %}border-emerald-500/30 text-emerald-600 dark:text-pastel-green{% endif %} font-mono text-xs break-all tracking-widest">
                             {{ result.header_analysis.uploaded }}
                         </div>
                     </div>
@@ -626,6 +629,8 @@
             background: white !important;
             color: black !important;
             font-size: 12px;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
 
         /* Hide UI elements */
@@ -664,12 +669,12 @@
 
         /* Card Styling for Print */
         .glass-card {
-            border: 1px solid #ddd !important;
-            background: white !important;
-            border-radius: 8px !important;
+            border: 1px solid #e2e8f0 !important;
+            background: #f8fafc !important;
+            border-radius: 12px !important;
             box-shadow: none !important;
-            padding: 20px !important;
-            margin-bottom: 20px !important;
+            padding: 24px !important;
+            margin-bottom: 24px !important;
             break-inside: avoid;
         }
 
@@ -694,20 +699,25 @@
         }
 
         th {
-            background: #f5f5f5 !important;
-            color: black !important;
-            border-bottom: 2px solid #ddd;
+            background: #f1f5f9 !important;
+            color: #0f172a !important;
+            border-bottom: 2px solid #cbd5e1 !important;
+            font-weight: 800 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.1em !important;
         }
 
         td {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #e2e8f0 !important;
+            color: #334155 !important;
         }
 
         /* Specific Overrides */
-        .bg-black\/50 {
-            background: transparent !important;
-            border: 1px solid #ddd !important;
-            color: black !important;
+        .bg-black\/50,
+        .bg-slate-100 {
+            background: #f8fafc !important;
+            border: 1px solid #e2e8f0 !important;
+            color: #0f172a !important;
         }
 
         /* Ensure graphs and text are sharp */
