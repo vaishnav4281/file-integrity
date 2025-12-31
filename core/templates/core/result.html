@@ -640,7 +640,7 @@
                                 <circle cx="48" cy="48" r="40" fill="none"
                                     stroke="{% if result.confidence_score >= 80 %}#10b981{% elif result.confidence_score >= 50 %}#f59e0b{% else %}#ef4444{% endif %}"
                                     stroke-width="6" stroke-linecap="round" stroke-dasharray="251.2"
-                                    style="stroke-dashoffset: calc(251.2 - (251.2 * {{ result.confidence_score|default:0 }}) / 100);" />
+                                    stroke-dashoffset="{% widthratio result.confidence_score|default:0 1 2.512 as offset %}{% widthratio offset 1 -1 as neg_offset %}{{ neg_offset|add:251.2 }}" />
                             </svg>
                             <div class="absolute inset-0 flex items-center justify-center">
                                 <span class="text-2xl font-black">{{ result.confidence_score|default:0 }}%</span>
