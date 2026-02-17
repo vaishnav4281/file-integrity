@@ -1,160 +1,186 @@
-# System Design & Architecture Documentation
+# 🏗️ System Architecture & Design Portfolio
 
-This document outlines the architectural blueprints, data flows, and design diagrams for the **Forensic Intelligence (File Integrity System)**. It is designed to be used for project presentations, technical documentation, and system analysis.
-
-## 1. System Design Architecture (High Level)
-
-The system follows the **Django MVT (Model-View-Template)** architecture, which is a variation of the MVC pattern.
-
-*   **Model**: Manages the data schema (`IntegrityProfile`) and database interactions.
-*   **View**: Handles business logic, file processing, and cryptographic analysis (`views.py`, `utils.py`).
-*   **Template**: Renders the user interface (`landing.html`, `result.html`).
-
-### Component Diagram
-```mermaid
-graph TD
-    User[User] -->|"HTTPS Request"| LoadBalancer["Web Server / Load Balancer"]
-    LoadBalancer -->|"WSGI/ASGI"| Django["Django Application"]
-    subgraph "Core Module"
-        Django -->|Routing| Views["Views (Logic)"]
-        Views -->|Forensics| Logic["Utils (Hashing/Entropy)"]
-        Views -->|ORM| Models["Models (Data Layer)"]
-    end
-    Models -->|SQL| DB[("PostgreSQL/SQLite")]
-    Views -->|Render| UI["Templates (HTML/CSS)"]
-    UI -->|Response| User
-```
+**Project:** Forensic Intelligence (File Integrity Verification System)  
+**Document Status:** Final  
+**Intended Audience:** Evaluators, Developers, and System Architects
 
 ---
 
-## 2. Data Flow Diagram (DFD)
+## 📖 Executive Summary
 
-### Level 0 (Context Diagram)
+This document visualizes the internal architecture of our **Privacy-Preserving File Integrity System**. Unlike traditional tools that just check *if* a file changed, our system understands *how* and *where* it changed using **Cryptographic Forensics** (SHA-256 + Shannon Entropy).
+
+**Key Architectural Decisions:**
+1.  **Zero-Knowledge Storage**: We only store mathematical fingerprints, never the actual files.
+2.  **Granular Analysis**: Files are processed in 4KB chunks, allowing for "Heatmap" visualization.
+3.  **Heuristic Logic**: A decision engine classifies anomalies as Bit-Rot, Ransomware, or Injection.
+
+---
+
+## 1. 🏛️ High-Level System Architecture
+**"The 10,000-foot view of how the system works."**
+
+We utilize a **Django MVT (Model-View-Template)** architecture. The system is layered to separate user interaction, business logic, and data storage.
+
+### 🎨 Architecture Diagram
+```mermaid
+graph TD
+    classDef client fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:black;
+    classDef server fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:black;
+    classDef db fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:black;
+
+    User((👤 User)):::client -->|"HTTPS / Browser"| LoadBalancer["🌐 Web Server"]:::client
+    LoadBalancer -->|Request| Django["🦁 Django Core"]:::server
+
+    subgraph "Backend Logic (The Brain)"
+        direction TB
+        Django -->|"URL Routing"| Views["⚡ Views / Controllers"]:::server
+        Views -->|"Forensic Analysis"| Logic["🧠 Utils.py (Hashing & Entropy)"]:::server
+        Views -->|"Query Data"| Models["🗃️ Models.py"]:::server
+    end
+
+    Models <-->|"Read/Write"| DB[("🛢️ Database")]:::db
+    
+    Views -->|"Render HTML"| UI["🖥️ Templates (Dashboard & Reports)"]:::client
+    UI -->|Response| User
+
+```
+
+**🗣️ Presentation Talking Points:**
+*   "The user interacts with a clean web interface."
+*   "The heart of the system is the **Utils.py** module, which acts as the 'Forensic Brain'."
+*   "The database stores **IntegrityProfiles**—lightweight metadata fingerprints—keeping user data private."
+
+---
+
+## 2. 🔄 Data Flow Diagrams (DFD)
+**"How data moves through the system."**
+
+### Level 0: The Context (The Big Picture)
+Simple Input/Output flow.
 ```mermaid
 graph LR
-    User[User] -- "Uploads File" --> System("File Integrity System")
-    System -- "Returns Integrity Report" --> User
-    System -- "Stores Metadata" --> DB[("Database")]
+    classDef default fill:#fff,stroke:#333,stroke-width:1px,color:black;
+    User((👤 User)) -- "1. Upload File" --> System["🛡️ File Integrity System"]
+    System -- "2. Calculation" --> Engine(("⚙️ Logic Engine"))
+    Engine -- "3. Store Hashes" --> DB[("🛢️ DB")]
+    Engine -- "4. Integrity Report" --> User
 ```
 
-### Level 1 (Process Decomposition)
+### Level 1: Detailed Process Flow
+What happens inside the "Logic Engine"?
 ```mermaid
 graph TD
-    User[User] -->|"1. Upload File"| Process1("Input Validation")
-    Process1 -->|"2. Valid File Stick"| Process2("Cryptographic Engine")
-    Process2 -->|"3. Streaming Read (4KB Chunks)"| Process3("Calculate SHA-256 & Entropy")
+    classDef default fill:#fff,stroke:#333,stroke-width:1px,color:black;
+    input(("📂 Input File")) -->|"Stream Read"| Validator{"Is Valid?"}
+    Validator -- No --> Error["❌ Reject"]
+    Validator -- Yes --> Chunker["🔪 Split into 4KB Chunks"]
     
-    Process3 -->|"4a. Registration"| DBStep("Save Integrity Profile")
-    DBStep --> DB[("Database")]
+    subgraph "Cryptographic Processing"
+        Chunker --> Hash["#️⃣ SHA-256 Hashing"]
+        Chunker --> Entropy["🎲 Entropy Calculation"]
+    end
     
-    Process3 -->|"4b. Verification"| FetchStep("Fetch Existing Profile")
-    DB --> FetchStep
-    FetchStep --> Compare("Heuristic Comparison Engine")
-    Compare --> Report("Generate Heatmap & Report")
-    Report --> User
+    Hash & Entropy --> Profiler["📝 Build Integrity Profile"]
+    
+    Profiler -->|"Scenario A: Register"| Save["💾 Save to Database"]
+    Profiler -->|"Scenario B: Verify"| Compare{"🔍 Compare w/ Stored"}
+    
+    Compare -->|Match| ResultOK["✅ Success Report"]
+    Compare -->|Mismatch| ResultBad["⚠️ Forensic Heatmap"]
 ```
 
 ---
 
-## 3. Entity Relationship (ER) Diagram
+## 3. 🗂️ Database Design (ER Diagram)
+**"How we structure the data."**
 
-Since this is a privacy-focused system, we only store **metadata**, not the actual files.
+We use a flat, efficient schema optimized for fast lookups.
 
 ```mermaid
 erDiagram
     INTEGRITY_PROFILE {
-        int id PK
-        string file_name "Original filename"
-        bigint file_size "Size in bytes"
-        string full_hash "SHA-256 of entire file"
-        json chunk_hashes "Array of 4KB block hashes"
-        json chunk_entropies "Array of entropy floats"
-        string file_header "Magic bytes (Hex)"
-        datetime created_at "Timestamp"
+        int id PK "Unique ID"
+        string file_name "e.g. firmware.bin"
+        bigint file_size "Size in Bytes"
+        string full_hash "Global SHA-256 Fingerprint"
+        json chunk_hashes "List of 4KB Block Hashes"
+        json chunk_entropies "List of Entropy Scores (0.0-8.0)"
+        string file_header "File Magic Bytes (Hex)"
+        datetime created_at "Registration Time"
     }
 ```
+**🗣️ Presentation Taking Point:** "Notice the `chunk_entropies` JSON field. This is what allows us to later generate the 'Heatmap' and detect if a specific part of the file was encrypted by ransomware."
 
 ---
 
-## 4. Project Schedule (Gantt Chart)
+## 4. 📐 UML Diagrams
+**"The formal blueprints of the software."**
 
-A typical timeline for the development of this Mini Project.
-
-```mermaid
-gantt
-    title File Integrity System Development Timeline
-    dateFormat  YYYY-MM-DD
-    section Phase 1: Planning
-    Requirement Analysis   :active, 2025-11-01, 7d
-    System Design & UML    :2025-11-08, 5d
-    section Phase 2: Core Dev
-    Project Setup (Django) :2025-11-13, 2d
-    Backend Logic (Hashing):2025-11-15, 5d
-    Database Integration   :2025-11-20, 3d
-    section Phase 3: Frontend
-    UI Design (Landing)    :2025-11-23, 4d
-    Result Visualization   :2025-11-27, 4d
-    section Phase 4: Testing & Docs
-    Integration Testing    :2025-12-01, 3d
-    Documentation (Reports):2025-12-04, 3d
-```
-
----
-
-## 5. UML Diagrams
-
-### A. Use Case Diagram
-Describes the user's interaction with the system.
-
-*(Note: Modeled using Graph syntax for compatibility)*
-
-```mermaid
-graph LR
-    User((User))
-    subgraph "File Integrity System"
-        UC1("Register File (Create Profile)")
-        UC2("Verify File Integrity")
-        UC3("View Forensic Report")
-        UC4("Analyze Entropy Heatmap")
-    end
-    User --> UC1
-    User --> UC2
-    UC2 -.->|include| UC3
-    UC3 -.->|include| UC4
-```
-
-### B. Sequence Diagram (Verification Flow)
-Detailed flow of messages during a file verification process.
+### A. Sequence Diagram
+**"The timeline of a verification request."**
 
 ```mermaid
 sequenceDiagram
-    participant User
-    participant Browser
-    participant View as View (Django)
-    participant Utils as Utils (Logic)
-    participant Database
+    autonumber
+    participant User as 👤 User
+    participant Frontend as 🖥️ Browser
+    participant Backend as 🦁 Django View
+    participant Logic as 🧠 Utils.py
+    participant DB as 🛢️ Database
 
-    User->>Browser: Uploads File for Verification
-    Browser->>View: POST /verify_integrity
-    View->>Database: Query Profile (by filename)
-    Database-->>View: Return IntegrityProfile object
+    User->>Frontend: Uploads "contract.pdf"
+    Frontend->>Backend: POST /verify (File Data)
+    Backend->>DB: SQL: SELECT * FROM profiles WHERE name="contract.pdf"
     
     alt Profile Not Found
-        View-->>Browser: Error: File not registered
+        DB-->>Backend: Empty Result
+        Backend-->>Frontend: Error "Please Register First"
     else Profile Found
-        loop For each 4KB Chunk
-            View->>Utils: Read Chunk
-            Utils->>Utils: Calculate Hash & Entropy
+        DB-->>Backend: Returns JSON Profile
+        
+        loop For Every 4KB Chunk
+            Backend->>Logic: Read Chunk
+            Logic->>Logic: Compute SHA-256
+            Logic->>Logic: Compute Entropy
         end
-        View->>Utils: compare_hashes(stored, current)
-        Utils-->>View: Comparison Result (Heatmap Data)
-        View-->>Browser: Render Result.html
-        Browser-->>User: Display Integrity Report
+        
+        Backend->>Logic: compare(stored_data, new_data)
+        Logic-->>Backend: Returns Analysis (Heatmap, Threat Level)
+        
+        Backend-->>Frontend: Render Result.html with Graphs
+        Frontend-->>User: Visual Report Displayed
     end
 ```
 
+### B. Use Case Diagram
+**"Who does what?"**
+
+```mermaid
+graph LR
+    User((👤 User))
+    
+    subgraph "File Integrity System"
+        direction TB
+        UC1["📝 Register New File"]
+        UC2["🔍 Verify File Integrity"]
+        UC3["📊 View Forensic Report"]
+        UC4["🌡️ Analyze Entropy Heatmap"]
+    end
+    
+    User -->|Uploads| UC1
+    User -->|Uploads| UC2
+    UC2 -.->|Includes| UC3
+    UC3 -.->|Includes| UC4
+    
+    style UC1 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:black
+    style UC2 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:black
+    style UC3 fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:black
+    style UC4 fill:#fce4ec,stroke:#c2185b,stroke-width:2px,color:black
+```
+
 ### C. Class Diagram
-Represents the code structure and relationships.
+**"The code structure."**
 
 ```mermaid
 classDiagram
@@ -188,27 +214,34 @@ classDiagram
 ```
 
 ### D. Activity Diagram
-The logic flow for deciding if a file is safe or corrupted.
+**"The logic flow for classifying threats."**
 
 ```mermaid
 flowchart TD
-    Start([Start]) --> Upload[User Uploads File]
-    Upload --> Check[Check DB for Profile]
-    Check -- Not Found --> Error[Show Error]
-    Check -- Found --> Hash[Stream & Hash File]
-    Hash --> Compare{Compare Hashes}
+    classDef default fill:#fff,stroke:#333,stroke-width:1px,color:black;
+    Start([🚀 Start]) --> Upload[/User Uploads File/]
+    Upload --> DBQuery{"Profile Exists?"}
     
-    Compare -- Match --> Safe[Result: VALID]
-    Compare -- Mismatch --> Analyze[Analyze Entropies]
+    DBQuery -- No --> Error["❌ Error: File Unknown"]
+    DBQuery -- Yes --> Process["⚙️ Compute Hash & Entropy"]
     
-    Analyze --> CheckEntropy{Entropy Diff?}
-    CheckEntropy -- "High Spike" --> Ransom[Detect: Ransomware]
-    CheckEntropy -- "No Change" --> BitRot[Detect: Bit-Rot]
-    CheckEntropy -- "Stable Header" --> Trojan[Detect: Injection]
+    Process --> Compare{"Hashes Match?"}
     
-    Ransom --> Report[Generate Report]
-    BitRot --> Report
-    Trojan --> Report
-    Safe --> Report
-    Report --> End([End])
+    Compare -- Yes --> Safe(["✅ Safe: No Changes"])
+    
+    Compare -- No --> Analysis["🕵️ Deep Forensic Analysis"]
+    
+    Analysis --> CheckEntropy{"Check Entropy Delta"}
+    
+    CheckEntropy -- "Spike (> 7.5)" --> Ransom["💀 DETECTED: Ransomware"]
+    CheckEntropy -- "No Change (~ 0.0)" --> BitRot["🍂 DETECTED: Bit-Rot"]
+    CheckEntropy -- "Stable Header" --> Trojan["💉 DETECTED: Code Injection"]
+    
+    Ransom & BitRot & Trojan --> Report["📄 Generate Incident Report"]
+    Report --> End([🏁 End])
+
+    style Ransom fill:#ffcdd2,stroke:#b71c1c,color:black
+    style BitRot fill:#fff9c4,stroke:#fbc02d,color:black
+    style Trojan fill:#ffcc80,stroke:#e65100,color:black
+    style Safe fill:#c8e6c9,stroke:#2e7d32,color:black
 ```
